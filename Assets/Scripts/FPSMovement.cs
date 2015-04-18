@@ -22,6 +22,18 @@ public class FPSMovement : MonoBehaviour
 	
 	void FixedUpdate ()
     {
+        // Check  to see if the player is grounded
+        RaycastHit hitInfo;
+        // TODO: Currently the player's transform position is the middle of the player, we'd rather it be at the player's feet
+        if(Physics.Raycast(transform.position, -Vector3.up, out hitInfo, 1.1f, 1 << 8))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
 	   if(isGrounded)
        {
             float xVelocity = Input.GetAxis("Horizontal");
@@ -51,16 +63,5 @@ public class FPSMovement : MonoBehaviour
        //Apply gravitational acceleration force
        rigidbody.AddForce(Physics.gravity, ForceMode.Force);
 
-       isGrounded = false;
 	}
-
-    void OnCollisionEnter()
-    {
-        isGrounded = true;
-    }
-
-    void OnCollisionStay()
-    {
-        isGrounded = true;
-    }
 }
