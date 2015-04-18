@@ -54,6 +54,11 @@ public class FPSMovement : MonoBehaviour
        isGrounded = false;
 	}
 
+    void OnCollisionEnter()
+    {
+        isGrounded = true;
+    }
+
     void OnCollisionStay()
     {
         isGrounded = true;
