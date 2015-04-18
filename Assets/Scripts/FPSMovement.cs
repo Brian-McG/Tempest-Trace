@@ -15,7 +15,7 @@ public class FPSMovement : MonoBehaviour
     {
 	   rigidbody = GetComponent<Rigidbody>();
        rigidbody.freezeRotation = true;
-       rigidbody.useGravity = false;
+       //rigidbody.useGravity = false;
 
        isGrounded = false;
 	}
@@ -34,6 +34,11 @@ public class FPSMovement : MonoBehaviour
             isGrounded = false;
         }
 
+        if(isGrounded && rigidbody.velocity.y > 0)
+        {
+            Debug.Log("Grounded upwards!");
+        }
+
 	   if(isGrounded)
        {
             float xVelocity = Input.GetAxis("Horizontal");
@@ -42,6 +47,13 @@ public class FPSMovement : MonoBehaviour
             targetVelocity = transform.TransformDirection(targetVelocity); // Transform the velocity vector from local space into world space
             targetVelocity *= moveSpeed;
 
+            // Modify the target velocity to account for the slope of the ground
+            Vector3 sideways = Vector3.Cross(Vector3.up, targetVelocity);
+            Vector3 newVelocityDir = Vector3.Cross(sideways, hitInfo.normal).normalized;
+            //Debug.Log("Velocity "+targetVelocity+" to "+newVelocityDir);
+            //targetVelocity = newVelocityDir * targetVelocity.magnitude;
+            //Debug.Log("Change = " + ((newVelocityDir * targetVelocity.magnitude) - targetVelocity));
+
             // Apply the required force to get us to our target velocity
             Vector3 velocity = rigidbody.velocity;
             Vector3 deltaVelocity = (targetVelocity - velocity);
@@ -49,7 +61,7 @@ public class FPSMovement : MonoBehaviour
             // Prevent speeding up too fast
             deltaVelocity.x = Mathf.Clamp(deltaVelocity.x, -maxDeltaVelocity, maxDeltaVelocity);
             deltaVelocity.z = Mathf.Clamp(deltaVelocity.z, -maxDeltaVelocity, maxDeltaVelocity);
-            deltaVelocity.y = 0;
+            deltaVelocity.y = 0;//Mathf.Min(deltaVelocity.y, 0);
 
             // TODO: This seems to be quite buggy, fairly often it won't jump (presumably because its not grounded) when it really seems like it should
             if(Input.GetKeyDown(KeyCode.Space))
@@ -62,6 +74,5 @@ public class FPSMovement : MonoBehaviour
 
        //Apply gravitational acceleration force
        rigidbody.AddForce(Physics.gravity, ForceMode.Force);
-
 	}
 }
