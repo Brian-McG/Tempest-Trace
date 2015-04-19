@@ -3,15 +3,15 @@ using System.Collections;
 
 public class FPSMovement : MonoBehaviour
 {
-    private float maxMoveSpeed = 10.0f;
+    private float maxMoveSpeed = 5.0f;
 
     private bool isRunningForwards = false;
     private float startedRunningForwards = 0.0f;
     private float timeRunningForwards;
 
-    private float jumpForce = 10.0f;
+    private float jumpForce = 7.0f;
 
-    private float gravitationalAcceleration = -9.81f;
+    private float gravitationalAcceleration = -20f;
     private float terminalFallVelocity = -30.0f;
 
     private CharacterController characterController;
@@ -46,10 +46,6 @@ public class FPSMovement : MonoBehaviour
         shouldJump = Input.GetKey(KeyCode.Space);
     }
 
-    public Vector3 newVelocity;
-
-    
-
 	void FixedUpdate ()
     {
         float moveSpeed = maxMoveSpeed;
@@ -73,8 +69,9 @@ public class FPSMovement : MonoBehaviour
         Vector3 actualMove = transform.position - previousPosition;
         Vector3 actualVelocity = actualMove / Time.fixedDeltaTime;
         Vector3 actualLocalVelocity = transform.InverseTransformVector(actualVelocity);
-        newVelocity = actualLocalVelocity;
-        if(newVelocity.z > maxMoveSpeed - 0.1f)
+
+        // Start timing if we're currently running at full speed
+        if(actualLocalVelocity.z > maxMoveSpeed - 0.1f)
         {
             if(!isRunningForwards)
             {
