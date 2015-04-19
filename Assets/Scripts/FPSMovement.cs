@@ -3,76 +3,116 @@ using System.Collections;
 
 public class FPSMovement : MonoBehaviour
 {
-    public float moveSpeed = 10.0f;
-    public float jumpForce = 4.0f;
+    private float maxMoveSpeed = 10.0f;
 
-    public float maxDeltaVelocity = 10.0f;
+    private bool isRunningForwards = false;
+    private float startedRunningForwards = 0.0f;
+    private float timeRunningForwards;
 
-    private Rigidbody rigidbody;
-    private bool isGrounded;
+    private float jumpForce = 10.0f;
+
+    private float gravitationalAcceleration = -9.81f;
+    private float terminalFallVelocity = -30.0f;
+
+    private CharacterController characterController;
+    private Vector3 currentVelocity;
+
+    private Vector3 previousPosition;
+
+    /*
+    TODO:
+    Shouldn't we store more than 1 of these? We get many Updates for each FixedUpdate
+    so we probably want to take all of them into account instead of just the last one
+    that ran before FixedUpdate
+    */
+    private Vector2 moveInput;
+    private bool shouldJump;
+
 
 	void Start ()
     {
-	   rigidbody = GetComponent<Rigidbody>();
-       rigidbody.freezeRotation = true;
-       //rigidbody.useGravity = false;
+        characterController = GetComponent<CharacterController>();
 
-       isGrounded = false;
+        isRunningForwards = false;
+
+
+        previousPosition = transform.position;
 	}
 	
+    void Update()
+    {
+        moveInput.x = Input.GetAxis("Horizontal");
+        moveInput.y = Input.GetAxis("Vertical");
+        shouldJump = Input.GetKey(KeyCode.Space);
+    }
+
+    public Vector3 newVelocity;
+
+    
+
 	void FixedUpdate ()
     {
-        // Check  to see if the player is grounded
-        RaycastHit hitInfo;
-        // TODO: Currently the player's transform position is the middle of the player, we'd rather it be at the player's feet
-        if(Physics.Raycast(transform.position, -Vector3.up, out hitInfo, 1.1f, 1 << 8))
+        float moveSpeed = maxMoveSpeed;
+        if(isRunningForwards && (timeRunningForwards > 1.0f))
         {
-            isGrounded = true;
+            moveSpeed += Mathf.Min(5*(timeRunningForwards - 1.0f), 5);
+        }
+
+        Vector3 inputVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
+        inputVelocity = transform.rotation * inputVelocity;
+        inputVelocity.y = currentVelocity.y;
+
+        inputVelocity = fixedUpdateVerticalMovement(inputVelocity);
+
+        // TODO: We might need to push the player down a bit further here if we're walking down
+        // sudden drops such as steps or after vaulting over a box
+
+        currentVelocity = inputVelocity;
+        characterController.Move(currentVelocity * Time.fixedDeltaTime);
+
+        Vector3 actualMove = transform.position - previousPosition;
+        Vector3 actualVelocity = actualMove / Time.fixedDeltaTime;
+        Vector3 actualLocalVelocity = transform.InverseTransformVector(actualVelocity);
+        newVelocity = actualLocalVelocity;
+        if(newVelocity.z > maxMoveSpeed - 0.1f)
+        {
+            if(!isRunningForwards)
+            {
+                startedRunningForwards = Time.time;
+            }
+            isRunningForwards = true;
+            timeRunningForwards = Time.time - startedRunningForwards;
         }
         else
         {
-            isGrounded = false;
+            isRunningForwards = false;
         }
 
-        if(isGrounded && rigidbody.velocity.y > 0)
-        {
-            Debug.Log("Grounded upwards!");
-        }
+        previousPosition = transform.position;
 
-	   if(isGrounded)
-       {
-            float xVelocity = Input.GetAxis("Horizontal");
-            float zVelocity = Input.GetAxis("Vertical");
-            Vector3 targetVelocity = new Vector3(xVelocity, 0, zVelocity);
-            targetVelocity = transform.TransformDirection(targetVelocity); // Transform the velocity vector from local space into world space
-            targetVelocity *= moveSpeed;
-
-            // Modify the target velocity to account for the slope of the ground
-            Vector3 sideways = Vector3.Cross(Vector3.up, targetVelocity);
-            Vector3 newVelocityDir = Vector3.Cross(sideways, hitInfo.normal).normalized;
-            //Debug.Log("Velocity "+targetVelocity+" to "+newVelocityDir);
-            //targetVelocity = newVelocityDir * targetVelocity.magnitude;
-            //Debug.Log("Change = " + ((newVelocityDir * targetVelocity.magnitude) - targetVelocity));
-
-            // Apply the required force to get us to our target velocity
-            Vector3 velocity = rigidbody.velocity;
-            Vector3 deltaVelocity = (targetVelocity - velocity);
-
-            // Prevent speeding up too fast
-            deltaVelocity.x = Mathf.Clamp(deltaVelocity.x, -maxDeltaVelocity, maxDeltaVelocity);
-            deltaVelocity.z = Mathf.Clamp(deltaVelocity.z, -maxDeltaVelocity, maxDeltaVelocity);
-            deltaVelocity.y = 0;//Mathf.Min(deltaVelocity.y, 0);
-
-            // TODO: This seems to be quite buggy, fairly often it won't jump (presumably because its not grounded) when it really seems like it should
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                rigidbody.velocity = new Vector3(velocity.x, jumpForce, velocity.z);
-            }
-
-            rigidbody.AddForce(deltaVelocity, ForceMode.VelocityChange);
-       }
-
-       //Apply gravitational acceleration force
-       rigidbody.AddForce(Physics.gravity, ForceMode.Force);
+        // TODO: Handle velocity modification as a result of collisions (both horizontally and vertically)
+        // IE We might have moved less because we hit a wall, or hit something above us
+        // in which case we should probably set the y-velocity to 0
 	}
+
+    private Vector3 fixedUpdateVerticalMovement(Vector3 velocity)
+    {
+        if(characterController.isGrounded)
+        {
+            velocity.y = 0;
+            // TODO: Let the player jump higher by holding down the jump button
+            //       This is more to make small jumps smaller than large jumps larger
+            // TODO: Allow for jumping if the jump button was pressed in the near past,
+            //       not just in the last update (to allow for small mis-timings)
+            if(shouldJump)
+            {
+                velocity.y = jumpForce;
+            }
+        }
+        velocity.y += gravitationalAcceleration * Time.fixedDeltaTime;
+
+        velocity.y = Mathf.Max(velocity.y, terminalFallVelocity);
+
+        return velocity;
+    } 
 }

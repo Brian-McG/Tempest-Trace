@@ -366,6 +366,18 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 9d4133d5d30b644bd87802a347eaccbe, type: 2}
+      propertyPath: jumping.baseHeight
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 9d4133d5d30b644bd87802a347eaccbe, type: 2}
+      propertyPath: jumping.extraHeight
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 9d4133d5d30b644bd87802a347eaccbe, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9d4133d5d30b644bd87802a347eaccbe, type: 2}
   m_RootGameObject: {fileID: 875554008}
@@ -719,6 +731,7 @@ GameObject:
   - 114: {fileID: 875554012}
   - 114: {fileID: 875554011}
   - 114: {fileID: 875554010}
+  - 114: {fileID: 875554014}
   m_Layer: 10
   m_Name: First Person Controller
   m_TagString: Untagged
@@ -772,7 +785,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 484886281}
   m_GameObject: {fileID: 875554008}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ab79d7f243824f5d9826bd83522c8df, type: 3}
   m_Name: 
@@ -809,8 +822,8 @@ MonoBehaviour:
     maxFallSpeed: 20
   jumping:
     enabled: 1
-    baseHeight: 1
-    extraHeight: 1
+    baseHeight: .5
+    extraHeight: .5
     perpAmount: 0
     steepPerpAmount: .5
   movingPlatform:
@@ -836,6 +849,22 @@ CharacterController:
   m_SkinWidth: .0500000007
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &875554014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 875554008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e6e7362bf5254743adbb4196d238df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxMoveSpeed: 10
+  maxMoveAcclerate: 5
+  jumpForce: 4
+  gravitationalAcceleration: -9.81000042
+  terminalFallVelocity: -10
 --- !u!1 &904556504
 GameObject:
   m_ObjectHideFlags: 0
