@@ -71,7 +71,7 @@ public class FPSMovement : MonoBehaviour
         Vector3 actualLocalVelocity = transform.InverseTransformVector(actualVelocity);
 
         // Start timing if we're currently running at full speed
-        if(actualLocalVelocity.z > maxMoveSpeed - 0.1f)
+        if(actualLocalVelocity.z > maxMoveSpeed - 0.5f)
         {
             if(!isRunningForwards)
             {
