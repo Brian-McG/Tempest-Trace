@@ -1,0 +1,137 @@
+fileFormatVersion: 2
+guid: d52d8db8b9d94ee41b5a831169428f11
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: branch1
+    100002: branch10
+    100004: branch11
+    100006: branch2
+    100008: branch3
+    100010: branch4
+    100012: branch5
+    100014: branch6
+    100016: branch7
+    100018: branch8
+    100020: branch9
+    100022: leaves
+    100024: leaves_base
+    100026: leaves_pot
+    100028: plant
+    100030: //RootNode
+    100032: pot_plant
+    100034: spotLight1
+    100036: spotLight2
+    400000: branch1
+    400002: branch10
+    400004: branch11
+    400006: branch2
+    400008: branch3
+    400010: branch4
+    400012: branch5
+    400014: branch6
+    400016: branch7
+    400018: branch8
+    400020: branch9
+    400022: leaves
+    400024: leaves_base
+    400026: leaves_pot
+    400028: plant
+    400030: //RootNode
+    400032: pot_plant
+    400034: spotLight1
+    400036: spotLight2
+    2300000: branch1
+    2300002: branch10
+    2300004: branch11
+    2300006: branch2
+    2300008: branch3
+    2300010: branch4
+    2300012: branch5
+    2300014: branch6
+    2300016: branch7
+    2300018: branch8
+    2300020: branch9
+    2300022: leaves_base
+    2300024: leaves_pot
+    3300000: branch1
+    3300002: branch10
+    3300004: branch11
+    3300006: branch2
+    3300008: branch3
+    3300010: branch4
+    3300012: branch5
+    3300014: branch6
+    3300016: branch7
+    3300018: branch8
+    3300020: branch9
+    3300022: leaves_base
+    3300024: leaves_pot
+    4300000: leaves_pot
+    4300002: leaves_base
+    4300004: branch1
+    4300006: branch2
+    4300008: branch3
+    4300010: branch4
+    4300012: branch5
+    4300014: branch6
+    4300016: branch7
+    4300018: branch8
+    4300020: branch9
+    4300022: branch10
+    4300024: branch11
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
