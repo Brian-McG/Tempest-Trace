@@ -7,19 +7,27 @@ ModelImporter:
     100002: fan_attach_big
     100004: fan_big
     100006: vent_big
+    100008: big_duct
+    100010: fan_big_grp
     400000: //RootNode
     400002: fan_attach_big
     400004: fan_big
     400006: vent_big
+    400008: big_duct
+    400010: fan_big_grp
     2300000: fan_attach_big
     2300002: fan_big
     2300004: vent_big
+    2300006: big_duct
     3300000: fan_attach_big
     3300002: fan_big
     3300004: vent_big
+    3300006: big_duct
     4300000: fan_big
     4300002: vent_big
     4300004: fan_attach_big
+    4300006: big_duct
+    7400000: Take 001
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -36,7 +44,41 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 32
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: big_duct
+        weight: 1
+      - path: fan_big_grp
+        weight: 1
+      - path: fan_big_grp/fan_big
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
