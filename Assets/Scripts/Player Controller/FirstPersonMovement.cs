@@ -14,6 +14,7 @@ public class FirstPersonMovement : MonoBehaviour
 {
     public float RunSpeed;
     public float JumpForce;
+    public float AirControlFactor;
 
     private Animator animator;
     private int animParamJump;
@@ -44,61 +45,59 @@ public class FirstPersonMovement : MonoBehaviour
     private void updateOnPlayerInput()
     {
         // Disallow change of movement vector while in the air
+        float zMovement = Input.GetAxis("Vertical");
+        float xMovement = Input.GetAxis("Horizontal");
+        Vector3 moveVector = new Vector3(xMovement, 0, zMovement);
+
+        if (moveVector != Vector3.zero)
+        {
+            float moveMagnitude = moveVector.magnitude;
+            moveVector /= moveMagnitude;
+            moveMagnitude = Mathf.Min(1.0f, moveMagnitude);
+
+            moveVector = (transform.rotation * moveVector) * RunSpeed * moveMagnitude;
+        }
         if(isGrounded)
         {
-            float zMovement = Input.GetAxis("Vertical");
-            float xMovement = Input.GetAxis("Horizontal");
-            Vector3 moveVector = new Vector3(xMovement, 0, zMovement);
-
-            if (moveVector != Vector3.zero)
-            {
-                float moveMagnitude = moveVector.magnitude;
-                moveVector /= moveMagnitude;
-                moveMagnitude = Mathf.Min(1.0f, moveMagnitude);
-
-                moveVector = (transform.rotation * moveVector) * RunSpeed * moveMagnitude;
-            }
             velocity.x = moveVector.x;
             velocity.z = moveVector.z;
-
-            bool shouldJump = Input.GetKeyDown(KeyCode.Space);
-            Debug.DrawLine(transform.position, transform.position+transform.forward, Color.green);
-            if (shouldJump)
-            {
-                // Check for climbable obstacles
-                RaycastHit climbHitInfo;
-                if(Physics.Raycast(transform.position, transform.forward, out climbHitInfo, 1.0f))
-                {
-                    Debug.Log("Jump next to an obstacle");
-                    Vector3 climbHitPoint = climbHitInfo.point;
-                    Vector3 maxClimbCeiling = climbHitPoint + new Vector3(0.0f, 2.0f, 0.0f);
-
-                    if(Physics.Raycast(maxClimbCeiling, new Vector3(0.0f, -1.0f, 0.0f),
-                                       out climbHitInfo, 2.0f))
-                    {
-                        Vector3 climbTarget = climbHitInfo.point +
-                                                new Vector3(0.0f, 1.1f, 0.0f) +
-                                                (transform.forward * 0.5f);
-                        Vector3 climbMidpoint = transform.position;
-                        climbMidpoint.y = climbTarget.y;
-
-                        currentMotion = DefinedMotion.CLIMB;
-                        motionTargets.Clear();
-                        motionTargets.Add(climbMidpoint);
-                        motionTargets.Add(climbTarget);
-                        motionProgress = 0;
-                        Debug.Log("Begin Motion");
-                    }
-                }
-
-                velocity.y = JumpForce;
-                //animator.SetBool(animParamJump, true);
-            } else
-            {
-                velocity.y -= 9.81f * Time.deltaTime;
-            }
+        } else
+        {
+            velocity.x = Mathf.Lerp(velocity.x, moveVector.x, AirControlFactor);
+            velocity.z = Mathf.Lerp(velocity.z, moveVector.z, AirControlFactor);
         }
-        else
+
+        bool shouldJump = Input.GetKeyDown(KeyCode.Space);
+        Debug.DrawLine(transform.position, transform.position+transform.forward, Color.green);
+        if (isGrounded && shouldJump)
+        {
+            // Check for climbable obstacles
+            RaycastHit climbHitInfo;
+            if(Physics.Raycast(transform.position, transform.forward, out climbHitInfo, 1.0f))
+            {
+                Vector3 climbHitPoint = climbHitInfo.point;
+                Vector3 maxClimbCeiling = climbHitPoint + new Vector3(0.0f, 2.0f, 0.0f);
+
+                if(Physics.Raycast(maxClimbCeiling, new Vector3(0.0f, -1.0f, 0.0f),
+                                   out climbHitInfo, 2.0f))
+                {
+                    Vector3 climbTarget = climbHitInfo.point +
+                                            new Vector3(0.0f, 1.1f, 0.0f) +
+                                            (transform.forward * 0.5f);
+                    Vector3 climbMidpoint = transform.position;
+                    climbMidpoint.y = climbTarget.y;
+
+                    currentMotion = DefinedMotion.CLIMB;
+                    motionTargets.Clear();
+                    motionTargets.Add(climbMidpoint);
+                    motionTargets.Add(climbTarget);
+                    motionProgress = 0;
+                }
+            }
+
+            velocity.y = JumpForce;
+            //animator.SetBool(animParamJump, true);
+        } else
         {
             velocity.y -= 9.81f * Time.deltaTime;
         }
@@ -115,18 +114,11 @@ public class FirstPersonMovement : MonoBehaviour
             velocity = actualMoveVelocity;
         }
 
-        // TODO: What if we couldnt move the full distance?
-        //       - We might have hit a roof (set Y velocity to 0)
-        //       - We might have hit an obstacle (so we didnt run as far as we thought)
-
-        bool wasGrounded = isGrounded;
         isGrounded = false;
         RaycastHit hitInfo;
         if (Physics.Raycast(transform.position, new Vector3(0, -1, 0),
                                out hitInfo, 1.02f))
         {
-            if(!wasGrounded)
-                Debug.Log("GROUNDED");
             isGrounded = true;
             //animator.SetBool(animParamJump, false);
             velocity.y = 0.0f;
@@ -142,7 +134,6 @@ public class FirstPersonMovement : MonoBehaviour
         {
             transform.position = motionTargets[motionProgress];
             ++motionProgress;
-            Debug.Log("Move on to motion progress " + motionProgress);
 
             if(motionProgress >= motionTargets.Count)
             {
