@@ -42,6 +42,74 @@ public class FirstPersonMovement : MonoBehaviour
         motionTargets = new List<Vector3>();
     }
 
+    // NOTE: We assume here that the player has height 2 and that the player's origin is at height
+    //       1 from the ground (IE in the centre of the player)
+    private void checkForDefinedMotions()
+    {
+        float motionCheckDistance = 1.0f;
+        Vector3 currentPosition = transform.position;
+        Vector3 forwardDir = transform.forward;
+        
+        float vaultCheckHeight = 0.3f;
+        float maxVaultHeight = 0.6f;
+        RaycastHit vaultCheckInfo;
+        Vector3 vaultCheckPosition = currentPosition - new Vector3(0.0f, 1.0f, 0.0f) + new Vector3(0.0f, vaultCheckHeight, 0.0f);
+        bool canVault = Physics.Raycast(vaultCheckPosition, forwardDir, out vaultCheckInfo, motionCheckDistance);
+        
+        float climbCheckHeight = 1.0f;
+        float maxClimbHeight = 2.0f;
+        RaycastHit climbCheckInfo;
+        Vector3 climbCheckPosition = currentPosition - new Vector3(0.0f, 1.0f, 0.0f) + new Vector3(0.0f, climbCheckHeight, 0.0f);
+        bool canClimb = Physics.Raycast(climbCheckPosition, forwardDir, out climbCheckInfo, motionCheckDistance);
+
+        if(canVault && !canClimb)
+        {
+            Vector3 vaultCheckPoint = vaultCheckInfo.point + forwardDir * 0.2f;
+            Vector3 vaultCeiling = vaultCheckPoint + new Vector3(0.0f, maxVaultHeight, 0.0f);
+
+            if(Physics.Raycast(vaultCeiling, Vector3.down,
+                               out vaultCheckInfo, maxClimbHeight))
+            {
+                Vector3 vaultTarget = vaultCheckInfo.point + new Vector3(0.0f, 1.0f, 0.0f) +
+                                      new Vector3(0.0f, 0.1f, 0.0f);
+                Vector3 vaultMidpoint = currentPosition;
+                vaultMidpoint.y = vaultTarget.y;
+
+                Vector3 vaultEnd = currentPosition + forwardDir * 2.0f;
+                Vector3 vaultEndMidpoint = vaultEnd;
+                vaultEndMidpoint.y = vaultTarget.y;
+
+                currentMotion = DefinedMotion.VAULT;
+                motionTargets.Clear();
+                motionTargets.Add(vaultMidpoint);
+                motionTargets.Add(vaultTarget);
+                motionTargets.Add(vaultEndMidpoint);
+                motionTargets.Add(vaultEnd);
+                motionProgress = 0;
+            }
+        }
+        else if(canClimb)
+        {
+            Vector3 climbCheckPoint = climbCheckInfo.point + forwardDir * 0.2f;
+            Vector3 climbCeiling = climbCheckPoint + new Vector3(0.0f, maxClimbHeight, 0.0f);
+
+            if(Physics.Raycast(climbCeiling, Vector3.down,
+                               out climbCheckInfo, maxClimbHeight))
+            {
+                Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 1.0f, 0.0f) +
+                                      new Vector3(0.0f, 0.1f, 0.0f);
+                Vector3 climbMidpoint = transform.position;
+                climbMidpoint.y = climbTarget.y;
+
+                currentMotion = DefinedMotion.CLIMB;
+                motionTargets.Clear();
+                motionTargets.Add(climbMidpoint);
+                motionTargets.Add(climbTarget);
+                motionProgress = 0;
+            }
+        }
+    }
+    
     private void updateOnPlayerInput()
     {
         // Disallow change of movement vector while in the air
@@ -71,29 +139,7 @@ public class FirstPersonMovement : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position+transform.forward, Color.green);
         if (isGrounded && shouldJump)
         {
-            // Check for climbable obstacles
-            RaycastHit climbHitInfo;
-            if(Physics.Raycast(transform.position, transform.forward, out climbHitInfo, 1.0f))
-            {
-                Vector3 climbHitPoint = climbHitInfo.point;
-                Vector3 maxClimbCeiling = climbHitPoint + new Vector3(0.0f, 2.0f, 0.0f);
-
-                if(Physics.Raycast(maxClimbCeiling, new Vector3(0.0f, -1.0f, 0.0f),
-                                   out climbHitInfo, 2.0f))
-                {
-                    Vector3 climbTarget = climbHitInfo.point +
-                                            new Vector3(0.0f, 1.1f, 0.0f) +
-                                            (transform.forward * 0.5f);
-                    Vector3 climbMidpoint = transform.position;
-                    climbMidpoint.y = climbTarget.y;
-
-                    currentMotion = DefinedMotion.CLIMB;
-                    motionTargets.Clear();
-                    motionTargets.Add(climbMidpoint);
-                    motionTargets.Add(climbTarget);
-                    motionProgress = 0;
-                }
-            }
+            checkForDefinedMotions();
 
             velocity.y = JumpForce;
             //animator.SetBool(animParamJump, true);
