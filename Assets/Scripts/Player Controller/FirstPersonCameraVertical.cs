@@ -1,28 +1,31 @@
+// <copyright file="FirstPersonCameraVertical.cs" company="University of Cape Town">
+//     Jacques Heunis
+//     HNSJAC003
+// </copyright>
 using UnityEngine;
 
 public class FirstPersonCameraVertical : MonoBehaviour
 {
-    public float sensitivity = 6.0f;
+    public float Sensitivity = 6.0f;
 
-    public float minimumAngle = -60.0f;
-    public float maximumAngle =  60.0f;
+    public float MinimumAngle = -60.0f;
+    public float MaximumAngle = 60.0f;
 
     private float currentAngle;
 
-    void Awake()
+    private void Awake()
     {
         currentAngle = transform.localEulerAngles.x;
     }
 
-    void Update()
+    private void Update()
     {
         Vector3 currentRotation = transform.localEulerAngles;
 
-        float xDeltaRotation = Input.GetAxis("Mouse Y")*sensitivity;
-        currentAngle -= xDeltaRotation;
-        currentAngle = Mathf.Clamp(currentAngle, minimumAngle, maximumAngle);
+        float deltaRotationX = Input.GetAxis("Mouse Y") * Sensitivity;
+        currentAngle -= deltaRotationX;
+        currentAngle = Mathf.Clamp(currentAngle, MinimumAngle, MaximumAngle);
 
         transform.localEulerAngles = new Vector3(currentAngle, currentRotation.y, currentRotation.z);
     }
-
 }

@@ -1,17 +1,20 @@
+// <copyright file="FirstPersonCameraHorizontal.cs" company="University of Cape Town">
+//     Jacques Heunis
+//     HNSJAC003
+// </copyright>
 using UnityEngine;
 
 public class FirstPersonCameraHorizontal : MonoBehaviour
 {
-    public float sensitivity = 6.0f;
+    public float Sensitivity = 6.0f;
 
-    void Update()
+    private void Update()
     {
         Vector3 currentRotation = transform.localEulerAngles;
 
-        float yDeltaRotation = Input.GetAxis("Mouse X")*sensitivity;
-        float yRotation = currentRotation.y + yDeltaRotation;
+        float deltaRotationY = Input.GetAxis("Mouse X") * Sensitivity;
+        float rotationY = currentRotation.y + deltaRotationY;
 
-        transform.localEulerAngles = new Vector3(currentRotation.x, yRotation, currentRotation.z);
+        transform.localEulerAngles = new Vector3(currentRotation.x, rotationY, currentRotation.z);
     }
-
 }
