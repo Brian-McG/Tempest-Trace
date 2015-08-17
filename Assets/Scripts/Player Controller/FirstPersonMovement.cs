@@ -1,12 +1,27 @@
+// <copyright file="FirstPersonMovement.cs" company="University of Cape Town">
+//     Jacques Heunis
+//     HNSJAC003
+// </copyright>
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-using System.Collections.Generic;
-
-enum DefinedMotion
+public enum DefinedMotion
 {
+    /// <summary>
+    /// Not currently enacting a predefined motion (IE just running around)
+    /// </summary>
     NONE,
+
+    /// <summary>
+    /// Climbing a tall obstacle
+    /// </summary>
     CLIMB,
+
+    /// <summary>
+    /// Vaulting over a low obstacle
+    /// </summary>
     VAULT
 }
 
@@ -28,7 +43,7 @@ public class FirstPersonMovement : MonoBehaviour
     private List<Vector3> motionTargets;
     private int motionProgress;
 
-    void Awake()
+    private void Awake()
     {
         charController = GetComponent<CharacterController>();
 
@@ -44,7 +59,7 @@ public class FirstPersonMovement : MonoBehaviour
 
     // NOTE: We assume here that the player has height 2 and that the player's origin is at height
     //       1 from the ground (IE in the centre of the player)
-    private void checkForDefinedMotions()
+    private void CheckForDefinedMotions()
     {
         float motionCheckDistance = 1.0f;
         Vector3 currentPosition = transform.position;
@@ -62,20 +77,20 @@ public class FirstPersonMovement : MonoBehaviour
         Vector3 climbCheckPosition = currentPosition - new Vector3(0.0f, 1.0f, 0.0f) + new Vector3(0.0f, climbCheckHeight, 0.0f);
         bool canClimb = Physics.Raycast(climbCheckPosition, forwardDir, out climbCheckInfo, motionCheckDistance);
 
-        if(canVault && !canClimb)
+        if (canVault && !canClimb)
         {
-            Vector3 vaultCheckPoint = vaultCheckInfo.point + forwardDir * 0.2f;
+            Vector3 vaultCheckPoint = vaultCheckInfo.point + (forwardDir * 0.2f);
             Vector3 vaultCeiling = vaultCheckPoint + new Vector3(0.0f, maxVaultHeight, 0.0f);
 
-            if(Physics.Raycast(vaultCeiling, Vector3.down,
-                               out vaultCheckInfo, maxClimbHeight))
+            if (Physics.Raycast(vaultCeiling, Vector3.down,
+                                out vaultCheckInfo, maxClimbHeight))
             {
                 Vector3 vaultTarget = vaultCheckInfo.point + new Vector3(0.0f, 1.0f, 0.0f) +
                                       new Vector3(0.0f, 0.1f, 0.0f);
                 Vector3 vaultMidpoint = currentPosition;
                 vaultMidpoint.y = vaultTarget.y;
 
-                Vector3 vaultEnd = currentPosition + forwardDir * 2.0f;
+                Vector3 vaultEnd = currentPosition + (forwardDir * 2.0f);
                 Vector3 vaultEndMidpoint = vaultEnd;
                 vaultEndMidpoint.y = vaultTarget.y;
 
@@ -88,13 +103,13 @@ public class FirstPersonMovement : MonoBehaviour
                 motionProgress = 0;
             }
         }
-        else if(canClimb)
+        else if (canClimb)
         {
-            Vector3 climbCheckPoint = climbCheckInfo.point + forwardDir * 0.2f;
+            Vector3 climbCheckPoint = climbCheckInfo.point + (forwardDir * 0.2f);
             Vector3 climbCeiling = climbCheckPoint + new Vector3(0.0f, maxClimbHeight, 0.0f);
 
-            if(Physics.Raycast(climbCeiling, Vector3.down,
-                               out climbCheckInfo, maxClimbHeight))
+            if (Physics.Raycast(climbCeiling, Vector3.down,
+                                out climbCheckInfo, maxClimbHeight))
             {
                 Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 1.0f, 0.0f) +
                                       new Vector3(0.0f, 0.1f, 0.0f);
@@ -110,12 +125,12 @@ public class FirstPersonMovement : MonoBehaviour
         }
     }
     
-    private void updateOnPlayerInput()
+    private void UpdateOnPlayerInput()
     {
         // Disallow change of movement vector while in the air
-        float zMovement = Input.GetAxis("Vertical");
-        float xMovement = Input.GetAxis("Horizontal");
-        Vector3 moveVector = new Vector3(xMovement, 0, zMovement);
+        float movementZ = Input.GetAxis("Vertical");
+        float movementX = Input.GetAxis("Horizontal");
+        Vector3 moveVector = new Vector3(movementX, 0, movementZ);
 
         if (moveVector != Vector3.zero)
         {
@@ -125,25 +140,28 @@ public class FirstPersonMovement : MonoBehaviour
 
             moveVector = (transform.rotation * moveVector) * RunSpeed * moveMagnitude;
         }
-        if(isGrounded)
+
+        if (isGrounded)
         {
             velocity.x = moveVector.x;
             velocity.z = moveVector.z;
-        } else
+        }
+        else
         {
             velocity.x = Mathf.Lerp(velocity.x, moveVector.x, AirControlFactor);
             velocity.z = Mathf.Lerp(velocity.z, moveVector.z, AirControlFactor);
         }
 
         bool shouldJump = Input.GetKeyDown(KeyCode.Space);
-        Debug.DrawLine(transform.position, transform.position+transform.forward, Color.green);
+        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.green);
         if (isGrounded && shouldJump)
         {
-            checkForDefinedMotions();
+            CheckForDefinedMotions();
 
             velocity.y = JumpForce;
-            //animator.SetBool(animParamJump, true);
-        } else
+            ////animator.SetBool(animParamJump, true);
+        }
+        else
         {
             velocity.y -= 9.81f * Time.deltaTime;
         }
@@ -152,10 +170,10 @@ public class FirstPersonMovement : MonoBehaviour
         charController.Move(velocity * Time.deltaTime);
         Vector3 postMoveLoc = transform.position;
         Vector3 actualMoveOffset = postMoveLoc - preMoveLoc;
-        Vector3 actualMoveVelocity = actualMoveOffset * (1.0f/Time.deltaTime);
+        Vector3 actualMoveVelocity = actualMoveOffset * (1.0f / Time.deltaTime);
 
         // Update velocity if we got blocked somewhere along the way
-        if(velocity.sqrMagnitude - actualMoveVelocity.sqrMagnitude > 0.01f)
+        if (velocity.sqrMagnitude - actualMoveVelocity.sqrMagnitude > 0.01f)
         {
             velocity = actualMoveVelocity;
         }
@@ -166,26 +184,26 @@ public class FirstPersonMovement : MonoBehaviour
                                out hitInfo, 1.02f))
         {
             isGrounded = true;
-            //animator.SetBool(animParamJump, false);
+            ////animator.SetBool(animParamJump, false);
             velocity.y = 0.0f;
         }
-
     }
 
-    private void updateOnCurrentMotion()
+    private void UpdateOnCurrentMotion()
     {
         float motionSpeed = 6.0f * Time.deltaTime;
         Vector3 targetOffset = motionTargets[motionProgress] - transform.position;
-        if(targetOffset.sqrMagnitude < motionSpeed * motionSpeed)
+        if (targetOffset.sqrMagnitude < motionSpeed * motionSpeed)
         {
             transform.position = motionTargets[motionProgress];
             ++motionProgress;
 
-            if(motionProgress >= motionTargets.Count)
+            if (motionProgress >= motionTargets.Count)
             {
                 currentMotion = DefinedMotion.NONE;
                 velocity = new Vector3(0.0f, 0.0f, 0.0f);
             }
+
             return;
         }
 
@@ -195,15 +213,15 @@ public class FirstPersonMovement : MonoBehaviour
 
     // TODO: May be worthwhile moving movement to FixedUpdate for better physics interaction
     //       If we do we might want to store movement input each frame lest we miss any
-    void Update()
+    private void Update()
     {
-        if(currentMotion == DefinedMotion.NONE)
+        if (currentMotion == DefinedMotion.NONE)
         {
-            updateOnPlayerInput();
+            UpdateOnPlayerInput();
         }
         else
         {
-            updateOnCurrentMotion();
+            UpdateOnCurrentMotion();
         }
     }
 }

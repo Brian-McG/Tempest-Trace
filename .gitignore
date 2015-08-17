@@ -22,3 +22,6 @@ sysinfo.txt
 
 # Vim Swap files
 .*.swp
+
+# StyleCop cache files
+StyleCop.Cache
