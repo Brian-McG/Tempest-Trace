@@ -1836,7 +1836,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: Aircon
@@ -13662,7 +13662,7 @@ Transform:
   - {fileID: 1112896380}
   - {fileID: 2096687504}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!1 &705160044
 GameObject:
   m_ObjectHideFlags: 0
@@ -25052,9 +25052,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a88d2ad7420e91245a3ba0bb339d0831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 6
-  minimumAngle: -60
-  maximumAngle: 60
+  Sensitivity: 6
+  MinimumAngle: -60
+  MaximumAngle: 60
 --- !u!81 &1456803700
 AudioListener:
   m_ObjectHideFlags: 0
@@ -34410,9 +34410,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac7999c811c1614b82e1d1992cdd0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunSpeed: 20
+  RunSpeed: 10
   JumpForce: 5
-  AirControlFactor: 0
+  AirControlFactor: .0500000007
+  ClimbSpeed: 7
 --- !u!114 &1999366546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34425,7 +34426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db9f4f337d192142b026cc63dbe85e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 6
+  Sensitivity: 6
 --- !u!4 &1999366547
 Transform:
   m_ObjectHideFlags: 0
@@ -34438,7 +34439,7 @@ Transform:
   m_Children:
   - {fileID: 1456803698}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
 --- !u!54 &1999366548
 Rigidbody:
   m_ObjectHideFlags: 0
