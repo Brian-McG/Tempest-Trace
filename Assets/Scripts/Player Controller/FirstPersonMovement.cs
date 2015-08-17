@@ -67,44 +67,77 @@ public class FirstPersonMovement : MonoBehaviour
         Vector3 currentPosition = transform.position;
         Vector3 forwardDir = transform.forward;
 
+        // TODO: These need to be a little more coordinated, at the moment we're a little fuzzy on when to vault and when to climb
+        //       Similarly, the vaulting height is quite low so for example the low bars next to the AC switch get climbed rather than vaulted
         float vaultCheckHeight = 0.3f;
-        float maxVaultHeight = 0.6f;
+        float maxVaultHeight = 1.0f;
+        float maxVaultDistance = 3.0f;
         RaycastHit vaultCheckInfo;
         Vector3 vaultCheckPosition = currentPosition + new Vector3(0.0f, vaultCheckHeight, 0.0f);
-        Debug.DrawLine(vaultCheckPosition, vaultCheckPosition + forwardDir*motionCheckDistance, Color.green, 1.0f, false);
+        Debug.DrawLine(vaultCheckPosition, vaultCheckPosition + (forwardDir * motionCheckDistance), Color.green, 1.0f, false);
         bool canVault = Physics.Raycast(vaultCheckPosition, forwardDir, out vaultCheckInfo, motionCheckDistance);
 
         float climbCheckHeight = 1.0f;
         float maxClimbHeight = 2.0f;
         RaycastHit climbCheckInfo;
         Vector3 climbCheckPosition = currentPosition + new Vector3(0.0f, climbCheckHeight, 0.0f);
-        Debug.DrawLine(climbCheckPosition, climbCheckPosition + forwardDir*motionCheckDistance, Color.magenta, 1.0f, false);
+        Debug.DrawLine(climbCheckPosition, climbCheckPosition + (forwardDir * motionCheckDistance), Color.magenta, 1.0f, false);
         bool canClimb = Physics.Raycast(climbCheckPosition, forwardDir, out climbCheckInfo, motionCheckDistance);
 
         if (canVault && !canClimb)
         {
-            Vector3 vaultCheckPoint = vaultCheckInfo.point + (forwardDir * 0.2f);
-            Vector3 vaultCeiling = vaultCheckPoint + new Vector3(0.0f, maxVaultHeight, 0.0f);
+            // TODO: At the moment our vault picks us up, shifts us conveniently over the obstacle, and puts us down nicely on the other side
+            //       While this is really neat, it also doesnt feel right, it feels far more like climbing than like anything called a "vault"
+            //       The player should be able to be running, and without noticing a difference in speed/smoothness, vault over a low object
+            Vector3 vaultCheckPoint = vaultCheckInfo.point;
+            Vector3 vaultCeilingBasePoint = vaultCheckPoint + (forwardDir * 0.2f);
+            Vector3 vaultCeiling = vaultCeilingBasePoint + new Vector3(0.0f, maxVaultHeight, 0.0f);
 
+            RaycastHit vaultApexInfo;
             if (Physics.Raycast(vaultCeiling, Vector3.down,
-                                out vaultCheckInfo, maxClimbHeight))
+                                out vaultApexInfo, maxClimbHeight))
             {
-                Vector3 vaultTarget = vaultCheckInfo.point + new Vector3(0.0f, 0.1f, 0.0f);
-                Vector3 vaultMidpoint = currentPosition;
-                vaultMidpoint.y = vaultTarget.y;
-
-                Vector3 vaultEnd = currentPosition + (forwardDir * 2.0f);
-                Vector3 vaultEndMidpoint = vaultEnd;
-                vaultEndMidpoint.y = vaultTarget.y;
+                Vector3 vaultApex = vaultApexInfo.point + new Vector3(0.0f, 0.1f, 0.0f);
+                Vector3 vaultMidpoint = vaultCheckPoint;
+                vaultMidpoint.y = vaultApex.y;
 
                 Debug.Log("Vault");
                 currentMotion = DefinedMotion.VAULT;
+                motionProgress = 0;
                 motionTargets.Clear();
                 motionTargets.Add(vaultMidpoint);
-                motionTargets.Add(vaultTarget);
-                motionTargets.Add(vaultEndMidpoint);
-                motionTargets.Add(vaultEnd);
-                motionProgress = 0;
+
+                RaycastHit vaultBackCheckInfo;
+                bool vaultEndInRange = Physics.Raycast(currentPosition + (forwardDir * maxVaultDistance),
+                                                       -forwardDir, out vaultBackCheckInfo,
+                                                       maxVaultDistance - vaultCheckInfo.distance);
+
+                // NOTE: If we know where the end of the object is (IE so we can get over it and down the other side)
+                //       Then we move over it in 3 steps (up, along, down). If it has no end (or is too long) then we
+                //       move over it in 2 steps (up, slightly along)
+                if (vaultEndInRange)
+                {
+                    Vector3 vaultBackPoint = vaultBackCheckInfo.point;
+                    Vector3 vaultEndMidpoint = vaultBackPoint;
+                    vaultEndMidpoint.y = vaultApex.y;
+
+                    Vector3 vaultStartApexOffset = vaultMidpoint - currentPosition;
+                    vaultStartApexOffset.y *= -1.0f;
+                    Vector3 vaultEndPoint = vaultEndMidpoint + vaultStartApexOffset;
+
+                    Debug.DrawLine(currentPosition, vaultMidpoint, Color.red, 10.0f, false);
+                    Debug.DrawLine(vaultMidpoint, vaultEndMidpoint, Color.red, 10.0f, false);
+                    Debug.DrawLine(vaultEndMidpoint, vaultEndPoint, Color.red, 10.0f, false);
+
+                    motionTargets.Add(vaultEndMidpoint);
+                    motionTargets.Add(vaultEndPoint);
+                }
+                else
+                {
+                    Vector3 vaultEndPoint = vaultMidpoint + (transform.forward * 0.2f);
+
+                    motionTargets.Add(vaultEndPoint);
+                }
             }
         }
         else if (canClimb)
