@@ -10,10 +10,10 @@ public class Aircon : MonoBehaviour
   public bool Status = false;
   public GameObject PlayerOneCamera;
   public GameObject PlayerTwoCamera;
-  public Material Unlocked;
+  public Material UnlockedMaterial;
   public GameObject AirconAnimator;
   public GameObject AirconParticle;
-  public float RayCastDistance = 2.0f;
+  public float RayCastDistance;
   private Animator airconAnimator;
   private ParticleSystem airconParticle;
   private int layerToHit = 1 << 8;
@@ -40,10 +40,13 @@ public class Aircon : MonoBehaviour
 
   private void Hit()
   {
-    Status = true;
-    Renderer screen = transform.Find("prop_switchUnit_screen").renderer;
-    screen.material = Unlocked;
-    airconAnimator.SetBool("AirConOn", Status);
-    airconParticle.Play();
+    if (!Status)
+    {
+      Status = true;
+      Renderer screen = transform.Find("prop_switchUnit_screen").renderer;
+      screen.material = UnlockedMaterial;
+      airconAnimator.SetBool("AirConOn", Status);
+      airconParticle.Play();
+    }
   }
 }
