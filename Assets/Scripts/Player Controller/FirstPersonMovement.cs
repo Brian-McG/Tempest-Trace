@@ -31,6 +31,8 @@ public class FirstPersonMovement : MonoBehaviour
     public float JumpForce;
     public float AirControlFactor;
 
+    public float ClimbSpeed;
+
     private Animator animator;
     private int animParamJump;
     private int animParamSpeed;
@@ -64,13 +66,13 @@ public class FirstPersonMovement : MonoBehaviour
         float motionCheckDistance = 1.0f;
         Vector3 currentPosition = transform.position;
         Vector3 forwardDir = transform.forward;
-        
+
         float vaultCheckHeight = 0.3f;
         float maxVaultHeight = 0.6f;
         RaycastHit vaultCheckInfo;
         Vector3 vaultCheckPosition = currentPosition - new Vector3(0.0f, 1.0f, 0.0f) + new Vector3(0.0f, vaultCheckHeight, 0.0f);
         bool canVault = Physics.Raycast(vaultCheckPosition, forwardDir, out vaultCheckInfo, motionCheckDistance);
-        
+
         float climbCheckHeight = 1.0f;
         float maxClimbHeight = 2.0f;
         RaycastHit climbCheckInfo;
@@ -112,7 +114,7 @@ public class FirstPersonMovement : MonoBehaviour
                                 out climbCheckInfo, maxClimbHeight))
             {
                 Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 1.0f, 0.0f) +
-                                      new Vector3(0.0f, 0.1f, 0.0f);
+                                      new Vector3(0.0f, 0.05f, 0.0f);
                 Vector3 climbMidpoint = transform.position;
                 climbMidpoint.y = climbTarget.y;
 
@@ -191,9 +193,9 @@ public class FirstPersonMovement : MonoBehaviour
 
     private void UpdateOnCurrentMotion()
     {
-        float motionSpeed = 6.0f * Time.deltaTime;
+        float motionMoveDistance = ClimbSpeed * Time.deltaTime;
         Vector3 targetOffset = motionTargets[motionProgress] - transform.position;
-        if (targetOffset.sqrMagnitude < motionSpeed * motionSpeed)
+        if (targetOffset.sqrMagnitude < motionMoveDistance * motionMoveDistance)
         {
             transform.position = motionTargets[motionProgress];
             ++motionProgress;
@@ -208,7 +210,7 @@ public class FirstPersonMovement : MonoBehaviour
         }
 
         Vector3 targetDirection = targetOffset.normalized;
-        transform.position += targetDirection * motionSpeed;
+        transform.position += targetDirection * motionMoveDistance;
     }
 
     // TODO: May be worthwhile moving movement to FixedUpdate for better physics interaction
