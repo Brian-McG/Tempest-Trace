@@ -73,6 +73,7 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
+    tileSizeHint: 0
   m_NavMesh: {fileID: 0}
 --- !u!1 &800624
 GameObject:
@@ -1811,7 +1812,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 16.1429996
+      value: 15.1429996
       objectReference: {fileID: 0}
     - target: {fileID: 441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -34459,7 +34460,7 @@ CharacterController:
   m_StepOffset: .300000012
   m_SkinWidth: .00999999978
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &1999366545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34474,8 +34475,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunSpeed: 15
   JumpForce: 5
-  AirControlFactor: 0
   Velocity: {x: 0, y: 0, z: 0}
+  AirControlFactor: .0500000007
+  ClimbSpeed: 5
 --- !u!114 &1999366546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34496,7 +34498,7 @@ Transform:
   m_PrefabInternal: {fileID: 102462722}
   m_GameObject: {fileID: 1999366542}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 47.0099983, y: 16.1429996, z: 0}
+  m_LocalPosition: {x: 47.0099983, y: 15.1429996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1456803698}

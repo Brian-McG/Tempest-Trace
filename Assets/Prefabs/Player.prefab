@@ -138,6 +138,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Aircon: {fileID: 0}
+  LerpDownTime: 0
+  LerpUpTime: 0
+  SlowFactor: 3
 --- !u!114 &11441680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -149,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db9f4f337d192142b026cc63dbe85e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 6
+  Sensitivity: 6
 --- !u!114 &11441682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -161,9 +164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac7999c811c1614b82e1d1992cdd0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunSpeed: 20
+  RunSpeed: 10
   JumpForce: 5
-  AirControlFactor: 0
+  AirControlFactor: .0500000007
+  ClimbSpeed: 5
 --- !u!114 &11441684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,9 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a88d2ad7420e91245a3ba0bb339d0831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 6
-  minimumAngle: -60
-  maximumAngle: 60
+  Sensitivity: 6
+  MinimumAngle: -60
+  MaximumAngle: 60
 --- !u!124 &12441678
 Behaviour:
   m_ObjectHideFlags: 1
@@ -198,7 +202,7 @@ CharacterController:
   m_StepOffset: .300000012
   m_SkinWidth: .00999999978
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
