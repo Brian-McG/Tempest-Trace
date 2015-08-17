@@ -24,7 +24,7 @@ public class KillPlayerOffMap : MonoBehaviour
 
   internal void Update()
   {
-    if (firstPersonMovement.Velocity.y < -15.0f)
+    if (!active && firstPersonMovement.Velocity.y < -15.0f)
     {
       Fadeout.guiTexture.enabled = true;
       Fadeout.guiTexture.color = Color.Lerp(Fadeout.guiTexture.color, Color.black, FadeOutSpeed * Time.deltaTime);
