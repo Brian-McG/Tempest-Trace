@@ -60,7 +60,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     // NOTE: We assume here that the player has height 2 and that the player's origin is at height
-    //       1 from the ground (IE in the centre of the player)
+    //       0 from the ground (IE at the foot of the player)
     private void CheckForDefinedMotions()
     {
         float motionCheckDistance = 1.0f;
@@ -70,13 +70,15 @@ public class FirstPersonMovement : MonoBehaviour
         float vaultCheckHeight = 0.3f;
         float maxVaultHeight = 0.6f;
         RaycastHit vaultCheckInfo;
-        Vector3 vaultCheckPosition = currentPosition - new Vector3(0.0f, 1.0f, 0.0f) + new Vector3(0.0f, vaultCheckHeight, 0.0f);
+        Vector3 vaultCheckPosition = currentPosition + new Vector3(0.0f, vaultCheckHeight, 0.0f);
+        Debug.DrawLine(vaultCheckPosition, vaultCheckPosition + forwardDir*motionCheckDistance, Color.green, 1.0f, false);
         bool canVault = Physics.Raycast(vaultCheckPosition, forwardDir, out vaultCheckInfo, motionCheckDistance);
 
         float climbCheckHeight = 1.0f;
         float maxClimbHeight = 2.0f;
         RaycastHit climbCheckInfo;
-        Vector3 climbCheckPosition = currentPosition - new Vector3(0.0f, 1.0f, 0.0f) + new Vector3(0.0f, climbCheckHeight, 0.0f);
+        Vector3 climbCheckPosition = currentPosition + new Vector3(0.0f, climbCheckHeight, 0.0f);
+        Debug.DrawLine(climbCheckPosition, climbCheckPosition + forwardDir*motionCheckDistance, Color.magenta, 1.0f, false);
         bool canClimb = Physics.Raycast(climbCheckPosition, forwardDir, out climbCheckInfo, motionCheckDistance);
 
         if (canVault && !canClimb)
@@ -87,8 +89,7 @@ public class FirstPersonMovement : MonoBehaviour
             if (Physics.Raycast(vaultCeiling, Vector3.down,
                                 out vaultCheckInfo, maxClimbHeight))
             {
-                Vector3 vaultTarget = vaultCheckInfo.point + new Vector3(0.0f, 1.0f, 0.0f) +
-                                      new Vector3(0.0f, 0.1f, 0.0f);
+                Vector3 vaultTarget = vaultCheckInfo.point + new Vector3(0.0f, 0.1f, 0.0f);
                 Vector3 vaultMidpoint = currentPosition;
                 vaultMidpoint.y = vaultTarget.y;
 
@@ -96,6 +97,7 @@ public class FirstPersonMovement : MonoBehaviour
                 Vector3 vaultEndMidpoint = vaultEnd;
                 vaultEndMidpoint.y = vaultTarget.y;
 
+                Debug.Log("Vault");
                 currentMotion = DefinedMotion.VAULT;
                 motionTargets.Clear();
                 motionTargets.Add(vaultMidpoint);
@@ -113,11 +115,11 @@ public class FirstPersonMovement : MonoBehaviour
             if (Physics.Raycast(climbCeiling, Vector3.down,
                                 out climbCheckInfo, maxClimbHeight))
             {
-                Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 1.0f, 0.0f) +
-                                      new Vector3(0.0f, 0.05f, 0.0f);
+                Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
                 Vector3 climbMidpoint = transform.position;
                 climbMidpoint.y = climbTarget.y;
 
+                Debug.Log("Climb");
                 currentMotion = DefinedMotion.CLIMB;
                 motionTargets.Clear();
                 motionTargets.Add(climbMidpoint);
@@ -155,7 +157,6 @@ public class FirstPersonMovement : MonoBehaviour
         }
 
         bool shouldJump = Input.GetKeyDown(KeyCode.Space);
-        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.green);
         if (isGrounded && shouldJump)
         {
             CheckForDefinedMotions();
@@ -182,8 +183,8 @@ public class FirstPersonMovement : MonoBehaviour
 
         isGrounded = false;
         RaycastHit hitInfo;
-        if (Physics.Raycast(transform.position, new Vector3(0, -1, 0),
-                               out hitInfo, 1.02f))
+        if (Physics.Raycast(transform.position, Vector3.down,
+                               out hitInfo, 0.02f))
         {
             isGrounded = true;
             ////animator.SetBool(animParamJump, false);
