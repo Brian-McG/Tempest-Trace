@@ -73,7 +73,6 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
-    tileSizeHint: 0
   m_NavMesh: {fileID: 0}
 --- !u!1 &800624
 GameObject:
@@ -1849,6 +1848,10 @@ Prefab:
     - target: {fileID: 11441682, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: RunSpeed
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 441680, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.79999995
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
@@ -25091,7 +25094,7 @@ Transform:
   m_PrefabInternal: {fileID: 102462722}
   m_GameObject: {fileID: 1456803697}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .800000012, z: -.150000006}
+  m_LocalPosition: {x: 0, y: 1.79999995, z: -.150000006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1999366547}
@@ -34475,8 +34478,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunSpeed: 15
   JumpForce: 5
-  Velocity: {x: 0, y: 0, z: 0}
   AirControlFactor: .0500000007
+  Velocity: {x: 0, y: 0, z: 0}
   ClimbSpeed: 5
 --- !u!114 &1999366546
 MonoBehaviour:
