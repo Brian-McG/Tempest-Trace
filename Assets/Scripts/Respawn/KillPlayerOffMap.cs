@@ -35,7 +35,7 @@ public class KillPlayerOffMap : MonoBehaviour
         transform.position = new Vector3(47.01f, 16.143f, 0.0f);
       }
     }
-    else if (active)
+    else
     {
       Fadeout.guiTexture.color = Color.Lerp(Fadeout.guiTexture.color, Color.clear, FadeInSpeed * Time.deltaTime);
       if (Fadeout.guiTexture.color.a < 0.05f)
