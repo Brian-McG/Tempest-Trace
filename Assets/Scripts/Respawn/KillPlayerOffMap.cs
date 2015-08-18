@@ -12,11 +12,13 @@ public class KillPlayerOffMap : MonoBehaviour
   public float FadeInSpeed = 1.0f;
   public GUITexture Fadeout;
   private FirstPersonMovement firstPersonMovement;
+  private Checkpoint checkpoint;
   private bool active;
 
-  internal void Start()
+  internal void Awake()
   {  
     firstPersonMovement = GetComponent<FirstPersonMovement>();
+    checkpoint = GetComponent<Checkpoint>();
     Fadeout.guiTexture.enabled = false;
     Fadeout.guiTexture.pixelInset = new Rect(0f, 0f, Screen.width, Screen.height); 
     Fadeout.guiTexture.color = Color.clear;
@@ -32,7 +34,7 @@ public class KillPlayerOffMap : MonoBehaviour
       {
         active = true;
         Fadeout.guiTexture.color = Color.black;
-        transform.position = new Vector3(47.01f, 16.143f, 0.0f);
+        transform.position = checkpoint.Position;
       }
     }
     else

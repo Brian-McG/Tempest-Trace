@@ -18,7 +18,7 @@ public class PlayerSlow : MonoBehaviour
   private float currentLerpTime;
   private bool active;
 
-  internal void Start()
+  internal void Awake()
   {  
     firstPersonMovement = GetComponent<FirstPersonMovement>();
     defaultRunSpeed = firstPersonMovement.RunSpeed;
