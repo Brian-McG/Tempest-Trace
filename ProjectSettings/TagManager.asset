@@ -4,6 +4,10 @@
 TagManager:
   tags:
   - SteamArea
+  - PlayerOneCheckpoint
+  - PlayerTwoCheckpoint
+  - PlayerOne
+  - 
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
