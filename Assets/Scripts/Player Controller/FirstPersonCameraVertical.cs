@@ -13,6 +13,11 @@ public class FirstPersonCameraVertical : MonoBehaviour
 
   private float currentAngle;
 
+  public void ResetState()
+  {
+    currentAngle = 0.0f;
+  }
+
   private void Awake()
   {
     currentAngle = transform.localEulerAngles.x;
@@ -27,10 +32,5 @@ public class FirstPersonCameraVertical : MonoBehaviour
     currentAngle = Mathf.Clamp(currentAngle, MinimumAngle, MaximumAngle);
 
     transform.localEulerAngles = new Vector3(currentAngle, currentRotation.y, currentRotation.z);
-  }
-
-  public void ResetState()
-  {
-    currentAngle = 0.0f;
   }
 }

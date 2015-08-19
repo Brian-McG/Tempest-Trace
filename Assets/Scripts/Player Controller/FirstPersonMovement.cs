@@ -27,11 +27,6 @@ public enum DefinedMotion
 
 public class FirstPersonMovement : MonoBehaviour
 {
-  public Vector3 Velocity
-  {
-    get { return velocity; }
-  }
-  
   public float RunSpeed;
   public float JumpForce;
   public float AirControlFactor;
@@ -49,6 +44,22 @@ public class FirstPersonMovement : MonoBehaviour
   private List<Vector3> motionTargets;
   private int motionProgress;
   
+  public Vector3 Velocity
+  {
+    get { return velocity; }
+  }
+
+  public void ResetState()
+  {
+    currentMotion = DefinedMotion.NONE;
+    velocity  = Vector3.zero;
+
+    Transform cameraChild = transform.Find("Camera");
+    FirstPersonCameraVertical cameraVerticalControl = cameraChild.GetComponent<FirstPersonCameraVertical>();
+    cameraChild.localRotation = Quaternion.identity;
+    cameraVerticalControl.ResetState();
+  }
+
   private void Awake()
   {
     charController = GetComponent<CharacterController>();
@@ -263,16 +274,5 @@ public class FirstPersonMovement : MonoBehaviour
     {
       UpdateOnCurrentMotion();
     }
-  }
-
-  public void ResetState()
-  {
-    currentMotion = DefinedMotion.NONE;
-    velocity  = Vector3.zero;
-
-    Transform cameraChild = transform.Find("Camera");
-    FirstPersonCameraVertical cameraVerticalControl = cameraChild.GetComponent<FirstPersonCameraVertical>();
-    cameraChild.localRotation = Quaternion.identity;
-    cameraVerticalControl.ResetState();
   }
 }
