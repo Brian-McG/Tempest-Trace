@@ -47,8 +47,6 @@ public class PlayerSlow : MonoBehaviour
     if (aircon.Status && other.tag == "SteamArea")
     {
       currentLerpTime = Mathf.Clamp(LerpDownTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - slowSpeed), 0, LerpDownTime);
-      Debug.Log("Current Lerp time on enter (unclamp): " + (LerpDownTime * (defaultRunSpeed - firstPersonMovement.RunSpeed)));
-      Debug.Log("Current Lerp time on enter: " + currentLerpTime);
       active = true;
     }
   }
@@ -58,8 +56,6 @@ public class PlayerSlow : MonoBehaviour
     if (other.tag == "SteamArea")
     {
       currentLerpTime = Mathf.Clamp(LerpUpTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - slowSpeed), 0, LerpUpTime);
-      Debug.Log("Current Lerp time on enter (unclamp): " + (LerpUpTime * (defaultRunSpeed - firstPersonMovement.RunSpeed)));
-      Debug.Log("Current Lerp time on exit: " + currentLerpTime);
       active = false;
     }
   }
