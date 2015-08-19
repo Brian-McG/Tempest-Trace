@@ -73,6 +73,7 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
+    tileSizeHint: 0
   m_NavMesh: {fileID: 0}
 --- !u!1 &800624
 GameObject:
@@ -1852,6 +1853,14 @@ Prefab:
     - target: {fileID: 441680, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_LocalPosition.y
       value: 1.79999995
+      objectReference: {fileID: 0}
+    - target: {fileID: 11408692, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11441682, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: SlideControlFactor
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
@@ -25094,7 +25103,7 @@ Transform:
   m_PrefabInternal: {fileID: 102462722}
   m_GameObject: {fileID: 1456803697}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.70000005, z: -.150000006}
+  m_LocalPosition: {x: 0, y: 1.79999995, z: -.150000006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1999366547}
@@ -34425,11 +34434,12 @@ GameObject:
   - 114: {fileID: 1999366545}
   - 143: {fileID: 1999366544}
   - 54: {fileID: 1999366548}
+  - 114: {fileID: 1999366550}
   - 114: {fileID: 1999366543}
   - 114: {fileID: 1999366549}
   m_Layer: 0
   m_Name: Player One
-  m_TagString: Untagged
+  m_TagString: PlayerOne
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34476,11 +34486,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac7999c811c1614b82e1d1992cdd0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunSpeed: 15
+  DefaultRunSpeed: 10
   JumpForce: 5
   AirControlFactor: .0500000007
-  Velocity: {x: 0, y: 0, z: 0}
   ClimbSpeed: 5
+  SlideDeceleration: 7.5
+  SlideStopSpeedThreshold: 1
 --- !u!114 &1999366546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34537,6 +34548,21 @@ MonoBehaviour:
   FadeOutSpeed: 1
   FadeInSpeed: 3
   Fadeout: {fileID: 460580026}
+--- !u!114 &1999366550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11408692, guid: 7c9f54af8d9a2cc409bdf72780990d9a,
+    type: 2}
+  m_PrefabInternal: {fileID: 102462722}
+  m_GameObject: {fileID: 1999366542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05de2c06412bf154d87906b6cb1aaf25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FadeOutSpeed: 1
+  FadeInSpeed: 3
+  Fadeout: {fileID: 0}
 --- !u!1 &2000049327
 GameObject:
   m_ObjectHideFlags: 0
