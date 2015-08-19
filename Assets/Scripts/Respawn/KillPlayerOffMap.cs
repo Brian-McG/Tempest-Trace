@@ -34,7 +34,9 @@ public class KillPlayerOffMap : MonoBehaviour
       {
         isEnabled = true;
         Fadeout.guiTexture.color = Color.black;
+        firstPersonMovement.ResetState();
         transform.position = checkpoint.Position;
+        transform.localEulerAngles = checkpoint.Orientation;
       }
     }
     else

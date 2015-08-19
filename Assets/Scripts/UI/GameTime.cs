@@ -20,7 +20,6 @@ public class GameTime : MonoBehaviour
   internal void Awake()
   {  
     playerOneTime = PlayerOneTime.GetComponent<Text>();
-
     // PlayerTwoTime = PlayerTwoTime.getComponent<Text>();
   }
 
