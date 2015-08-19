@@ -13,7 +13,7 @@ public class KillPlayerOffMap : MonoBehaviour
   public GUITexture Fadeout;
   private FirstPersonMovement firstPersonMovement;
   private Checkpoint checkpoint;
-  private bool active;
+  private bool isEnabled;
 
   internal void Awake()
   {  
@@ -26,13 +26,13 @@ public class KillPlayerOffMap : MonoBehaviour
 
   internal void Update()
   {
-    if (!active && firstPersonMovement.Velocity.y < -15.0f)
+    if (!isEnabled && firstPersonMovement.Velocity.y < -15.0f)
     {
       Fadeout.guiTexture.enabled = true;
       Fadeout.guiTexture.color = Color.Lerp(Fadeout.guiTexture.color, Color.black, FadeOutSpeed * Time.deltaTime);
       if (Fadeout.guiTexture.color.a >= 0.7f)
       {
-        active = true;
+        isEnabled = true;
         Fadeout.guiTexture.color = Color.black;
         transform.position = checkpoint.Position;
       }
@@ -42,7 +42,7 @@ public class KillPlayerOffMap : MonoBehaviour
       Fadeout.guiTexture.color = Color.Lerp(Fadeout.guiTexture.color, Color.clear, FadeInSpeed * Time.deltaTime);
       if (Fadeout.guiTexture.color.a < 0.05f)
       {
-        active = false;
+        isEnabled = false;
         Fadeout.guiTexture.enabled = false;
         Fadeout.guiTexture.color = Color.clear;
       }
