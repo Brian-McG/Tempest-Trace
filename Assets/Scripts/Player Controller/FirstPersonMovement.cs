@@ -260,4 +260,15 @@ public class FirstPersonMovement : MonoBehaviour
             UpdateOnCurrentMotion();
         }
     }
+
+    public void ResetState()
+    {
+        currentMotion = DefinedMotion.NONE;
+        velocity  = Vector3.zero;
+
+        Transform cameraChild = transform.Find("Camera");
+        FirstPersonCameraVertical cameraVerticalControl = cameraChild.GetComponent<FirstPersonCameraVertical>();
+        cameraChild.localRotation = Quaternion.identity;
+        cameraVerticalControl.ResetState();
+    }
 }

@@ -28,4 +28,9 @@ public class FirstPersonCameraVertical : MonoBehaviour
 
         transform.localEulerAngles = new Vector3(currentAngle, currentRotation.y, currentRotation.z);
     }
+
+    public void ResetState()
+    {
+        currentAngle = 0.0f;
+    }
 }
