@@ -27,10 +27,14 @@ public enum DefinedMotion
 
 public class FirstPersonMovement : MonoBehaviour
 {
+  public Vector3 Velocity
+  {
+    get { return velocity; }
+  }
+  
   public float RunSpeed;
   public float JumpForce;
   public float AirControlFactor;
-  public Vector3 Velocity;
   public float ClimbSpeed;
   
   private Animator animator;
@@ -39,6 +43,7 @@ public class FirstPersonMovement : MonoBehaviour
   
   private CharacterController charController;
   private bool isGrounded;
+  private Vector3 velocity;
   
   private DefinedMotion currentMotion;
   private List<Vector3> motionTargets;
@@ -52,7 +57,7 @@ public class FirstPersonMovement : MonoBehaviour
     animParamJump = Animator.StringToHash("Jump");
     animParamSpeed = Animator.StringToHash("Speed");
     
-    Velocity = Vector3.zero;
+    velocity = Vector3.zero;
     isGrounded = true;
     currentMotion = DefinedMotion.NONE;
     motionTargets = new List<Vector3>();
@@ -179,13 +184,13 @@ public class FirstPersonMovement : MonoBehaviour
     
     if (isGrounded)
     {
-      Velocity.x = moveVector.x;
-      Velocity.z = moveVector.z;
+      velocity.x = moveVector.x;
+      velocity.z = moveVector.z;
     }
     else
     {
-      Velocity.x = Mathf.Lerp(Velocity.x, moveVector.x, AirControlFactor);
-      Velocity.z = Mathf.Lerp(Velocity.z, moveVector.z, AirControlFactor);
+      velocity.x = Mathf.Lerp(velocity.x, moveVector.x, AirControlFactor);
+      velocity.z = Mathf.Lerp(velocity.z, moveVector.z, AirControlFactor);
     }
     
     bool shouldJump = Input.GetKeyDown(KeyCode.Space);
@@ -193,24 +198,24 @@ public class FirstPersonMovement : MonoBehaviour
     {
       CheckForDefinedMotions();
       
-      Velocity.y = JumpForce;
+      velocity.y = JumpForce;
       ////animator.SetBool(animParamJump, true);
     }
     else
     {
-      Velocity.y -= 9.81f * Time.deltaTime;
+      velocity.y -= 9.81f * Time.deltaTime;
     }
     
     Vector3 preMoveLoc = transform.position;
-    charController.Move(Velocity * Time.deltaTime);
+    charController.Move(velocity * Time.deltaTime);
     Vector3 postMoveLoc = transform.position;
     Vector3 actualMoveOffset = postMoveLoc - preMoveLoc;
-    Vector3 actualMoveVelocity = actualMoveOffset * (1.0f / Time.deltaTime);
+    Vector3 actualMovevelocity = actualMoveOffset * (1.0f / Time.deltaTime);
     
     // Update velocity if we got blocked somewhere along the way
-    if (Velocity.sqrMagnitude - actualMoveVelocity.sqrMagnitude > 0.01f)
+    if (velocity.sqrMagnitude - actualMovevelocity.sqrMagnitude > 0.01f)
     {
-      Velocity = actualMoveVelocity;
+      velocity = actualMovevelocity;
     }
     
     isGrounded = false;
@@ -220,7 +225,7 @@ public class FirstPersonMovement : MonoBehaviour
     {
       isGrounded = true;
       ////animator.SetBool(animParamJump, false);
-      Velocity.y = 0.0f;
+      velocity.y = 0.0f;
     }
   }
   
@@ -236,7 +241,7 @@ public class FirstPersonMovement : MonoBehaviour
       if (motionProgress >= motionTargets.Count)
       {
         currentMotion = DefinedMotion.NONE;
-        Velocity = new Vector3(0.0f, 0.0f, 0.0f);
+        velocity = new Vector3(0.0f, 0.0f, 0.0f);
       }
       
       return;
