@@ -26,6 +26,7 @@ public class Checkpoint : MonoBehaviour
       {
         // TODO: Reset player rotation to straight forward
         Position = other.transform.position;
+        Orientation = other.transform.localEulerAngles;
         checkpoints.Add(Position, null);
       }
     }

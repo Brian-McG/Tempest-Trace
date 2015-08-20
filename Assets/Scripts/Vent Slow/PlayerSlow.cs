@@ -16,7 +16,7 @@ public class PlayerSlow : MonoBehaviour
   private float defaultRunSpeed;
   private float slowSpeed;
   private float currentLerpTime;
-  private bool active;
+  private bool isEnabled;
 
   internal void Awake()
   {  
@@ -28,13 +28,13 @@ public class PlayerSlow : MonoBehaviour
 
   internal void Update()
   {
-    if (active && LerpDownTime - currentLerpTime > 0.01f)
+    if (isEnabled && LerpDownTime - currentLerpTime > 0.01f)
     {
       currentLerpTime += Time.deltaTime;
       float percentage = currentLerpTime / LerpDownTime;
       firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, slowSpeed, percentage);
     }
-    else if (!active && LerpUpTime - currentLerpTime < (LerpUpTime - 0.01f))
+    else if (!isEnabled && LerpUpTime - currentLerpTime < (LerpUpTime - 0.01f))
     {
       currentLerpTime -= Time.deltaTime;
       float percentage = currentLerpTime / LerpUpTime;
@@ -47,7 +47,7 @@ public class PlayerSlow : MonoBehaviour
     if (aircon.Status && other.tag == "SteamArea")
     {
       currentLerpTime = Mathf.Clamp(LerpDownTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - slowSpeed), 0, LerpDownTime);
-      active = true;
+      isEnabled = true;
     }
   }
   
@@ -56,7 +56,7 @@ public class PlayerSlow : MonoBehaviour
     if (other.tag == "SteamArea")
     {
       currentLerpTime = Mathf.Clamp(LerpUpTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - slowSpeed), 0, LerpUpTime);
-      active = false;
+      isEnabled = false;
     }
   }
 }
