@@ -1,0 +1,175 @@
+fileFormatVersion: 2
+guid: 545c5503e219b8d4e9226b706f4fcc75
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: base2_joint
+    100002: base_joint
+    100004: body_control
+    100006: bot_body
+    100008: bot_control_grp
+    100010: //RootNode
+    100012: bot_joint_grp
+    100014: bot_left_fan
+    100016: bot_left_fan_grp
+    100018: bot_mesh_grp
+    100020: bot_right_fan
+    100022: bot_right_fan_grp
+    100024: global_control
+    100026: left_back_joint
+    100028: left_control
+    100030: left_front_joint
+    100032: main_joint
+    100034: right_back_joint
+    100036: right_control
+    100038: right_front_joint
+    400000: base2_joint
+    400002: base_joint
+    400004: body_control
+    400006: bot_body
+    400008: bot_control_grp
+    400010: //RootNode
+    400012: bot_joint_grp
+    400014: bot_left_fan
+    400016: bot_left_fan_grp
+    400018: bot_mesh_grp
+    400020: bot_right_fan
+    400022: bot_right_fan_grp
+    400024: global_control
+    400026: left_back_joint
+    400028: left_control
+    400030: left_front_joint
+    400032: main_joint
+    400034: right_back_joint
+    400036: right_control
+    400038: right_front_joint
+    2300000: bot_left_fan
+    2300002: bot_right_fan
+    3300000: bot_left_fan
+    3300002: bot_right_fan
+    4300000: bot_left_fan
+    4300002: bot_right_fan
+    4300004: bot_body
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: bot_body
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: bot_control_grp
+        weight: 1
+      - path: bot_control_grp/global_control
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/bot_left_fan_grp
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/bot_left_fan_grp/bot_left_fan
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/bot_right_fan_grp
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/bot_right_fan_grp/bot_right_fan
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/main_joint
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/main_joint/base2_joint
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/main_joint/base2_joint/right_control
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/main_joint/base2_joint/right_control/right_back_joint
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/main_joint/base2_joint/right_control/right_back_joint/right_front_joint
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/main_joint/base_joint
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/main_joint/base_joint/left_control
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/main_joint/base_joint/left_control/left_back_joint
+        weight: 1
+      - path: bot_control_grp/global_control/bot_joint_grp/body_control/main_joint/base_joint/left_control/left_back_joint/left_front_joint
+        weight: 1
+      - path: bot_mesh_grp
+        weight: 1
+      - path: bot_mesh_grp/bot_body
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 

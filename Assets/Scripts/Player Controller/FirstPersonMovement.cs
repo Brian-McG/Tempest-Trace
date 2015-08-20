@@ -62,6 +62,11 @@ public class FirstPersonMovement : MonoBehaviour
     get { return velocity; }
   }
 
+  public bool IsGrounded
+  {
+    get { return isGrounded; }
+  }
+
   public void ResetState()
   {
     currentMotion = DefinedMotion.NONE;
