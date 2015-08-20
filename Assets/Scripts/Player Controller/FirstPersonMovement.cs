@@ -22,16 +22,23 @@ public enum DefinedMotion
   /// <summary>
   /// Vaulting over a low obstacle
   /// </summary>
-  VAULT
+  VAULT,
+
+  /// <summary>
+  /// Slide under an obstacle or down a slope
+  /// </summary>
+  SLIDE,
 }
 
 public class FirstPersonMovement : MonoBehaviour
 {
-  public float RunSpeed;
+  public float DefaultRunSpeed;
   public float JumpForce;
   public float AirControlFactor;
   public float ClimbSpeed;
-  
+  public float SlideDeceleration;
+  public float SlideStopSpeedThreshold;
+
   private Animator animator;
   private int animParamJump;
   private int animParamSpeed;
@@ -44,6 +51,12 @@ public class FirstPersonMovement : MonoBehaviour
   private List<Vector3> motionTargets;
   private int motionProgress;
   
+  public float RunSpeed
+  {
+    get;
+    set;
+  }
+
   public Vector3 Velocity
   {
     get { return velocity; }
@@ -67,7 +80,8 @@ public class FirstPersonMovement : MonoBehaviour
     animator = GetComponentInChildren<Animator>();
     animParamJump = Animator.StringToHash("Jump");
     animParamSpeed = Animator.StringToHash("Speed");
-    
+
+    RunSpeed = DefaultRunSpeed;
     velocity = Vector3.zero;
     isGrounded = true;
     currentMotion = DefinedMotion.NONE;
@@ -76,7 +90,9 @@ public class FirstPersonMovement : MonoBehaviour
   
   // NOTE: We assume here that the player has height 2 and that the player's origin is at height
   //       0 from the ground (IE at the foot of the player)
-  private void CheckForDefinedMotions()
+  // TODO: We should be able to jump at a wall and if we hit the wall mid-jump, climb up it
+  //       (or at the very least grab onto the ledge)
+  private void CheckForVaultClimbMotion()
   {
     float motionCheckDistance = 1.0f;
     Vector3 currentPosition = transform.position;
@@ -176,10 +192,38 @@ public class FirstPersonMovement : MonoBehaviour
       }
     }
   }
-  
+ 
+  private void CheckForSlideMotion()
+  {
+    float horizontalVelocityThreshold = 1.0f;
+    Vector3 horizontalVelocity = velocity;
+    horizontalVelocity.y = 0;
+
+    if(horizontalVelocity.sqrMagnitude > horizontalVelocityThreshold *
+                                         horizontalVelocityThreshold)
+    {
+      currentMotion = DefinedMotion.SLIDE;
+      transform.localScale = new Vector3(1.0f, 0.5f, 1.0f);
+    }
+  }
+
+  private void MoveAndUpdateVelocity()
+  {
+    Vector3 preMoveLoc = transform.position;
+    charController.Move(velocity * Time.deltaTime);
+    Vector3 postMoveLoc = transform.position;
+    Vector3 actualMoveOffset = postMoveLoc - preMoveLoc;
+    Vector3 actualMovevelocity = actualMoveOffset * (1.0f / Time.deltaTime);
+    
+    // Update velocity if we got blocked somewhere along the way
+    if (velocity.sqrMagnitude - actualMovevelocity.sqrMagnitude > 0.01f)
+    {
+      velocity = actualMovevelocity;
+    }
+  }
+
   private void UpdateOnPlayerInput()
   {
-    // Disallow change of movement vector while in the air
     float movementZ = Input.GetAxis("Vertical");
     float movementX = Input.GetAxis("Horizontal");
     Vector3 moveVector = new Vector3(movementX, 0, movementZ);
@@ -192,7 +236,8 @@ public class FirstPersonMovement : MonoBehaviour
       
       moveVector = (transform.rotation * moveVector) * RunSpeed * moveMagnitude;
     }
-    
+
+    // Constrain change of movement vector while in the air
     if (isGrounded)
     {
       velocity.x = moveVector.x;
@@ -207,7 +252,7 @@ public class FirstPersonMovement : MonoBehaviour
     bool shouldJump = Input.GetKeyDown(KeyCode.Space);
     if (isGrounded && shouldJump)
     {
-      CheckForDefinedMotions();
+      CheckForVaultClimbMotion();
       
       velocity.y = JumpForce;
       ////animator.SetBool(animParamJump, true);
@@ -215,6 +260,12 @@ public class FirstPersonMovement : MonoBehaviour
     else
     {
       velocity.y -= 9.81f * Time.deltaTime;
+    }
+
+    bool shouldSlide = Input.GetKeyDown(KeyCode.LeftShift);
+    if(isGrounded && !shouldJump && shouldSlide)
+    {
+      CheckForSlideMotion();
     }
     
     Vector3 preMoveLoc = transform.position;
@@ -240,7 +291,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
   }
   
-  private void UpdateOnCurrentMotion()
+  private void UpdateVaultClimbMotion()
   {
     float motionMoveDistance = ClimbSpeed * Time.deltaTime;
     Vector3 targetOffset = motionTargets[motionProgress] - transform.position;
@@ -262,17 +313,80 @@ public class FirstPersonMovement : MonoBehaviour
     transform.position += targetDirection * motionMoveDistance;
   }
   
+  private void UpdateSlideMotion()
+  {
+    float movementZ = 1.0f;
+    float movementX = Input.GetAxis("Horizontal");
+    Vector3 moveVector = new Vector3(movementX, 0, movementZ);
+    
+    if (moveVector != Vector3.zero)
+    {
+      float moveMagnitude = moveVector.magnitude;
+      moveVector /= moveMagnitude;
+      moveMagnitude = Mathf.Min(1.0f, moveMagnitude);
+      
+      moveVector = (transform.rotation * moveVector) * RunSpeed * moveMagnitude;
+    }
+    velocity.x = moveVector.x;
+    velocity.z = moveVector.z;
+    
+    // Apply Gravity
+    velocity.y -= 9.81f * Time.deltaTime;
+
+    // Actually move
+    MoveAndUpdateVelocity();
+    // TODO: Check new velocity, we might need to exit slide (e.g if we slide into a wall)
+    
+    isGrounded = false;
+    RaycastHit hitInfo;
+    if (Physics.Raycast(transform.position, Vector3.down,
+                        out hitInfo, 0.02f))
+    {
+      isGrounded = true;
+      velocity.y = 0.0f;
+    }
+    
+    // Apply sliding slowdown
+    RunSpeed -= SlideDeceleration * Time.deltaTime;
+    if(RunSpeed < SlideStopSpeedThreshold)
+    {
+      currentMotion = DefinedMotion.NONE;
+      RunSpeed = DefaultRunSpeed;
+      transform.localScale = Vector3.one;
+    }
+
+    // Check that we're still holding the slide key, otherwise go back to standard running
+    if(!Input.GetKey(KeyCode.LeftShift))
+    {
+      currentMotion = DefinedMotion.NONE;
+      RunSpeed = DefaultRunSpeed;
+      transform.localScale = Vector3.one;
+    }
+  }
+
+
   // TODO: May be worthwhile moving movement to FixedUpdate for better physics interaction
   //       If we do we might want to store movement input each frame lest we miss any
   private void Update()
   {
-    if (currentMotion == DefinedMotion.NONE)
+    switch(currentMotion)
     {
-      UpdateOnPlayerInput();
-    }
-    else
-    {
-      UpdateOnCurrentMotion();
+      case DefinedMotion.NONE:
+        UpdateOnPlayerInput();
+        break;
+
+      case DefinedMotion.VAULT:
+      case DefinedMotion.CLIMB:
+        UpdateVaultClimbMotion();
+        break;
+
+      case DefinedMotion.SLIDE:
+        UpdateSlideMotion();
+        break;
+
+      default:
+        Debug.Log("Attempt to update on unrecognized motion");
+        break;
     }
   }
 }
