@@ -203,6 +203,7 @@ public class FirstPersonMovement : MonoBehaviour
                                          horizontalVelocityThreshold)
     {
       currentMotion = DefinedMotion.SLIDE;
+      transform.localScale = new Vector3(1.0f, 0.5f, 1.0f);
     }
   }
 
@@ -351,6 +352,7 @@ public class FirstPersonMovement : MonoBehaviour
     {
       currentMotion = DefinedMotion.NONE;
       RunSpeed = DefaultRunSpeed;
+      transform.localScale = Vector3.one;
     }
 
     // Check that we're still holding the slide key, otherwise go back to standard running
@@ -358,6 +360,7 @@ public class FirstPersonMovement : MonoBehaviour
     {
       currentMotion = DefinedMotion.NONE;
       RunSpeed = DefaultRunSpeed;
+      transform.localScale = Vector3.one;
     }
   }
 
