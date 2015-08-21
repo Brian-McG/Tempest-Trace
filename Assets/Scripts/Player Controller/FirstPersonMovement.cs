@@ -99,7 +99,16 @@ public class FirstPersonMovement : MonoBehaviour
   //       (or at the very least grab onto the ledge)
   private void CheckForVaultClimbMotion()
   {
-    float motionCheckDistance = 1.0f;
+    Vector3 horizontalVelocity = velocity;
+    horizontalVelocity.y = 0;
+    float horizontalSpeed = horizontalVelocity.magnitude;
+
+    float motionCheckTime = 0.15f;
+    float minCheckDistance = 0.8f;
+    float motionCheckDistance = horizontalSpeed*motionCheckTime;
+    motionCheckDistance = Mathf.Max(motionCheckDistance, minCheckDistance);
+
+    Debug.Log(motionCheckDistance);
     Vector3 currentPosition = transform.position;
     Vector3 forwardDir = transform.forward;
     
@@ -259,8 +268,11 @@ public class FirstPersonMovement : MonoBehaviour
     {
       CheckForVaultClimbMotion();
       
-      velocity.y = JumpForce;
-      ////animator.SetBool(animParamJump, true);
+      if(currentMotion == DefinedMotion.NONE)
+      {
+        velocity.y = JumpForce;
+        ////animator.SetBool(animParamJump, true);
+      }
     }
     else
     {
@@ -308,7 +320,6 @@ public class FirstPersonMovement : MonoBehaviour
       if (motionProgress >= motionTargets.Count)
       {
         currentMotion = DefinedMotion.NONE;
-        velocity = new Vector3(0.0f, 0.0f, 0.0f);
       }
       
       return;
