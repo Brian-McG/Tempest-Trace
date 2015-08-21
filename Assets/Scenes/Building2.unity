@@ -36813,6 +36813,13 @@ MonoBehaviour:
   DefaultRunSpeed: 10
   JumpForce: 5
   AirControlFactor: .0500000007
+  ObstacleCheckTime: .150000006
+  MinimumObstacleCheckDistance: .800000012
+  MinimumObstacleScanHeight: .349999994
+  MaximumVaultHeight: 1
+  MaximumVaultDistance: 3
+  MinimumSpeedToVault: 5
+  MaximumClimbHeight: 3.04999995
   ClimbSpeed: 5
   SlideDeceleration: 7.5
   SlideStopSpeedThreshold: 1

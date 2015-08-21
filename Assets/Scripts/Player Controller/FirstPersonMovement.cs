@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// TODO: Add a "STEP" motion for when an obstacle is too long/the player is too slow to vault,
+//       since the climb animation will probably look strange on an obstacle that is waist height
 public enum DefinedMotion
 {
   /// <summary>
@@ -35,7 +37,29 @@ public class FirstPersonMovement : MonoBehaviour
   public float DefaultRunSpeed;
   public float JumpForce;
   public float AirControlFactor;
+
+  [Header("Motion Parameters")]
+  [Tooltip("The number of seconds for which the obstacle detection ray gets shot forwards")]
+  public float ObstacleCheckTime;
+  [Tooltip("The minimum length of the obstacle check ray")]
+  public float MinimumObstacleCheckDistance;
+  [Tooltip("The minimum height at which an obstacle will be detected for vaulting/climbing")]
+  public float MinimumObstacleScanHeight;
+
+  [Header("Vault Parameters")]
+  [Tooltip("The maximum height of an obstacle that can be vaulted over")]
+  public float MaximumVaultHeight;
+  [Tooltip("The maximum length of an object that can be vaulted over")]
+  public float MaximumVaultDistance;
+  [Tooltip("The minimum speed that the player must be running in order to vault")]
+  public float MinimumSpeedToVault;
+
+  [Header("Climb Parameters")]
+  [Tooltip("The maximum height of an object that can be climbed")]
+  public float MaximumClimbHeight;
   public float ClimbSpeed;
+
+  [Header("Slide Parameters")]
   public float SlideDeceleration;
   public float SlideStopSpeedThreshold;
 
@@ -97,50 +121,46 @@ public class FirstPersonMovement : MonoBehaviour
   //       0 from the ground (IE at the foot of the player)
   // TODO: We should be able to jump at a wall and if we hit the wall mid-jump, climb up it
   //       (or at the very least grab onto the ledge)
+  // TODO: Check that the motion won't force the player through a wall (for example let them climb onto
+  //       a low object next a wall, instead of vaulting over it and through the wall
   private void CheckForVaultClimbMotion()
   {
     Vector3 horizontalVelocity = velocity;
     horizontalVelocity.y = 0;
     float horizontalSpeed = horizontalVelocity.magnitude;
 
-    float motionCheckTime = 0.15f;
-    float minCheckDistance = 0.8f;
-    float motionCheckDistance = horizontalSpeed*motionCheckTime;
-    motionCheckDistance = Mathf.Max(motionCheckDistance, minCheckDistance);
+    float motionCheckDistance = horizontalSpeed*ObstacleCheckTime;
+    motionCheckDistance = Mathf.Max(motionCheckDistance, MinimumObstacleCheckDistance);
 
-    Debug.Log(motionCheckDistance);
     Vector3 currentPosition = transform.position;
     Vector3 forwardDir = transform.forward;
     
     // TODO: These need to be a little more coordinated, at the moment we're a little fuzzy on when to vault and when to climb
     //       Similarly, the vaulting height is quite low so for example the low bars next to the AC switch get climbed rather than vaulted
-    float vaultCheckHeight = 0.3f;
-    float maxVaultHeight = 1.0f;
-    float maxVaultDistance = 3.0f;
     RaycastHit vaultCheckInfo;
-    Vector3 vaultCheckPosition = currentPosition + new Vector3(0.0f, vaultCheckHeight, 0.0f);
+    Vector3 vaultCheckPosition = currentPosition + new Vector3(0.0f, MinimumObstacleScanHeight, 0.0f);
     Debug.DrawLine(vaultCheckPosition, vaultCheckPosition + (forwardDir * motionCheckDistance), Color.green, 1.0f, false);
     bool canVault = Physics.Raycast(vaultCheckPosition, forwardDir, out vaultCheckInfo, motionCheckDistance);
     
-    float climbCheckHeight = 1.0f;
-    float maxClimbHeight = 2.0f;
+    float climbCheckHeight = MaximumVaultHeight + 0.2f;
     RaycastHit climbCheckInfo;
     Vector3 climbCheckPosition = currentPosition + new Vector3(0.0f, climbCheckHeight, 0.0f);
     Debug.DrawLine(climbCheckPosition, climbCheckPosition + (forwardDir * motionCheckDistance), Color.magenta, 1.0f, false);
     bool canClimb = Physics.Raycast(climbCheckPosition, forwardDir, out climbCheckInfo, motionCheckDistance);
-    
-    if (canVault && !canClimb)
+
+    if (canVault && !canClimb && (horizontalSpeed > MinimumSpeedToVault))
     {
       // TODO: At the moment our vault picks us up, shifts us conveniently over the obstacle, and puts us down nicely on the other side
       //       While this is really neat, it also doesnt feel right, it feels far more like climbing than like anything called a "vault"
       //       The player should be able to be running, and without noticing a difference in speed/smoothness, vault over a low object
       Vector3 vaultCheckPoint = vaultCheckInfo.point;
       Vector3 vaultCeilingBasePoint = vaultCheckPoint + (forwardDir * 0.2f);
-      Vector3 vaultCeiling = vaultCeilingBasePoint + new Vector3(0.0f, maxVaultHeight, 0.0f);
+      float vaultCeilingHeight = MaximumVaultHeight - MinimumObstacleScanHeight; // We subtract the height from our initial ray
+      Vector3 vaultCeiling = vaultCeilingBasePoint + new Vector3(0.0f, vaultCeilingHeight, 0.0f);
       
       RaycastHit vaultApexInfo;
       if (Physics.Raycast(vaultCeiling, Vector3.down,
-                          out vaultApexInfo, maxClimbHeight))
+                          out vaultApexInfo, MaximumVaultHeight))
       {
         Vector3 vaultApex = vaultApexInfo.point + new Vector3(0.0f, 0.1f, 0.0f);
         Vector3 vaultMidpoint = vaultCheckPoint;
@@ -153,9 +173,9 @@ public class FirstPersonMovement : MonoBehaviour
         motionTargets.Add(vaultMidpoint);
         
         RaycastHit vaultBackCheckInfo;
-        bool vaultEndInRange = Physics.Raycast(currentPosition + (forwardDir * maxVaultDistance),
+        bool vaultEndInRange = Physics.Raycast(currentPosition + (forwardDir * MaximumVaultDistance),
                                                -forwardDir, out vaultBackCheckInfo,
-                                               maxVaultDistance - vaultCheckInfo.distance);
+                                               MaximumVaultDistance - vaultCheckInfo.distance);
         
         // NOTE: If we know where the end of the object is (IE so we can get over it and down the other side)
         //       Then we move over it in 3 steps (up, along, down). If it has no end (or is too long) then we
@@ -188,10 +208,11 @@ public class FirstPersonMovement : MonoBehaviour
     else if (canClimb)
     {
       Vector3 climbCheckPoint = climbCheckInfo.point + (forwardDir * 0.2f);
-      Vector3 climbCeiling = climbCheckPoint + new Vector3(0.0f, maxClimbHeight, 0.0f);
+      float climbCeilingHeight = MaximumClimbHeight - climbCheckHeight; // Subtract the height form our initial ray
+      Vector3 climbCeiling = climbCheckPoint + new Vector3(0.0f, climbCeilingHeight, 0.0f);
       
       if (Physics.Raycast(climbCeiling, Vector3.down,
-                          out climbCheckInfo, maxClimbHeight))
+                          out climbCheckInfo, MaximumClimbHeight))
       {
         Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
         Vector3 climbMidpoint = transform.position;
@@ -263,6 +284,8 @@ public class FirstPersonMovement : MonoBehaviour
       velocity.z = Mathf.Lerp(velocity.z, moveVector.z, AirControlFactor);
     }
     
+    // TODO: Since velocity has been update here, we have the velocity based on the input alone
+    //       and does not consider the actual velocity based on collision
     bool shouldJump = Input.GetKeyDown(KeyCode.Space);
     if (isGrounded && shouldJump)
     {
