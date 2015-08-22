@@ -25,3 +25,6 @@ sysinfo.txt
 
 # StyleCop cache files
 StyleCop.Cache
+
+#Lightmaps
+*lightmap*
