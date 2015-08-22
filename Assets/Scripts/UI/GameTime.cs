@@ -25,18 +25,23 @@ public class GameTime : MonoBehaviour
 
   internal void Update()
   {
+    UpdateTime();
+  }
+
+  private void UpdateTime()
+  {
     seconds += Time.deltaTime;
     if (seconds >= 60.0f)
     {
       seconds -= 60.0f;
       minutes += 1;
     }
-
+    
     if (PlayerOneActive)
     {
       playerOneTime.text = "Time " + (minutes < 10 ? "0" : string.Empty) + minutes + ":" + (seconds < 10.0f ? "0" : string.Empty) + (int)seconds; 
     }
-
+    
     if (PlayerTwoActive)
     {
       // TODO

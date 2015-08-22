@@ -8,8 +8,9 @@ using UnityEngine;
 // TODO: Faciliate for two players
 public class KillPlayerOffMap : MonoBehaviour
 {
-  public float FadeOutSpeed = 1.0f;
-  public float FadeInSpeed = 1.0f;
+  public float FadeOutSpeed;
+  public float FadeInSpeed;
+  public float FadeTriggerVelocity;
   public GUITexture Fadeout;
   private FirstPersonMovement firstPersonMovement;
   private Checkpoint checkpoint;
@@ -26,28 +27,48 @@ public class KillPlayerOffMap : MonoBehaviour
 
   internal void Update()
   {
-    if (!isEnabled && firstPersonMovement.Velocity.y < -15.0f)
+    if (!isEnabled && firstPersonMovement.Velocity.y < FadeTriggerVelocity)
     {
-      Fadeout.guiTexture.enabled = true;
-      Fadeout.guiTexture.color = Color.Lerp(Fadeout.guiTexture.color, Color.black, FadeOutSpeed * Time.deltaTime);
-      if (Fadeout.guiTexture.color.a >= 0.7f)
-      {
-        isEnabled = true;
-        Fadeout.guiTexture.color = Color.black;
-        firstPersonMovement.ResetState();
-        transform.position = checkpoint.Position;
-        transform.localEulerAngles = checkpoint.Orientation;
-      }
+      FadeOverlay();
     }
     else
     {
-      Fadeout.guiTexture.color = Color.Lerp(Fadeout.guiTexture.color, Color.clear, FadeInSpeed * Time.deltaTime);
-      if (Fadeout.guiTexture.color.a < 0.05f)
-      {
-        isEnabled = false;
-        Fadeout.guiTexture.enabled = false;
-        Fadeout.guiTexture.color = Color.clear;
-      }
+      UnFadeOverlay();
     }
+  }
+
+  private void FadeOverlay()
+  {
+    Fadeout.guiTexture.enabled = true;
+    Fadeout.guiTexture.color = Color.Lerp(Fadeout.guiTexture.color, Color.black, FadeOutSpeed * Time.deltaTime);
+    if (Fadeout.guiTexture.color.a >= 0.7f)
+    {
+      KillPlayer();
+    }
+  }
+
+  private void UnFadeOverlay()
+  {
+    Fadeout.guiTexture.color = Color.Lerp(Fadeout.guiTexture.color, Color.clear, FadeInSpeed * Time.deltaTime);
+    if (Fadeout.guiTexture.color.a < 0.05f)
+    {
+      ClearScreenOverlay();
+    }
+  }
+
+  private void KillPlayer()
+  {
+    isEnabled = true;
+    Fadeout.guiTexture.color = Color.black;
+    firstPersonMovement.ResetState();
+    transform.position = checkpoint.Position;
+    transform.localEulerAngles = checkpoint.Orientation;
+  }
+
+  private void ClearScreenOverlay()
+  {
+    isEnabled = false;
+    Fadeout.guiTexture.enabled = false;
+    Fadeout.guiTexture.color = Color.clear;
   }
 }
