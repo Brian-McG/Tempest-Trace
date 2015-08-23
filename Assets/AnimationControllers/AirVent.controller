@@ -12,7 +12,7 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 0
+    m_DefaultBool: 1
     m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 3
@@ -90,7 +90,7 @@ State:
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
-  - {fileID: 7400000, guid: 549c9dfbcdf043345aadc96946c20e79, type: 3}
+  - {fileID: 7400000, guid: b9ccb0a75af7d264cb1cbb7881c80837, type: 3}
   m_ParentStateMachine: {fileID: 110757906}
   m_Position: {x: 36, y: -96, z: 0}
   m_IKOnFeet: 0

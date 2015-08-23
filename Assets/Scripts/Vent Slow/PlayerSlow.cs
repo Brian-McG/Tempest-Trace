@@ -21,7 +21,7 @@ public class PlayerSlow : MonoBehaviour
   internal void Awake()
   {  
     firstPersonMovement = GetComponent<FirstPersonMovement>();
-    defaultRunSpeed = firstPersonMovement.RunSpeed;
+    defaultRunSpeed = firstPersonMovement.DefaultRunSpeed;
     slowSpeed = defaultRunSpeed / SlowFactor;
     aircon = Aircon.GetComponent<Aircon>();
   }
