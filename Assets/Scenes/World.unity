@@ -226,7 +226,6 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
-    tileSizeHint: 0
   m_NavMesh: {fileID: 0}
 --- !u!1 &5536312
 GameObject:
@@ -9867,8 +9866,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -16762,6 +16761,33 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 365047811}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &369076546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 369076547}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &369076547
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 369076546}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.81999993, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1604412588}
+  m_RootOrder: 2
 --- !u!1 &369879589
 GameObject:
   m_ObjectHideFlags: 0
@@ -36039,7 +36065,6 @@ GameObject:
   - 33: {fileID: 639032733}
   - 65: {fileID: 639032732}
   - 23: {fileID: 639032731}
-  - 114: {fileID: 639032734}
   m_Layer: 0
   m_Name: Bot2
   m_TagString: Untagged
@@ -36098,20 +36123,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 639032729}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &639032734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 639032729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 251bd223e72a6384fbea33532437c480, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MoveSpeed: 0
-  RotationSpeed: 0
-  Waypoints: []
 --- !u!1 &639618539
 GameObject:
   m_ObjectHideFlags: 0
@@ -39027,6 +39038,7 @@ Transform:
   - {fileID: 748109005}
   - {fileID: 1859846985}
   - {fileID: 902013593}
+  - {fileID: 1604412588}
   m_Father: {fileID: 0}
   m_RootOrder: 3
 --- !u!1 &709126438
@@ -60938,6 +60950,33 @@ MeshFilter:
   m_PrefabInternal: {fileID: 628564914}
   m_GameObject: {fileID: 1224420561}
   m_Mesh: {fileID: 4300726, guid: d7890fb66136a6b4daf75fd44cb90384, type: 3}
+--- !u!1 &1227612192
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1227612193}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1227612193
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1227612192}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.85999966, y: 0, z: -5.23000002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1604412588}
+  m_RootOrder: 1
 --- !u!1 &1231816624
 GameObject:
   m_ObjectHideFlags: 0
@@ -61585,6 +61624,33 @@ MeshFilter:
   m_PrefabInternal: {fileID: 408003608}
   m_GameObject: {fileID: 1245793799}
   m_Mesh: {fileID: 4300374, guid: d7890fb66136a6b4daf75fd44cb90384, type: 3}
+--- !u!1 &1248677328
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1248677329}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1248677329
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1248677328}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 6.05000019}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1604412588}
+  m_RootOrder: 0
 --- !u!1 &1249681367
 GameObject:
   m_ObjectHideFlags: 0
@@ -75552,6 +75618,36 @@ Transform:
   - {fileID: 2067892655}
   m_Father: {fileID: 539452411}
   m_RootOrder: 0
+--- !u!1 &1604412587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1604412588}
+  m_Layer: 0
+  m_Name: Waypoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1604412588
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1604412587}
+  m_LocalRotation: {x: 0, y: -.707106829, z: 0, w: .707106829}
+  m_LocalPosition: {x: .199998066, y: 19.7199993, z: -9.18000317}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_Children:
+  - {fileID: 1248677329}
+  - {fileID: 1227612193}
+  - {fileID: 369076547}
+  m_Father: {fileID: 707136059}
+  m_RootOrder: 22
 --- !u!1 &1608559046
 GameObject:
   m_ObjectHideFlags: 0
@@ -93699,6 +93795,7 @@ GameObject:
   - 95: {fileID: 2056835611}
   - 54: {fileID: 2056835612}
   - 135: {fileID: 2056835613}
+  - 114: {fileID: 2056835614}
   m_Layer: 0
   m_Name: Bot1
   m_TagString: Untagged
@@ -93763,6 +93860,23 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .600000024
   m_Center: {x: 0, y: .159999996, z: 0}
+--- !u!114 &2056835614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2056835609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 251bd223e72a6384fbea33532437c480, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 5
+  RotationSpeed: 50
+  Waypoints:
+  - {fileID: 1248677328}
+  - {fileID: 1227612192}
+  - {fileID: 369076546}
 --- !u!1 &2057229882
 GameObject:
   m_ObjectHideFlags: 0
