@@ -7,14 +7,30 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-  public Vector3 Position;
-  public Vector3 Orientation;
+  private Vector3 position;
+  private Vector3 orientation;
   private Hashtable checkpoints;
+
+  public Vector3 Position
+  {
+    get
+    {
+      return position;
+    }
+  }
+
+  public Vector3 Orientation
+  {
+    get
+    {
+      return orientation;
+    }
+  }
 
   internal void Awake()
   {
-    Position = transform.position;
-    Orientation = transform.localEulerAngles;
+    position = transform.position;
+    orientation = transform.localEulerAngles;
     checkpoints = new Hashtable();
   }
 
@@ -24,11 +40,18 @@ public class Checkpoint : MonoBehaviour
     {
       if (!checkpoints.ContainsKey(other.transform.position))
       {
-        // TODO: Reset player rotation to straight forward
-        Position = other.transform.position;
-        Orientation = other.transform.localEulerAngles;
-        checkpoints.Add(Position, null);
+        CheckpointReached(other);
       }
+    }
+  }
+
+  private void CheckpointReached(Collider checkpoint)
+  {
+    if (!checkpoints.ContainsKey(checkpoint.transform.position))
+    {
+      position = checkpoint.transform.position;
+      orientation = checkpoint.transform.localEulerAngles;
+      checkpoints.Add(Position, null);
     }
   }
 }

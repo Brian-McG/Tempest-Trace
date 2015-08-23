@@ -18,7 +18,7 @@ public class Aircon : MonoBehaviour
   private ParticleSystem airconParticle;
   private int layerToHit = 1 << 8;
 
-  internal void Start()
+  internal void Awake()
   {
     airconAnimator = AirconAnimator.GetComponent<Animator>();
     airconParticle = AirconParticle.GetComponent<ParticleSystem>();

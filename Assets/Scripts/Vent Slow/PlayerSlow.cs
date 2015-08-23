@@ -28,18 +28,7 @@ public class PlayerSlow : MonoBehaviour
 
   internal void Update()
   {
-    if (isEnabled && LerpDownTime - currentLerpTime > 0.01f)
-    {
-      currentLerpTime += Time.deltaTime;
-      float percentage = currentLerpTime / LerpDownTime;
-      firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, slowSpeed, percentage);
-    }
-    else if (!isEnabled && LerpUpTime - currentLerpTime < (LerpUpTime - 0.01f))
-    {
-      currentLerpTime -= Time.deltaTime;
-      float percentage = currentLerpTime / LerpUpTime;
-      firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, slowSpeed, percentage);
-    }
+    UpdatePlayerRunSpeed();
   }
 
   internal void OnTriggerEnter(Collider other)
@@ -57,6 +46,22 @@ public class PlayerSlow : MonoBehaviour
     {
       currentLerpTime = Mathf.Clamp(LerpUpTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - slowSpeed), 0, LerpUpTime);
       isEnabled = false;
+    }
+  }
+
+  private void UpdatePlayerRunSpeed()
+  {
+    if (isEnabled && LerpDownTime - currentLerpTime > 0.01f)
+    {
+      currentLerpTime += Time.deltaTime;
+      float percentage = currentLerpTime / LerpDownTime;
+      firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, slowSpeed, percentage);
+    }
+    else if (!isEnabled && LerpUpTime - currentLerpTime < (LerpUpTime - 0.01f))
+    {
+      currentLerpTime -= Time.deltaTime;
+      float percentage = currentLerpTime / LerpUpTime;
+      firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, slowSpeed, percentage);
     }
   }
 }

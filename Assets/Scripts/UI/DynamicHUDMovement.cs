@@ -41,6 +41,12 @@ public class DynamicHUDMovement : MonoBehaviour
 
   internal void Update()
   {
+    UpdateHUDPosition();
+  }
+
+
+  private void UpdateHUDPosition()
+  {
     // Should this effect play if you are not grounded?
     if (firstPersonMovement.Velocity.magnitude > 0.0f && firstPersonMovement.IsGrounded)
     {
@@ -51,7 +57,7 @@ public class DynamicHUDMovement : MonoBehaviour
         float y = element.anchoredPosition.y;    
         hudElements[i].anchoredPosition = new Vector2(x + (XMovement * Time.deltaTime), y + (YMovement * Time.deltaTime));
       }
-
+      
       currentXTime += Time.deltaTime;
       currentYTime += Time.deltaTime;
       if (currentXTime > XSwapTime)
@@ -59,7 +65,7 @@ public class DynamicHUDMovement : MonoBehaviour
         XMovement *= -1.0f;
         currentXTime -= XSwapTime;
       }
-
+      
       if (currentYTime > YSwapTime)
       {
         YMovement *= -1.0f;
