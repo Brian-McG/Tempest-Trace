@@ -244,10 +244,10 @@ public class FirstPersonMovement : MonoBehaviour
   private void MoveAndUpdateVelocity()
   {
     Vector3 preMoveLoc = transform.position;
-    charController.Move(velocity * Time.deltaTime);
+    charController.Move(velocity * Time.fixedDeltaTime);
     Vector3 postMoveLoc = transform.position;
     Vector3 actualMoveOffset = postMoveLoc - preMoveLoc;
-    Vector3 actualMovevelocity = actualMoveOffset * (1.0f / Time.deltaTime);
+    Vector3 actualMovevelocity = actualMoveOffset * (1.0f / Time.fixedDeltaTime);
     
     // Update velocity if we got blocked somewhere along the way
     if (velocity.sqrMagnitude - actualMovevelocity.sqrMagnitude > 0.01f)
@@ -298,7 +298,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
     else
     {
-      velocity.y -= 9.81f * Time.deltaTime;
+      velocity.y -= 9.81f * Time.fixedDeltaTime;
     }
 
     bool shouldSlide = Input.GetKeyDown(KeyCode.LeftShift);
@@ -308,10 +308,10 @@ public class FirstPersonMovement : MonoBehaviour
     }
     
     Vector3 preMoveLoc = transform.position;
-    charController.Move(velocity * Time.deltaTime);
+    charController.Move(velocity * Time.fixedDeltaTime);
     Vector3 postMoveLoc = transform.position;
     Vector3 actualMoveOffset = postMoveLoc - preMoveLoc;
-    Vector3 actualMovevelocity = actualMoveOffset * (1.0f / Time.deltaTime);
+    Vector3 actualMovevelocity = actualMoveOffset * (1.0f / Time.fixedDeltaTime);
     
     // Update velocity if we got blocked somewhere along the way
     if (velocity.sqrMagnitude - actualMovevelocity.sqrMagnitude > 0.01f)
@@ -332,7 +332,7 @@ public class FirstPersonMovement : MonoBehaviour
   
   private void UpdateVaultClimbMotion()
   {
-    float motionMoveDistance = ClimbSpeed * Time.deltaTime;
+    float motionMoveDistance = ClimbSpeed * Time.fixedDeltaTime;
     Vector3 targetOffset = motionTargets[motionProgress] - transform.position;
     if (targetOffset.sqrMagnitude < motionMoveDistance * motionMoveDistance)
     {
@@ -369,7 +369,7 @@ public class FirstPersonMovement : MonoBehaviour
     velocity.z = moveVector.z;
     
     // Apply Gravity
-    velocity.y -= 9.81f * Time.deltaTime;
+    velocity.y -= 9.81f * Time.fixedDeltaTime;
 
     // Actually move
     MoveAndUpdateVelocity();
@@ -385,7 +385,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
     
     // Apply sliding slowdown
-    RunSpeed -= SlideDeceleration * Time.deltaTime;
+    RunSpeed -= SlideDeceleration * Time.fixedDeltaTime;
     if(RunSpeed < SlideStopSpeedThreshold)
     {
       currentMotion = DefinedMotion.NONE;
@@ -403,9 +403,9 @@ public class FirstPersonMovement : MonoBehaviour
   }
 
 
-  // TODO: May be worthwhile moving movement to FixedUpdate for better physics interaction
-  //       If we do we might want to store movement input each frame lest we miss any
-  private void Update()
+  // TODO: Since we do all of this in FixedUpdate, we might want to get input in Update,
+  //       just to prevent the possibility of missing some of the input?
+  private void FixedUpdate()
   {
     switch(currentMotion)
     {
