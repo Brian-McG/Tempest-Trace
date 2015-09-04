@@ -331,7 +331,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
     else
     {
-      if((velocity.y <= 0.0f) && wasGrounded)
+      if(wasGrounded && !shouldJump)
       {
         // We just left the ground but we're moving downwards, check if theres more ground
         // just out of reach and if so then we're on a slope and we can just move down
