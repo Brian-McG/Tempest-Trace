@@ -319,6 +319,7 @@ public class FirstPersonMovement : MonoBehaviour
       velocity = actualMovevelocity;
     }
     
+    bool wasGrounded = isGrounded;
     isGrounded = false;
     RaycastHit hitInfo;
     if (Physics.Raycast(transform.position, Vector3.down,
@@ -327,6 +328,21 @@ public class FirstPersonMovement : MonoBehaviour
       isGrounded = true;
       ////animator.SetBool(animParamJump, false);
       velocity.y = 0.0f;
+    }
+    else
+    {
+      if((velocity.y <= 0.0f) && wasGrounded)
+      {
+        // We just left the ground but we're moving downwards, check if theres more ground
+        // just out of reach and if so then we're on a slope and we can just move down
+        RaycastHit slopeCheckInfo;
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeCheckInfo, 0.20f))
+        {
+          Vector3 offset = slopeCheckInfo.point - transform.position;
+          charController.Move(offset);
+          isGrounded = true;
+        }
+      }
     }
   }
   
