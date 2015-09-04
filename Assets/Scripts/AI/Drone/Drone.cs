@@ -5,7 +5,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class Drone : MoveableObject {
+public class Drone : MoveableObject
+{
   private int index;
   private GameObject drone;
   private GameObject[] patrolRoute;
@@ -16,16 +17,19 @@ public class Drone : MoveableObject {
                GameObject[] patrolRoute)
         : base(movementSpeed,
                rotationSpeed,
-               drone) {
+               drone)
+  {
     index = 0;
     this.drone = drone;
     this.patrolRoute = patrolRoute;
   }
 
-  public void Move() {
+  public void Move()
+  {
     Vector3 currentTarget = patrolRoute[index].transform.position;
     Vector3 difference = currentTarget - drone.transform.position;
-    if (difference.magnitude < 5f) {
+    if (difference.magnitude < 5f)
+    {
       index = (index + 1) % patrolRoute.Length;
       currentTarget = patrolRoute[index].transform.position;
       difference = currentTarget - drone.transform.position;

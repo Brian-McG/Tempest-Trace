@@ -20,7 +20,7 @@ public class GameTime : MonoBehaviour
   internal void Awake()
   {  
     playerOneTime = PlayerOneTime.GetComponent<Text>();
-    // PlayerTwoTime = PlayerTwoTime.getComponent<Text>();
+    playerTwoTime = PlayerTwoTime.GetComponent<Text>();
   }
 
   internal void Update()
@@ -44,7 +44,7 @@ public class GameTime : MonoBehaviour
     
     if (PlayerTwoActive)
     {
-      // TODO
+      playerTwoTime.text = "Time " + (minutes < 10 ? "0" : string.Empty) + minutes + ":" + (seconds < 10.0f ? "0" : string.Empty) + (int)seconds; 
     }
   }
 }
