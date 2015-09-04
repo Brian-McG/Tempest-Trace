@@ -125,6 +125,7 @@ public class FirstPersonMovement : MonoBehaviour
   //       a low object next a wall, instead of vaulting over it and through the wall
   private void CheckForVaultClimbMotion()
   {
+    float epsilon = 0.0001f;
     Vector3 horizontalVelocity = velocity;
     horizontalVelocity.y = 0;
     float horizontalSpeed = horizontalVelocity.magnitude;
@@ -135,14 +136,12 @@ public class FirstPersonMovement : MonoBehaviour
     Vector3 currentPosition = transform.position;
     Vector3 forwardDir = transform.forward;
     
-    // TODO: These need to be a little more coordinated, at the moment we're a little fuzzy on when to vault and when to climb
-    //       Similarly, the vaulting height is quite low so for example the low bars next to the AC switch get climbed rather than vaulted
     RaycastHit vaultCheckInfo;
     Vector3 vaultCheckPosition = currentPosition + new Vector3(0.0f, MinimumObstacleScanHeight, 0.0f);
     Debug.DrawLine(vaultCheckPosition, vaultCheckPosition + (forwardDir * motionCheckDistance), Color.green, 1.0f, false);
     bool canVault = Physics.Raycast(vaultCheckPosition, forwardDir, out vaultCheckInfo, motionCheckDistance);
     
-    float climbCheckHeight = MaximumVaultHeight + 0.2f;
+    float climbCheckHeight = MaximumVaultHeight + epsilon;
     RaycastHit climbCheckInfo;
     Vector3 climbCheckPosition = currentPosition + new Vector3(0.0f, climbCheckHeight, 0.0f);
     Debug.DrawLine(climbCheckPosition, climbCheckPosition + (forwardDir * motionCheckDistance), Color.magenta, 1.0f, false);
@@ -154,7 +153,7 @@ public class FirstPersonMovement : MonoBehaviour
       //       While this is really neat, it also doesnt feel right, it feels far more like climbing than like anything called a "vault"
       //       The player should be able to be running, and without noticing a difference in speed/smoothness, vault over a low object
       Vector3 vaultCheckPoint = vaultCheckInfo.point;
-      Vector3 vaultCeilingBasePoint = vaultCheckPoint + (forwardDir * 0.2f);
+      Vector3 vaultCeilingBasePoint = vaultCheckPoint + (forwardDir * epsilon);
       float vaultCeilingHeight = MaximumVaultHeight - MinimumObstacleScanHeight; // We subtract the height from our initial ray
       Vector3 vaultCeiling = vaultCeilingBasePoint + new Vector3(0.0f, vaultCeilingHeight, 0.0f);
       
@@ -199,7 +198,7 @@ public class FirstPersonMovement : MonoBehaviour
         }
         else
         {
-          Vector3 vaultEndPoint = vaultMidpoint + (transform.forward * 0.2f);
+          Vector3 vaultEndPoint = vaultMidpoint + (transform.forward * epsilon);
           
           motionTargets.Add(vaultEndPoint);
         }
@@ -207,7 +206,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
     else if (canClimb)
     {
-      Vector3 climbCheckPoint = climbCheckInfo.point + (forwardDir * 0.2f);
+      Vector3 climbCheckPoint = climbCheckInfo.point + (forwardDir * epsilon);
       float climbCeilingHeight = MaximumClimbHeight - climbCheckHeight; // Subtract the height form our initial ray
       Vector3 climbCeiling = climbCheckPoint + new Vector3(0.0f, climbCeilingHeight, 0.0f);
       
