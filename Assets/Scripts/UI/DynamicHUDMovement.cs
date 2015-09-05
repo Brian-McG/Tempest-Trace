@@ -14,8 +14,6 @@ public class DynamicHUDMovement : MonoBehaviour
   public GameObject[] PlayerTwoHud;
   public float XSwapTime;
   public float YSwapTime;
-  public float MaxXMovement;
-  public float MaxYMovement;
   public float XMovement;
   public float YMovement;
   private FirstPersonMovement playerOneMovement;
