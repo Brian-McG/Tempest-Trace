@@ -162,7 +162,7 @@ public class FirstPersonMovement : MonoBehaviour
                           out vaultApexInfo, MaximumVaultHeight))
       {
         Vector3 vaultApex = vaultApexInfo.point + new Vector3(0.0f, 0.1f, 0.0f);
-        Vector3 vaultMidpoint = vaultCheckPoint;
+        Vector3 vaultMidpoint = vaultCheckPoint - (forwardDir * charController.radius);
         vaultMidpoint.y = vaultApex.y;
         
         Debug.Log("Vault");
@@ -182,7 +182,7 @@ public class FirstPersonMovement : MonoBehaviour
         if (vaultEndInRange)
         {
           Vector3 vaultBackPoint = vaultBackCheckInfo.point;
-          Vector3 vaultEndMidpoint = vaultBackPoint;
+          Vector3 vaultEndMidpoint = vaultBackPoint + (forwardDir * charController.radius);
           vaultEndMidpoint.y = vaultApex.y;
           
           Vector3 vaultStartApexOffset = vaultMidpoint - currentPosition;
@@ -346,25 +346,38 @@ public class FirstPersonMovement : MonoBehaviour
     }
   }
   
-  private void UpdateVaultClimbMotion()
+  /// <returns>
+  /// True iff the motion should stop playing (either because an obstacle was hit
+  /// or because we just got to the end of the motion)
+  /// </returns>
+  private bool UpdateVaultClimbMotion()
   {
     float motionMoveDistance = ClimbSpeed * Time.fixedDeltaTime;
     Vector3 targetOffset = motionTargets[motionProgress] - transform.position;
     if (targetOffset.sqrMagnitude < motionMoveDistance * motionMoveDistance)
     {
-      transform.position = motionTargets[motionProgress];
+      charController.Move(targetOffset);
       ++motionProgress;
       
       if (motionProgress >= motionTargets.Count)
       {
-        currentMotion = DefinedMotion.NONE;
+        return true;
       }
       
-      return;
+      return false;
     }
     
+    Vector3 preMovePosition = transform.position;
     Vector3 targetDirection = targetOffset.normalized;
-    transform.position += targetDirection * motionMoveDistance;
+    charController.Move(targetDirection * motionMoveDistance);
+    Vector3 postMovePosition = transform.position;
+
+    Vector3 moveOffset = postMovePosition - preMovePosition;
+    if(moveOffset.sqrMagnitude < (motionMoveDistance * motionMoveDistance) - 0.001f)
+    {
+      return true;
+    }
+    return false;
   }
   
   private void UpdateSlideMotion()
@@ -431,7 +444,11 @@ public class FirstPersonMovement : MonoBehaviour
 
       case DefinedMotion.VAULT:
       case DefinedMotion.CLIMB:
-        UpdateVaultClimbMotion();
+        bool motionComplete = UpdateVaultClimbMotion();
+        if(motionComplete)
+        {
+          currentMotion = DefinedMotion.NONE;
+        }
         break;
 
       case DefinedMotion.SLIDE:
