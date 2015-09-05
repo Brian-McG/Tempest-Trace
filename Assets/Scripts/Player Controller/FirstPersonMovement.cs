@@ -91,6 +91,11 @@ public class FirstPersonMovement : MonoBehaviour
     get { return isGrounded; }
   }
 
+  public DefinedMotion CurrentMotion
+  {
+    get { return currentMotion; }
+  }
+
   public void ResetState()
   {
     currentMotion = DefinedMotion.NONE;
