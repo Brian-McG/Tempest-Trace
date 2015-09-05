@@ -2285,7 +2285,7 @@ MonoBehaviour:
   ObstacleCheckTime: .150000006
   MinimumObstacleCheckDistance: .800000012
   MinimumObstacleScanHeight: .349999994
-  MaximumVaultHeight: 1
+  MaximumVaultHeight: 1.20000005
   MaximumVaultDistance: 3
   MinimumSpeedToVault: 5
   MaximumClimbHeight: 3.04999995
