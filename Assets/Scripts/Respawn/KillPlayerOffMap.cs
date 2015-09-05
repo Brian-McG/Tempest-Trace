@@ -26,7 +26,7 @@ public class KillPlayerOffMap : MonoBehaviour
     checkpoint = GetComponent<Checkpoint>();
     Fadeout.enabled = false;
     camera = this.gameObject.GetComponentInChildren<Camera>();
-    Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(camera.pixelRect.width, camera.pixelRect.height);
+    Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
     Fadeout.color = Color.clear;
     total = 0.0f;
   }
