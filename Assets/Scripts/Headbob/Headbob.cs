@@ -35,7 +35,7 @@ public class Headbob : MonoBehaviour
   private float playerTwoXTime;
   private float playerTwoYTime;
   
-  internal void Start()
+  internal void Awake()
   {  
     playerOneCamera = PlayerOne.GetComponentInChildren<Camera>();
     playerTwoCamera = PlayerTwo.GetComponentInChildren<Camera>();
@@ -53,7 +53,7 @@ public class Headbob : MonoBehaviour
 
   internal void Update()
   {
-    // Update Player one HUD
+    // Update Player one head position
     if (playerOneMovement.Velocity.magnitude > 0.0f && playerOneMovement.IsGrounded)
     {
       playerOneCamera.transform.localPosition = new Vector3(playerOneCamera.transform.localPosition.x + (playerOneXMovement * Time.deltaTime),
@@ -74,12 +74,12 @@ public class Headbob : MonoBehaviour
       }
     }
     
-    // Update Player two HUD
+    // Update Player two head position
     if (playerTwoMovement.Velocity.magnitude > 0.0f && playerTwoMovement.IsGrounded)
     {
-      playerOneCamera.transform.localPosition = new Vector3(playerOneCamera.transform.localPosition.x + (playerOneXMovement * Time.deltaTime),
-                                                            playerOneCamera.transform.localPosition.y + (playerOneYMovement * Time.deltaTime),
-                                                            playerOneCamera.transform.localPosition.z);
+      playerTwoCamera.transform.localPosition = new Vector3(playerTwoCamera.transform.localPosition.x + (playerTwoXMovement * Time.deltaTime),
+                                                            playerTwoCamera.transform.localPosition.y + (playerTwoYMovement * Time.deltaTime),
+                                                            playerTwoCamera.transform.localPosition.z);
       playerTwoXTime += Time.deltaTime;
       playerTwoYTime += Time.deltaTime;
       if (playerTwoXTime > XSwapTime)
