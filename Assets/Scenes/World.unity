@@ -226,7 +226,6 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
-    tileSizeHint: 0
   m_NavMesh: {fileID: 0}
 --- !u!1 &2171611
 GameObject:
@@ -9617,8 +9616,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -32049,11 +32048,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11483678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11483682, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130370, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_Layer
@@ -32362,6 +32361,10 @@ Prefab:
     - target: {fileID: 2041678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_CullingMask.m_Bits
       value: 4294966271
+      objectReference: {fileID: 0}
+    - target: {fileID: 11483682, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: height
+      value: -250
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
@@ -40327,8 +40330,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -46718,7 +46721,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 517954290}
   m_GameObject: {fileID: 871293497}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7db9ec1392f34265817a55853e6ab07, type: 3}
   m_Name: 
@@ -46784,7 +46787,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 517954290}
   m_GameObject: {fileID: 871293497}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 34c3946ab5378473cb34bedd1c8194ba, type: 3}
   m_Name: 
@@ -46793,7 +46796,7 @@ MonoBehaviour:
   startDistance: 200
   globalDensity: 1
   heightScale: 100
-  height: -100
+  height: -250
   globalFogColor: {r: .816176474, g: .816176474, b: .816176474, a: 1}
   fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
 --- !u!114 &871293502
@@ -62257,6 +62260,7 @@ GameObject:
   - 54: {fileID: 1200851969}
   - 114: {fileID: 1200851975}
   - 114: {fileID: 1200851976}
+  - 114: {fileID: 1200851977}
   m_Layer: 9
   m_Name: PlayerOne
   m_TagString: PlayerOne
@@ -62362,7 +62366,7 @@ Transform:
   - {fileID: 1924056021}
   - {fileID: 1483169834}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!114 &1200851975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62391,6 +62395,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11adf7b6f82e58b44a3b076652e7ca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1200851977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1200851968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2228bf86646d2c04cbc44314904e44bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SmokeBomb: {fileID: 146614, guid: b73bceea6a063b046a95eb4f4673b9e8, type: 2}
 --- !u!1 &1200896122
 GameObject:
   m_ObjectHideFlags: 0
@@ -67844,7 +67860,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 141678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_Name
@@ -67864,7 +67880,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11483678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130372, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_Layer
@@ -68173,6 +68189,10 @@ Prefab:
     - target: {fileID: 2041678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_CullingMask.m_Bits
       value: 4294966783
+      objectReference: {fileID: 0}
+    - target: {fileID: 11483682, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: fogMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
@@ -84217,7 +84237,7 @@ Transform:
   - {fileID: 1758904961}
   - {fileID: 1639403555}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!1 &1742393576
 GameObject:
   m_ObjectHideFlags: 0
@@ -92087,7 +92107,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1360052121}
   m_GameObject: {fileID: 1924056020}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7db9ec1392f34265817a55853e6ab07, type: 3}
   m_Name: 
