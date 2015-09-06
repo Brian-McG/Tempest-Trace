@@ -34,6 +34,8 @@ public class Headbob : MonoBehaviour
   private float playerOneYTime;
   private float playerTwoXTime;
   private float playerTwoYTime;
+  private Vector3 defaultPlayerOneCameraPosition;
+  private Vector3 defaultPlayerTwoCameraPosition;
   
   internal void Awake()
   {  
@@ -41,6 +43,8 @@ public class Headbob : MonoBehaviour
     playerTwoCamera = PlayerTwo.GetComponentInChildren<Camera>();
     playerOneMovement = PlayerOne.GetComponent<FirstPersonMovement>();
     playerTwoMovement = PlayerTwo.GetComponent<FirstPersonMovement>();
+    defaultPlayerOneCameraPosition = playerOneCamera.transform.localPosition;
+    defaultPlayerTwoCameraPosition = playerTwoCamera.transform.localPosition;
     playerOneXMovement = XMovement;
     playerOneYMovement = YMovement;
     playerTwoXMovement = XMovement;
@@ -54,7 +58,7 @@ public class Headbob : MonoBehaviour
   internal void Update()
   {
     // Update Player one head position
-    if (playerOneMovement.Velocity.magnitude > 0.0f && playerOneMovement.IsGrounded)
+    if (playerOneMovement.Velocity.magnitude > 0.0f && playerOneMovement.IsGrounded && playerOneMovement.CurrentMotion == DefinedMotion.NONE)
     {
       playerOneCamera.transform.localPosition = new Vector3(playerOneCamera.transform.localPosition.x + (playerOneXMovement * Time.deltaTime),
                                                             playerOneCamera.transform.localPosition.y + (playerOneYMovement * Time.deltaTime),
@@ -73,9 +77,13 @@ public class Headbob : MonoBehaviour
         playerOneYTime -= YSwapTime;
       }
     }
+    else
+    {
+      playerOneCamera.transform.localPosition = defaultPlayerOneCameraPosition;
+    }
     
     // Update Player two head position
-    if (playerTwoMovement.Velocity.magnitude > 0.0f && playerTwoMovement.IsGrounded)
+    if (playerTwoMovement.Velocity.magnitude > 0.0f && playerTwoMovement.IsGrounded && playerTwoMovement.CurrentMotion == DefinedMotion.NONE)
     {
       playerTwoCamera.transform.localPosition = new Vector3(playerTwoCamera.transform.localPosition.x + (playerTwoXMovement * Time.deltaTime),
                                                             playerTwoCamera.transform.localPosition.y + (playerTwoYMovement * Time.deltaTime),
@@ -93,6 +101,10 @@ public class Headbob : MonoBehaviour
         playerTwoYMovement *= -1.0f;
         playerTwoYTime -= YSwapTime;
       }
+    }
+    else
+    {
+      playerTwoCamera.transform.localPosition = defaultPlayerTwoCameraPosition;
     }
   }
 }
