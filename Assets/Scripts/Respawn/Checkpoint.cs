@@ -36,12 +36,10 @@ public class Checkpoint : MonoBehaviour
 
   internal void OnTriggerEnter(Collider other)
   {
-    if ((tag == "PlayerOne" && other.tag == "PlayerOneCheckpoint") || (tag == "PlayerTwo" && other.tag == "PlayerTwoCheckpoint"))
+    if (other.tag == "Checkpoint" &&
+      !checkpoints.ContainsKey(other.transform.position))
     {
-      if (!checkpoints.ContainsKey(other.transform.position))
-      {
-        CheckpointReached(other);
-      }
+      CheckpointReached(other);
     }
   }
 
