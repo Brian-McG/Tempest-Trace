@@ -45,10 +45,12 @@ public class PositionManager : MonoBehaviour
     }
     else
     {
+
       uint nextCheckpointIndex = checkpointP1.NumberPassed;
+      /*
       uint currentCheckpointIndex = checkpointP1.NumberPassed - 1;
-      Vector3 a = checkpoints[nextCheckpointIndex].transform.position;
-      Vector3 b = checkpoints[currentCheckpointIndex].transform.position;
+      Vector3 a = checkpoints[currentCheckpointIndex].transform.position;
+      Vector3 b = checkpoints[nextCheckpointIndex].transform.position;
       Vector3 p1 = PlayerOne.transform.position;
       Vector3 p2 = PlayerTwo.transform.position;
       Vector3 ap1 = p1 - a;
@@ -56,7 +58,13 @@ public class PositionManager : MonoBehaviour
       Vector3 ab = b - a;
       Vector3 onTheLineP1 = a + ((Vector3.Dot(ap1, ab) / Vector3.Dot(ab, ab)) * ab);
       Vector3 onTheLineP2 = a + ((Vector3.Dot(ap2, ab) / Vector3.Dot(ab, ab)) * ab);
-      if (onTheLineP1.magnitude >= onTheLineP2.magnitude)
+      */
+      Vector3 p1 = PlayerOne.transform.position;
+      Vector3 p2 = PlayerTwo.transform.position;
+      Vector3 b = checkpoints[nextCheckpointIndex].transform.position;
+      Vector3 p1b = b - p1;
+      Vector3 p2b = b - p2;
+      if (p2b.magnitude >= p1b.magnitude)
       {
         SetP1Ahead();
       }
