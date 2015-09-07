@@ -17,21 +17,33 @@ public class SmokeBomb : MonoBehaviour
   private SphereCollider smokeCollider;
   private float timer;
   private ParticleSystem smoke;
+  private bool activated;
 
   internal void Awake()
   {  
     smokeCollider = this.gameObject.GetComponent<SphereCollider>();
     smoke = this.gameObject.GetComponentInChildren<ParticleSystem>();
     timer = 0.0f;
+    activated = false;
+  }
+
+  internal void OnCollisionEnter(Collision collision)
+  {
+    if (!activated)
+    {
+      smoke.Play();
+      activated = true;
+    }
+
   }
 
   internal void Update()
   {
-    if (!smoke.isPlaying)
+    if (!smoke.isPlaying && activated)
     {
       Destroy(this.gameObject);
     }
-    if (timer < GrowthStopTime)
+    if (timer < GrowthStopTime && activated)
     {
       smokeCollider.radius += ColliderGrowthRate * Time.deltaTime;
       timer += Time.deltaTime;
