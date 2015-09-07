@@ -250,7 +250,7 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
-  m_NavMesh: {fileID: 0}
+  m_NavMesh: {fileID: 19400000, guid: e44197b47b496be45bc286bb05d17b55, type: 2}
 --- !u!1 &2171611
 GameObject:
   m_ObjectHideFlags: 0
@@ -63063,7 +63063,7 @@ Transform:
   m_PrefabInternal: {fileID: 1575951412}
   m_GameObject: {fileID: 1010165238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.8999996, y: 15.75, z: -9.93999195}
+  m_LocalPosition: {x: -14.9700003, y: 15.75, z: -9.93999958}
   m_LocalScale: {x: 1000, y: 1000, z: 1000}
   m_Children:
   - {fileID: 1053230909}
@@ -86856,7 +86856,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400030, guid: d52d8db8b9d94ee41b5a831169428f11, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.8999996
+      value: -14.9700003
       objectReference: {fileID: 0}
     - target: {fileID: 400030, guid: d52d8db8b9d94ee41b5a831169428f11, type: 3}
       propertyPath: m_LocalPosition.y
@@ -86864,7 +86864,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400030, guid: d52d8db8b9d94ee41b5a831169428f11, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.93999195
+      value: -9.93999958
       objectReference: {fileID: 0}
     - target: {fileID: 400030, guid: d52d8db8b9d94ee41b5a831169428f11, type: 3}
       propertyPath: m_LocalRotation.x
@@ -108044,6 +108044,8 @@ GameObject:
   - 54: {fileID: 2056835612}
   - 135: {fileID: 2056835613}
   - 114: {fileID: 2056835614}
+  - 195: {fileID: 2056835616}
+  - 114: {fileID: 2056835615}
   m_Layer: 0
   m_Name: Bot1
   m_TagString: Untagged
@@ -108114,7 +108116,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2056835609}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 251bd223e72a6384fbea33532437c480, type: 3}
   m_Name: 
@@ -108125,6 +108127,45 @@ MonoBehaviour:
   - {fileID: 1248677328}
   - {fileID: 1227612192}
   - {fileID: 369076546}
+--- !u!114 &2056835615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2056835609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce3c8aa07430c6945acab8f26bba007a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PatrolSpeed: 2
+  ChaseSpeed: 5
+  ChaseWaitTime: 5
+  PatrolWaitTime: 1
+  PatrolWayPoints:
+  - {fileID: 1248677329}
+  - {fileID: 1227612193}
+  - {fileID: 369076547}
+--- !u!195 &2056835616
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2056835609}
+  m_Enabled: 1
+  m_Radius: .5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: .800000012
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &2057229882
 GameObject:
   m_ObjectHideFlags: 0
