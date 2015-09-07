@@ -250,7 +250,6 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
-    tileSizeHint: 0
   m_NavMesh: {fileID: 0}
 --- !u!1 &2171611
 GameObject:
@@ -3599,7 +3598,7 @@ Transform:
   m_LocalScale: {x: 4, y: .00999999978, z: 5}
   m_Children: []
   m_Father: {fileID: 717851654}
-  m_RootOrder: 43
+  m_RootOrder: 42
 --- !u!23 &77720069
 Renderer:
   m_ObjectHideFlags: 0
@@ -9708,8 +9707,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -34025,7 +34024,7 @@ Transform:
   m_LocalScale: {x: 3, y: .00999999978, z: 10}
   m_Children: []
   m_Father: {fileID: 717851654}
-  m_RootOrder: 40
+  m_RootOrder: 39
 --- !u!23 &566553943
 Renderer:
   m_ObjectHideFlags: 0
@@ -34244,7 +34243,7 @@ Transform:
   m_LocalScale: {x: 3, y: .00999999978, z: 10}
   m_Children: []
   m_Father: {fileID: 717851654}
-  m_RootOrder: 41
+  m_RootOrder: 40
 --- !u!23 &568725091
 Renderer:
   m_ObjectHideFlags: 0
@@ -48484,7 +48483,7 @@ Transform:
   m_LocalScale: {x: 2, y: .00999999978, z: 6}
   m_Children: []
   m_Father: {fileID: 717851654}
-  m_RootOrder: 42
+  m_RootOrder: 41
 --- !u!23 &659480986
 Renderer:
   m_ObjectHideFlags: 0
@@ -50544,7 +50543,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 717851654}
-  m_RootOrder: 44
+  m_RootOrder: 43
 --- !u!108 &706480558
 Light:
   m_ObjectHideFlags: 0
@@ -50787,8 +50786,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -51011,13 +51010,11 @@ Transform:
   - {fileID: 1451195553}
   - {fileID: 1788417030}
   - {fileID: 1365013649}
-  - {fileID: 672814308}
   - {fileID: 1826835801}
   - {fileID: 566553942}
   - {fileID: 568725090}
   - {fileID: 659480985}
   - {fileID: 77720068}
-  - {fileID: 706480557}
   - {fileID: 706480557}
   m_Father: {fileID: 0}
   m_RootOrder: 8
@@ -98087,7 +98084,7 @@ Transform:
   m_LocalScale: {x: 4, y: .00999999978, z: 30}
   m_Children: []
   m_Father: {fileID: 717851654}
-  m_RootOrder: 39
+  m_RootOrder: 38
 --- !u!23 &1826835802
 Renderer:
   m_ObjectHideFlags: 0
