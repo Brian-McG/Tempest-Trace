@@ -10,6 +10,15 @@ public class Checkpoint : MonoBehaviour
   private Vector3 position;
   private Vector3 orientation;
   private Hashtable checkpoints;
+  private uint count;
+
+  public uint NumberPassed
+  {
+    get
+    {
+      return count;
+    }
+  }
 
   public Vector3 Position
   {
@@ -29,6 +38,7 @@ public class Checkpoint : MonoBehaviour
 
   internal void Awake()
   {
+    count = 0;
     position = transform.position;
     orientation = transform.localEulerAngles;
     checkpoints = new Hashtable();
@@ -50,6 +60,7 @@ public class Checkpoint : MonoBehaviour
       position = checkpoint.transform.position;
       orientation = checkpoint.transform.localEulerAngles;
       checkpoints.Add(Position, null);
+      ++count;
     }
   }
 }
