@@ -64,8 +64,9 @@ public class FirstPersonMovement : MonoBehaviour
   public float SlideStopSpeedThreshold;
 
   private Animator animator;
-  private int animParamJump;
   private int animParamSpeed;
+  private int animParamSlide;
+  private int animParamClimb;
   
   private CharacterController charController;
   private bool isGrounded;
@@ -99,6 +100,9 @@ public class FirstPersonMovement : MonoBehaviour
   public void ResetState()
   {
     currentMotion = DefinedMotion.NONE;
+    animator.SetFloat(animParamSpeed, 0.0f);
+    animator.SetBool(animParamClimb, false);
+    animator.SetBool(animParamSlide, false);
     velocity  = Vector3.zero;
 
     Transform cameraChild = transform.Find("Camera");
@@ -112,8 +116,9 @@ public class FirstPersonMovement : MonoBehaviour
     charController = GetComponent<CharacterController>();
     
     animator = GetComponentInChildren<Animator>();
-    animParamJump = Animator.StringToHash("Jump");
-    animParamSpeed = Animator.StringToHash("Speed");
+    animParamSpeed = Animator.StringToHash("MoveSpeed");
+    animParamSlide = Animator.StringToHash("IsSliding");
+    animParamClimb = Animator.StringToHash("IsClimbing");
 
     RunSpeed = DefaultRunSpeed;
     velocity = Vector3.zero;
@@ -224,6 +229,7 @@ public class FirstPersonMovement : MonoBehaviour
         
         Debug.Log("Climb");
         currentMotion = DefinedMotion.CLIMB;
+        animator.SetBool(animParamClimb, true);
         motionTargets.Clear();
         motionTargets.Add(climbMidpoint);
         motionTargets.Add(climbTarget);
@@ -242,6 +248,7 @@ public class FirstPersonMovement : MonoBehaviour
                                          horizontalVelocityThreshold)
     {
       currentMotion = DefinedMotion.SLIDE;
+      animator.SetBool(animParamSlide, true);
       transform.localScale = new Vector3(1.0f, 0.5f, 1.0f);
     }
   }
@@ -298,7 +305,6 @@ public class FirstPersonMovement : MonoBehaviour
       if (currentMotion == DefinedMotion.NONE)
       {
         velocity.y = JumpForce;
-        ////animator.SetBool(animParamJump, true);
       }
     }
     else
@@ -316,13 +322,14 @@ public class FirstPersonMovement : MonoBehaviour
     charController.Move(velocity * Time.fixedDeltaTime);
     Vector3 postMoveLoc = transform.position;
     Vector3 actualMoveOffset = postMoveLoc - preMoveLoc;
-    Vector3 actualMovevelocity = actualMoveOffset * (1.0f / Time.fixedDeltaTime);
+    Vector3 actualMoveVelocity = actualMoveOffset * (1.0f / Time.fixedDeltaTime);
     
     // Update velocity if we got blocked somewhere along the way
-    if (velocity.sqrMagnitude - actualMovevelocity.sqrMagnitude > 0.01f)
+    if (velocity.sqrMagnitude - actualMoveVelocity.sqrMagnitude > 0.01f)
     {
-      velocity = actualMovevelocity;
+      velocity = actualMoveVelocity;
     }
+    animator.SetFloat(animParamSpeed, actualMoveVelocity.magnitude);
     
     bool wasGrounded = isGrounded;
     isGrounded = false;
@@ -331,7 +338,6 @@ public class FirstPersonMovement : MonoBehaviour
                         out hitInfo, 0.02f))
     {
       isGrounded = true;
-      ////animator.SetBool(animParamJump, false);
       velocity.y = 0.0f;
     }
     else
@@ -428,6 +434,7 @@ public class FirstPersonMovement : MonoBehaviour
     if (RunSpeed < SlideStopSpeedThreshold)
     {
       currentMotion = DefinedMotion.NONE;
+      animator.SetBool(animParamSlide, false);
       RunSpeed = DefaultRunSpeed;
       transform.localScale = Vector3.one;
     }
@@ -436,6 +443,7 @@ public class FirstPersonMovement : MonoBehaviour
     if (!Input.GetKey(KeyCode.LeftShift))
     {
       currentMotion = DefinedMotion.NONE;
+      animator.SetBool(animParamSlide, false);
       RunSpeed = DefaultRunSpeed;
       transform.localScale = Vector3.one;
     }
@@ -457,6 +465,7 @@ public class FirstPersonMovement : MonoBehaviour
         if (motionComplete)
         {
           currentMotion = DefinedMotion.NONE;
+          animator.SetBool(animParamClimb, false);
         }
 
         break;
