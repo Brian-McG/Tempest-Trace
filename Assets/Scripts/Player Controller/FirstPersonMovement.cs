@@ -147,16 +147,18 @@ public class FirstPersonMovement : MonoBehaviour
     Vector3 currentPosition = transform.position;
     Vector3 forwardDir = transform.forward;
     
+    int checkLayerMask = ~(1 << 12);
+
     RaycastHit vaultCheckInfo;
     Vector3 vaultCheckPosition = currentPosition + new Vector3(0.0f, MinimumObstacleScanHeight, 0.0f);
     Debug.DrawLine(vaultCheckPosition, vaultCheckPosition + (forwardDir * motionCheckDistance), Color.green, 1.0f, false);
-    bool canVault = Physics.Raycast(vaultCheckPosition, forwardDir, out vaultCheckInfo, motionCheckDistance);
+    bool canVault = Physics.Raycast(vaultCheckPosition, forwardDir, out vaultCheckInfo, motionCheckDistance, checkLayerMask);
     
     float climbCheckHeight = MaximumVaultHeight + epsilon;
     RaycastHit climbCheckInfo;
     Vector3 climbCheckPosition = currentPosition + new Vector3(0.0f, climbCheckHeight, 0.0f);
     Debug.DrawLine(climbCheckPosition, climbCheckPosition + (forwardDir * motionCheckDistance), Color.magenta, 1.0f, false);
-    bool canClimb = Physics.Raycast(climbCheckPosition, forwardDir, out climbCheckInfo, motionCheckDistance);
+    bool canClimb = Physics.Raycast(climbCheckPosition, forwardDir, out climbCheckInfo, motionCheckDistance, checkLayerMask);
 
     if (canVault && !canClimb && (horizontalSpeed > MinimumSpeedToVault))
     {
