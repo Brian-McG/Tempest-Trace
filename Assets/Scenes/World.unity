@@ -250,6 +250,7 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
+    tileSizeHint: 0
   m_NavMesh: {fileID: 19400000, guid: e44197b47b496be45bc286bb05d17b55, type: 2}
 --- !u!1 &2171611
 GameObject:
@@ -9707,8 +9708,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreReversedGraphics: 1
-  blockingObjects: 0
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -29333,7 +29334,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 427589817}
   - 65: {fileID: 427589818}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Checkpoint
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
@@ -33615,7 +33616,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 539449212}
   - 65: {fileID: 539449213}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Checkpoint
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
@@ -34975,7 +34976,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 568795249}
   - 65: {fileID: 568795250}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Checkpoint
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
@@ -51666,8 +51667,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreReversedGraphics: 1
-  blockingObjects: 0
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -57512,7 +57513,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 863249330}
   - 65: {fileID: 863249331}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Checkpoint
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
@@ -65985,7 +65986,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1057306554}
   - 65: {fileID: 1057306555}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Checkpoint
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
@@ -94192,7 +94193,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1695792546}
   - 65: {fileID: 1695792547}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Checkpoint
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
@@ -110361,7 +110362,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 2058820498}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RespawnCheckpoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
