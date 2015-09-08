@@ -6,28 +6,23 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-// TODO: Faciliate for two players
 public class KillPlayerOffMap : MonoBehaviour
 {
   public float FadeOutSpeed;
   public float FadeInSpeed;
   public float FadeTriggerVelocity;
-  //public GUITexture Fadeout;
   public RawImage Fadeout;
   private FirstPersonMovement firstPersonMovement;
   private Checkpoint checkpoint;
   private bool isEnabled;
-  private Camera camera;
-  float total;
+  private float total;
 
   internal void Awake()
   {  
     firstPersonMovement = this.gameObject.GetComponent<FirstPersonMovement>();
     checkpoint = GetComponent<Checkpoint>();
     Fadeout.enabled = false;
-    camera = this.gameObject.GetComponentInChildren<Camera>();
-    Debug.Log(this.gameObject.name + "\n" + "x: " + camera.pixelRect.x + "\ny: " + camera.pixelRect.y + "\nwidth: " + camera.pixelRect.width + "\nheight: " + camera.pixelRect.height);
-    Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(camera.pixelRect.width, camera.pixelRect.height);
+    Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
     Fadeout.color = Color.clear;
     total = 0.0f;
   }

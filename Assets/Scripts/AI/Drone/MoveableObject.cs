@@ -30,7 +30,8 @@ public class MoveableObject
   public void FaceDirection(Vector3 location)
   {
     Vector3 direction = location - moveObj.transform.position;
-    float angle = Vector3.Angle(moveObj.transform.forward, location);
+    float angle = Vector3.Angle(new Vector3(moveObj.transform.forward.x, 0.0f, moveObj.transform.forward.z),
+                                new Vector3(location.x, 0.0f, location.z));
 
     float rotate;
 

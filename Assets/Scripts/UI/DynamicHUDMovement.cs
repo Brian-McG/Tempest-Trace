@@ -14,8 +14,6 @@ public class DynamicHUDMovement : MonoBehaviour
   public GameObject[] PlayerTwoHud;
   public float XSwapTime;
   public float YSwapTime;
-  public float MaxXMovement;
-  public float MaxYMovement;
   public float XMovement;
   public float YMovement;
   private FirstPersonMovement playerOneMovement;
@@ -69,7 +67,7 @@ public class DynamicHUDMovement : MonoBehaviour
     // Should this effect play if you are not grounded?
 
     // Update Player one HUD
-    if (playerOneMovement.Velocity.magnitude > 0.0f && playerOneMovement.IsGrounded)
+    if (playerOneMovement.Velocity.magnitude > 0.0f && playerOneMovement.IsGrounded && playerOneMovement.CurrentMotion == DefinedMotion.NONE)
     {
       for (uint i = 0; i < playerOneHud.Length; ++i)
       {
@@ -95,7 +93,7 @@ public class DynamicHUDMovement : MonoBehaviour
     }
 
     // Update Player two HUD
-    if (playerTwoMovement.Velocity.magnitude > 0.0f && playerTwoMovement.IsGrounded)
+    if (playerTwoMovement.Velocity.magnitude > 0.0f && playerTwoMovement.IsGrounded && playerTwoMovement.CurrentMotion == DefinedMotion.NONE)
     {
       for (uint i = 0; i < playerTwoHud.Length; ++i)
       {
