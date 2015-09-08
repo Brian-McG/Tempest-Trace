@@ -36,7 +36,6 @@ public class FirstPersonMovement : MonoBehaviour
 {
   public float DefaultRunSpeed;
   public float JumpForce;
-  public float AirControlFactor;
 
   [Header("Motion Parameters")]
   [Tooltip("The number of seconds for which the obstacle detection ray gets shot forwards")]
@@ -76,6 +75,8 @@ public class FirstPersonMovement : MonoBehaviour
   private List<Vector3> motionTargets;
   private int motionProgress;
   
+  private bool isJumping = false;
+
   public float RunSpeed
   {
     get;
@@ -288,11 +289,15 @@ public class FirstPersonMovement : MonoBehaviour
     {
       velocity.x = moveVector.x;
       velocity.z = moveVector.z;
+      isJumping = false;
     }
+    
     else
     {
-      velocity.x = Mathf.Lerp(velocity.x, moveVector.x, AirControlFactor);
-      velocity.z = Mathf.Lerp(velocity.z, moveVector.z, AirControlFactor);
+      if (isJumping)
+      {
+        CheckForVaultClimbMotion();
+      }
     }
     
     // TODO: Since velocity has been update here, we have the velocity based on the input alone
@@ -304,6 +309,7 @@ public class FirstPersonMovement : MonoBehaviour
       
       if (currentMotion == DefinedMotion.NONE)
       {
+        isJumping = true;
         velocity.y = JumpForce;
       }
     }
