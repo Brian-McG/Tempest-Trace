@@ -130,7 +130,7 @@ public class FirstPersonMovement : MonoBehaviour
     horizontalVelocity.y = 0;
     float horizontalSpeed = horizontalVelocity.magnitude;
 
-    float motionCheckDistance = horizontalSpeed*ObstacleCheckTime;
+    float motionCheckDistance = horizontalSpeed * ObstacleCheckTime;
     motionCheckDistance = Mathf.Max(motionCheckDistance, MinimumObstacleCheckDistance);
 
     Vector3 currentPosition = transform.position;
@@ -233,7 +233,7 @@ public class FirstPersonMovement : MonoBehaviour
     Vector3 horizontalVelocity = velocity;
     horizontalVelocity.y = 0;
 
-    if(horizontalVelocity.sqrMagnitude > horizontalVelocityThreshold *
+    if (horizontalVelocity.sqrMagnitude > horizontalVelocityThreshold *
                                          horizontalVelocityThreshold)
     {
       currentMotion = DefinedMotion.SLIDE;
@@ -290,7 +290,7 @@ public class FirstPersonMovement : MonoBehaviour
     {
       CheckForVaultClimbMotion();
       
-      if(currentMotion == DefinedMotion.NONE)
+      if (currentMotion == DefinedMotion.NONE)
       {
         velocity.y = JumpForce;
         ////animator.SetBool(animParamJump, true);
@@ -302,7 +302,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     bool shouldSlide = Input.GetKeyDown(KeyCode.LeftShift);
-    if(isGrounded && !shouldJump && shouldSlide)
+    if (isGrounded && !shouldJump && shouldSlide)
     {
       CheckForSlideMotion();
     }
@@ -331,12 +331,12 @@ public class FirstPersonMovement : MonoBehaviour
     }
     else
     {
-      if(wasGrounded && !shouldJump)
+      if (wasGrounded && !shouldJump)
       {
         // We just left the ground but we're moving downwards, check if theres more ground
         // just out of reach and if so then we're on a slope and we can just move down
         RaycastHit slopeCheckInfo;
-        if(Physics.Raycast(transform.position, Vector3.down, out slopeCheckInfo, 0.20f))
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeCheckInfo, 0.20f))
         {
           Vector3 offset = slopeCheckInfo.point - transform.position;
           charController.Move(offset);
@@ -346,8 +346,11 @@ public class FirstPersonMovement : MonoBehaviour
     }
   }
   
+  /// <summary>
+  /// Updates the character controller based on the state of a vault or climb motion
+  /// </summary>
   /// <returns>
-  /// True iff the motion should stop playing (either because an obstacle was hit
+  /// True if and only if the motion should stop playing (either because an obstacle was hit
   /// or because we just got to the end of the motion)
   /// </returns>
   private bool UpdateVaultClimbMotion()
@@ -373,10 +376,11 @@ public class FirstPersonMovement : MonoBehaviour
     Vector3 postMovePosition = transform.position;
 
     Vector3 moveOffset = postMovePosition - preMovePosition;
-    if(moveOffset.sqrMagnitude < (motionMoveDistance * motionMoveDistance) - 0.001f)
+    if (moveOffset.sqrMagnitude < (motionMoveDistance * motionMoveDistance) - 0.001f)
     {
       return true;
     }
+
     return false;
   }
   
@@ -394,6 +398,7 @@ public class FirstPersonMovement : MonoBehaviour
       
       moveVector = (transform.rotation * moveVector) * RunSpeed * moveMagnitude;
     }
+
     velocity.x = moveVector.x;
     velocity.z = moveVector.z;
     
@@ -401,8 +406,8 @@ public class FirstPersonMovement : MonoBehaviour
     velocity.y -= 9.81f * Time.fixedDeltaTime;
 
     // Actually move
+    // TODO: Check new velocity after update, we might need to exit slide (e.g if we slide into a wall)
     MoveAndUpdateVelocity();
-    // TODO: Check new velocity, we might need to exit slide (e.g if we slide into a wall)
     
     isGrounded = false;
     RaycastHit hitInfo;
@@ -415,7 +420,7 @@ public class FirstPersonMovement : MonoBehaviour
     
     // Apply sliding slowdown
     RunSpeed -= SlideDeceleration * Time.fixedDeltaTime;
-    if(RunSpeed < SlideStopSpeedThreshold)
+    if (RunSpeed < SlideStopSpeedThreshold)
     {
       currentMotion = DefinedMotion.NONE;
       RunSpeed = DefaultRunSpeed;
@@ -423,7 +428,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     // Check that we're still holding the slide key, otherwise go back to standard running
-    if(!Input.GetKey(KeyCode.LeftShift))
+    if (!Input.GetKey(KeyCode.LeftShift))
     {
       currentMotion = DefinedMotion.NONE;
       RunSpeed = DefaultRunSpeed;
@@ -431,12 +436,11 @@ public class FirstPersonMovement : MonoBehaviour
     }
   }
 
-
   // TODO: Since we do all of this in FixedUpdate, we might want to get input in Update,
   //       just to prevent the possibility of missing some of the input?
   private void FixedUpdate()
   {
-    switch(currentMotion)
+    switch (currentMotion)
     {
       case DefinedMotion.NONE:
         UpdateOnPlayerInput();
@@ -445,10 +449,11 @@ public class FirstPersonMovement : MonoBehaviour
       case DefinedMotion.VAULT:
       case DefinedMotion.CLIMB:
         bool motionComplete = UpdateVaultClimbMotion();
-        if(motionComplete)
+        if (motionComplete)
         {
           currentMotion = DefinedMotion.NONE;
         }
+
         break;
 
       case DefinedMotion.SLIDE:
