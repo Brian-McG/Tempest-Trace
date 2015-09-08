@@ -24,7 +24,7 @@ public class MoveableObject
 
   public void Move(Vector3 direction)
   {
-    moveRigidbody.AddForce(direction * moveSpeed);
+    moveRigidbody.transform.position = moveRigidbody.transform.position + (direction * moveSpeed * Time.deltaTime);
   }
 
   public void FaceDirection(Vector3 location)
