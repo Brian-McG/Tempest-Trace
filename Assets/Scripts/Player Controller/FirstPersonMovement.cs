@@ -68,14 +68,14 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamClimb;
   
   private CharacterController charController;
-  private bool isGrounded;
   private Vector3 velocity;
   
   private DefinedMotion currentMotion;
   private List<Vector3> motionTargets;
   private int motionProgress;
   
-  private bool isJumping = false;
+  private bool isJumping;
+  private bool wasGrounded;
 
   public float RunSpeed
   {
@@ -90,7 +90,7 @@ public class FirstPersonMovement : MonoBehaviour
 
   public bool IsGrounded
   {
-    get { return isGrounded; }
+    get { return charController.isGrounded; }
   }
 
   public DefinedMotion CurrentMotion
@@ -123,7 +123,7 @@ public class FirstPersonMovement : MonoBehaviour
 
     RunSpeed = DefaultRunSpeed;
     velocity = Vector3.zero;
-    isGrounded = true;
+    wasGrounded = false;
     currentMotion = DefinedMotion.NONE;
     motionTargets = new List<Vector3>();
   }
@@ -287,7 +287,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     // Constrain change of movement vector while in the air
-    if (isGrounded)
+    if (charController.isGrounded)
     {
       velocity.x = moveVector.x;
       velocity.z = moveVector.z;
@@ -305,7 +305,7 @@ public class FirstPersonMovement : MonoBehaviour
     // TODO: Since velocity has been update here, we have the velocity based on the input alone
     //       and does not consider the actual velocity based on collision
     bool shouldJump = Input.GetKeyDown(KeyCode.Space);
-    if (isGrounded && shouldJump)
+    if (charController.isGrounded && shouldJump)
     {
       CheckForVaultClimbMotion();
       
@@ -321,7 +321,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     bool shouldSlide = Input.GetKeyDown(KeyCode.LeftShift);
-    if (isGrounded && !shouldJump && shouldSlide)
+    if (charController.isGrounded && !shouldJump && shouldSlide)
     {
       CheckForSlideMotion();
     }
@@ -339,13 +339,8 @@ public class FirstPersonMovement : MonoBehaviour
     }
     animator.SetFloat(animParamSpeed, actualMoveVelocity.magnitude);
     
-    bool wasGrounded = isGrounded;
-    isGrounded = false;
-    RaycastHit hitInfo;
-    if (Physics.Raycast(transform.position, Vector3.down,
-                        out hitInfo, 0.02f))
+    if (charController.isGrounded)
     {
-      isGrounded = true;
       velocity.y = 0.0f;
     }
     else
@@ -359,10 +354,11 @@ public class FirstPersonMovement : MonoBehaviour
         {
           Vector3 offset = slopeCheckInfo.point - transform.position;
           charController.Move(offset);
-          isGrounded = true;
         }
       }
     }
+
+    wasGrounded = charController.isGrounded;
   }
   
   /// <summary>
@@ -428,12 +424,8 @@ public class FirstPersonMovement : MonoBehaviour
     // TODO: Check new velocity after update, we might need to exit slide (e.g if we slide into a wall)
     MoveAndUpdateVelocity();
     
-    isGrounded = false;
-    RaycastHit hitInfo;
-    if (Physics.Raycast(transform.position, Vector3.down,
-                        out hitInfo, 0.02f))
+    if (charController.isGrounded)
     {
-      isGrounded = true;
       velocity.y = 0.0f;
     }
     
