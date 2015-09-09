@@ -34,8 +34,10 @@ public enum DefinedMotion
 
 public class FirstPersonMovement : MonoBehaviour
 {
+  public int PlayerID;
   public float DefaultRunSpeed;
   public float JumpForce;
+  public float MaxSafeYVelocity;
 
   [Header("Motion Parameters")]
   [Tooltip("The number of seconds for which the obstacle detection ray gets shot forwards")]
@@ -68,6 +70,7 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamClimb;
   
   private CharacterController charController;
+  private PlayerLifeHandler lifeHandler;
   private Vector3 velocity;
   
   private DefinedMotion currentMotion;
@@ -115,6 +118,7 @@ public class FirstPersonMovement : MonoBehaviour
   private void Awake()
   {
     charController = GetComponent<CharacterController>();
+    lifeHandler = GetComponent<PlayerLifeHandler>();
     
     animator = GetComponentInChildren<Animator>();
     animParamSpeed = Animator.StringToHash("MoveSpeed");
@@ -128,12 +132,6 @@ public class FirstPersonMovement : MonoBehaviour
     motionTargets = new List<Vector3>();
   }
   
-  // NOTE: We assume here that the player has height 2 and that the player's origin is at height
-  //       0 from the ground (IE at the foot of the player)
-  // TODO: We should be able to jump at a wall and if we hit the wall mid-jump, climb up it
-  //       (or at the very least grab onto the ledge)
-  // TODO: Check that the motion won't force the player through a wall (for example let them climb onto
-  //       a low object next a wall, instead of vaulting over it and through the wall
   private void CheckForVaultClimbMotion()
   {
     float epsilon = 0.0001f;
@@ -141,7 +139,22 @@ public class FirstPersonMovement : MonoBehaviour
     horizontalVelocity.y = 0;
     float horizontalSpeed = horizontalVelocity.magnitude;
 
-    float motionCheckDistance = horizontalSpeed * ObstacleCheckTime;
+    // NOTE: We compute the time it would take the player to jump to the max vault height here
+    //       This should prevent 'super-jumps' that come from colliding with an obstacle while
+    //       jumping and getting bounced into the air
+    float accelerateTerm = -0.5f * Physics.gravity.y;
+    float velocityTerm = -1.0f * JumpForce;
+    float distanceTerm = MaximumVaultHeight;
+    float discriminantSquared = (velocityTerm * velocityTerm) - (4 * accelerateTerm * distanceTerm);
+    float discriminant = Mathf.Sqrt(discriminantSquared);
+    float solution1 = (-velocityTerm + discriminant) / (2.0f * accelerateTerm);
+    float solution2 = (-velocityTerm - discriminant) / (2.0f * accelerateTerm);
+
+    // NOTE: We're assuming here that we get solutions where sol1 > sol2 and sol1,sol2 > 0
+    float vaultCollideTime = solution2;
+
+    float motionCheckTime = Mathf.Max(ObstacleCheckTime, vaultCollideTime);
+    float motionCheckDistance = horizontalSpeed * motionCheckTime;
     motionCheckDistance = Mathf.Max(motionCheckDistance, MinimumObstacleCheckDistance);
 
     Vector3 currentPosition = transform.position;
@@ -185,9 +198,18 @@ public class FirstPersonMovement : MonoBehaviour
         motionTargets.Add(vaultMidpoint);
         
         RaycastHit vaultBackCheckInfo;
-        bool vaultEndInRange = Physics.Raycast(currentPosition + (forwardDir * MaximumVaultDistance),
-                                               -forwardDir, out vaultBackCheckInfo,
-                                               MaximumVaultDistance - vaultCheckInfo.distance);
+        bool vaultEndInRange = false;
+        if (MaximumVaultDistance > vaultCheckInfo.distance)
+        {
+          vaultEndInRange = Physics.Raycast(currentPosition + (forwardDir * MaximumVaultDistance),
+                                            -forwardDir, out vaultBackCheckInfo,
+                                            MaximumVaultDistance - vaultCheckInfo.distance);
+        }
+        else
+        {
+          // NOTE: This is a complete hack to get around vaultBackCheckInfo being unassigned
+          vaultBackCheckInfo = new RaycastHit();
+        }
         
         // NOTE: If we know where the end of the object is (IE so we can get over it and down the other side)
         //       Then we move over it in 3 steps (up, along, down). If it has no end (or is too long) then we
@@ -273,8 +295,8 @@ public class FirstPersonMovement : MonoBehaviour
 
   private void UpdateOnPlayerInput()
   {
-    float movementZ = Input.GetAxis("Vertical");
-    float movementX = Input.GetAxis("Horizontal");
+    float movementZ = InputSplitter.GetVerticalAxis(PlayerID);
+    float movementX = InputSplitter.GetHorizontalAxis(PlayerID);
     Vector3 moveVector = new Vector3(movementX, 0, movementZ);
     
     if (moveVector != Vector3.zero)
@@ -293,7 +315,6 @@ public class FirstPersonMovement : MonoBehaviour
       velocity.z = moveVector.z;
       isJumping = false;
     }
-    
     else
     {
       if (isJumping)
@@ -304,7 +325,7 @@ public class FirstPersonMovement : MonoBehaviour
     
     // TODO: Since velocity has been update here, we have the velocity based on the input alone
     //       and does not consider the actual velocity based on collision
-    bool shouldJump = Input.GetKeyDown(KeyCode.Space);
+    bool shouldJump = InputSplitter.GetJumpPressed(PlayerID);
     if (charController.isGrounded && shouldJump)
     {
       CheckForVaultClimbMotion();
@@ -331,12 +352,21 @@ public class FirstPersonMovement : MonoBehaviour
     Vector3 postMoveLoc = transform.position;
     Vector3 actualMoveOffset = postMoveLoc - preMoveLoc;
     Vector3 actualMoveVelocity = actualMoveOffset * (1.0f / Time.fixedDeltaTime);
-    
+   
+    if ((charController.collisionFlags & CollisionFlags.Below) != 0)
+    {
+      if (velocity.y < (-1.0f * MaxSafeYVelocity))
+      {
+        lifeHandler.KillPlayer();
+      }
+    }
+
     // Update velocity if we got blocked somewhere along the way
     if (velocity.sqrMagnitude - actualMoveVelocity.sqrMagnitude > 0.01f)
     {
       velocity = actualMoveVelocity;
     }
+
     animator.SetFloat(animParamSpeed, actualMoveVelocity.magnitude);
     
     if (charController.isGrounded)

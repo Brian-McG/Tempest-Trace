@@ -1,4 +1,4 @@
-﻿// <copyright file="KillPlayerOffMap.cs" company="University of Cape Town">
+﻿// <copyright file="PlayerLifeHandler.cs" company="University of Cape Town">
 //     Brian Mc George
 //     MCGBRI004
 // </copyright>
@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class KillPlayerOffMap : MonoBehaviour
+public class PlayerLifeHandler : MonoBehaviour
 {
   public float FadeOutSpeed;
   public float FadeInSpeed;
@@ -16,6 +16,15 @@ public class KillPlayerOffMap : MonoBehaviour
   private Checkpoint checkpoint;
   private bool isEnabled;
   private float total;
+
+  public void KillPlayer()
+  {
+    isEnabled = true;
+    Fadeout.color = Color.black;
+    firstPersonMovement.ResetState();
+    transform.position = checkpoint.Position;
+    transform.localEulerAngles = checkpoint.Orientation;
+  }
 
   internal void Awake()
   {  
@@ -60,15 +69,6 @@ public class KillPlayerOffMap : MonoBehaviour
       total = 0.0f;
       ClearScreenOverlay();
     }
-  }
-
-  private void KillPlayer()
-  {
-    isEnabled = true;
-    Fadeout.color = Color.black;
-    firstPersonMovement.ResetState();
-    transform.position = checkpoint.Position;
-    transform.localEulerAngles = checkpoint.Orientation;
   }
 
   private void ClearScreenOverlay()
