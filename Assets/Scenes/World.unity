@@ -250,7 +250,6 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
-    tileSizeHint: 0
   m_NavMesh: {fileID: 19400000, guid: e44197b47b496be45bc286bb05d17b55, type: 2}
 --- !u!1 &2171611
 GameObject:
@@ -9632,8 +9631,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -51504,8 +51503,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -71308,7 +71307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac7999c811c1614b82e1d1992cdd0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerID: 1
+  PlayerID: 0
   DefaultRunSpeed: 8
   JumpForce: 5
   MaxSafeYVelocity: 17
@@ -73804,6 +73803,7 @@ GameObject:
   - 114: {fileID: 1200851975}
   - 114: {fileID: 1200851976}
   - 114: {fileID: 1200851977}
+  - 136: {fileID: 1200851978}
   m_Layer: 9
   m_Name: PlayerOne
   m_TagString: PlayerOne
@@ -73839,7 +73839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ab6b610a735ac46b1eba1bf36db349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Aircon: {fileID: 0}
+  Aircon: {fileID: 568447014}
   LerpDownTime: .400000006
   LerpUpTime: 1
   SlowFactor: 3
@@ -73870,7 +73870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac7999c811c1614b82e1d1992cdd0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerID: 0
+  PlayerID: 0
   DefaultRunSpeed: 8
   JumpForce: 5
   MaxSafeYVelocity: 17
@@ -73926,7 +73926,7 @@ MonoBehaviour:
   FadeOutSpeed: .200000003
   FadeInSpeed: .0500000007
   FadeTriggerVelocity: -18
-  Fadeout: {fileID: 0}
+  Fadeout: {fileID: 377018952}
 --- !u!114 &1200851976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109233,6 +109233,14 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: Aircon
+      value: 
+      objectReference: {fileID: 568447014}
+    - target: {fileID: 11408692, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: Fadeout
+      value: 
+      objectReference: {fileID: 377018952}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
   m_RootGameObject: {fileID: 1200851968}
