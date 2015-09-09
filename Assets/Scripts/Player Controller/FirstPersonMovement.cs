@@ -131,12 +131,6 @@ public class FirstPersonMovement : MonoBehaviour
     motionTargets = new List<Vector3>();
   }
   
-  // NOTE: We assume here that the player has height 2 and that the player's origin is at height
-  //       0 from the ground (IE at the foot of the player)
-  // TODO: We should be able to jump at a wall and if we hit the wall mid-jump, climb up it
-  //       (or at the very least grab onto the ledge)
-  // TODO: Check that the motion won't force the player through a wall (for example let them climb onto
-  //       a low object next a wall, instead of vaulting over it and through the wall
   private void CheckForVaultClimbMotion()
   {
     float epsilon = 0.0001f;
@@ -144,7 +138,21 @@ public class FirstPersonMovement : MonoBehaviour
     horizontalVelocity.y = 0;
     float horizontalSpeed = horizontalVelocity.magnitude;
 
-    float motionCheckDistance = horizontalSpeed * ObstacleCheckTime;
+    // NOTE: We compute the time it would take the player to jump to the max vault height here
+    //       This should prevent 'super-jumps' that come from colliding with an obstacle while
+    //       jumping and getting bounced into the air
+    float accelerateTerm = -0.5f * Physics.gravity.y;
+    float velocityTerm = -1.0f * JumpForce;
+    float distanceTerm = MaximumVaultHeight;
+    float discriminantSquared = (velocityTerm * velocityTerm) - (4 * accelerateTerm * distanceTerm);
+    float discriminant = Mathf.Sqrt(discriminantSquared);
+    float solution1 = ((-velocityTerm + discriminant) / (2.0f * accelerateTerm));
+    float solution2 = ((-velocityTerm - discriminant) / (2.0f * accelerateTerm));
+    // NOTE: We're assuming here that we get solutions where sol1 > sol2 and sol1,sol2 > 0
+    float vaultCollideTime = solution2;
+
+    float motionCheckTime = Mathf.Max(ObstacleCheckTime, vaultCollideTime);
+    float motionCheckDistance = horizontalSpeed * motionCheckTime;
     motionCheckDistance = Mathf.Max(motionCheckDistance, MinimumObstacleCheckDistance);
 
     Vector3 currentPosition = transform.position;
@@ -188,9 +196,18 @@ public class FirstPersonMovement : MonoBehaviour
         motionTargets.Add(vaultMidpoint);
         
         RaycastHit vaultBackCheckInfo;
-        bool vaultEndInRange = Physics.Raycast(currentPosition + (forwardDir * MaximumVaultDistance),
-                                               -forwardDir, out vaultBackCheckInfo,
-                                               MaximumVaultDistance - vaultCheckInfo.distance);
+        bool vaultEndInRange = false;
+        if (MaximumVaultDistance > vaultCheckInfo.distance)
+        {
+          vaultEndInRange = Physics.Raycast(currentPosition + (forwardDir * MaximumVaultDistance),
+                                            -forwardDir, out vaultBackCheckInfo,
+                                            MaximumVaultDistance - vaultCheckInfo.distance);
+        }
+        else
+        {
+          // NOTE: This is a complete hack to get around vaultBackCheckInfo being unassigned
+          vaultBackCheckInfo = new RaycastHit();
+        }
         
         // NOTE: If we know where the end of the object is (IE so we can get over it and down the other side)
         //       Then we move over it in 3 steps (up, along, down). If it has no end (or is too long) then we
