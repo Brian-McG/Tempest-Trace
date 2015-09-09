@@ -34,6 +34,7 @@ public enum DefinedMotion
 
 public class FirstPersonMovement : MonoBehaviour
 {
+  public int playerID;
   public float DefaultRunSpeed;
   public float JumpForce;
   public float MaxSafeYVelocity;
@@ -293,8 +294,8 @@ public class FirstPersonMovement : MonoBehaviour
 
   private void UpdateOnPlayerInput()
   {
-    float movementZ = Input.GetAxis("Vertical");
-    float movementX = Input.GetAxis("Horizontal");
+    float movementZ = InputSplitter.GetVerticalAxis(playerID);
+    float movementX = InputSplitter.GetHorizontalAxis(playerID);
     Vector3 moveVector = new Vector3(movementX, 0, movementZ);
     
     if (moveVector != Vector3.zero)
@@ -323,7 +324,7 @@ public class FirstPersonMovement : MonoBehaviour
     
     // TODO: Since velocity has been update here, we have the velocity based on the input alone
     //       and does not consider the actual velocity based on collision
-    bool shouldJump = Input.GetKeyDown(KeyCode.Space);
+    bool shouldJump = InputSplitter.GetJumpPressed(playerID);
     if (charController.isGrounded && shouldJump)
     {
       CheckForVaultClimbMotion();
