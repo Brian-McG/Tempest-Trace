@@ -296,7 +296,6 @@ public class FirstPersonMovement : MonoBehaviour
       velocity.z = moveVector.z;
       isJumping = false;
     }
-    
     else
     {
       if (isJumping)
@@ -337,7 +336,7 @@ public class FirstPersonMovement : MonoBehaviour
    
     if ((charController.collisionFlags & CollisionFlags.Below) != 0)
     {
-      if (velocity.y <  (-1.0f * MaxSafeYVelocity))
+      if (velocity.y < (-1.0f * MaxSafeYVelocity))
       {
         lifeHandler.KillPlayer();
       }
@@ -348,6 +347,7 @@ public class FirstPersonMovement : MonoBehaviour
     {
       velocity = actualMoveVelocity;
     }
+
     animator.SetFloat(animParamSpeed, actualMoveVelocity.magnitude);
     
     if (charController.isGrounded)

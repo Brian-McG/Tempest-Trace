@@ -1,4 +1,4 @@
-﻿// <copyright file="KillPlayerOffMap.cs" company="University of Cape Town">
+﻿// <copyright file="PlayerLifeHandler.cs" company="University of Cape Town">
 //     Brian Mc George
 //     MCGBRI004
 // </copyright>
