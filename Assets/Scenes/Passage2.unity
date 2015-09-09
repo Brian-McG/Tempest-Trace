@@ -2709,7 +2709,7 @@ Animator:
   m_GameObject: {fileID: 1043355920}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 369b466f4912ad146958444aa73f255f, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2d1b3ea5bdcdf1c489d6e2c363715dc6, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2721,7 +2721,7 @@ Transform:
   m_PrefabParentObject: {fileID: 430298, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
   m_PrefabInternal: {fileID: 1537975481}
   m_GameObject: {fileID: 1043355920}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: .707106829, y: .707106829, z: -3.09086232e-08, w: -3.09086232e-08}
   m_LocalPosition: {x: 0, y: 0, z: -.349999994}
   m_LocalScale: {x: 1.29999995, y: 1.29999995, z: 1.29999995}
   m_Children:
@@ -3580,11 +3580,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 7.01999998
+      value: 1.20000005
       objectReference: {fileID: 0}
     - target: {fileID: 441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 57.1899986
+      value: -5.15999985
       objectReference: {fileID: 0}
     - target: {fileID: 441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3889,7 +3889,7 @@ Transform:
   m_PrefabInternal: {fileID: 1537975481}
   m_GameObject: {fileID: 1696467575}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .0496311188, y: 7.01999998, z: 57.1899986}
+  m_LocalPosition: {x: .0496311188, y: 1.20000005, z: -5.15999985}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1867199400}
@@ -3998,7 +3998,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultRunSpeed: 10
   JumpForce: 5
-  AirControlFactor: .0500000007
   ObstacleCheckTime: .150000006
   MinimumObstacleCheckDistance: .800000012
   MinimumObstacleScanHeight: .349999994

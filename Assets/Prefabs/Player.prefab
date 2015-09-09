@@ -2280,9 +2280,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac7999c811c1614b82e1d1992cdd0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultRunSpeed: 10
+  DefaultRunSpeed: 8
   JumpForce: 5
-  MaxSafeYVelocity: 20
+  MaxSafeYVelocity: 17
   ObstacleCheckTime: .150000006
   MinimumObstacleCheckDistance: .800000012
   MinimumObstacleScanHeight: .349999994
