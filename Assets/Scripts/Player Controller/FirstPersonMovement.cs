@@ -36,6 +36,7 @@ public class FirstPersonMovement : MonoBehaviour
 {
   public float DefaultRunSpeed;
   public float JumpForce;
+  public float MaxSafeYVelocity;
 
   [Header("Motion Parameters")]
   [Tooltip("The number of seconds for which the obstacle detection ray gets shot forwards")]
@@ -68,6 +69,7 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamClimb;
   
   private CharacterController charController;
+  private PlayerLifeHandler lifeHandler;
   private Vector3 velocity;
   
   private DefinedMotion currentMotion;
@@ -115,6 +117,7 @@ public class FirstPersonMovement : MonoBehaviour
   private void Awake()
   {
     charController = GetComponent<CharacterController>();
+    lifeHandler = GetComponent<PlayerLifeHandler>();
     
     animator = GetComponentInChildren<Animator>();
     animParamSpeed = Animator.StringToHash("MoveSpeed");
@@ -331,7 +334,15 @@ public class FirstPersonMovement : MonoBehaviour
     Vector3 postMoveLoc = transform.position;
     Vector3 actualMoveOffset = postMoveLoc - preMoveLoc;
     Vector3 actualMoveVelocity = actualMoveOffset * (1.0f / Time.fixedDeltaTime);
-    
+   
+    if ((charController.collisionFlags & CollisionFlags.Below) != 0)
+    {
+      if (velocity.y <  (-1.0f * MaxSafeYVelocity))
+      {
+        lifeHandler.KillPlayer();
+      }
+    }
+
     // Update velocity if we got blocked somewhere along the way
     if (velocity.sqrMagnitude - actualMoveVelocity.sqrMagnitude > 0.01f)
     {

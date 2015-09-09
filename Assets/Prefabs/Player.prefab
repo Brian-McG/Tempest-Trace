@@ -2282,7 +2282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultRunSpeed: 10
   JumpForce: 5
-  AirControlFactor: .0500000007
+  MaxSafeYVelocity: 20
   ObstacleCheckTime: .150000006
   MinimumObstacleCheckDistance: .800000012
   MinimumObstacleScanHeight: .349999994
