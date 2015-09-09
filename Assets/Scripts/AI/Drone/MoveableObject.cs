@@ -22,27 +22,32 @@ public class MoveableObject
     rotateSpeed = rotSpeed;
   }
 
-  public void Move(Vector3 direction)
+  public void Move(Vector3 location)
   {
-    moveRigidbody.transform.position = moveRigidbody.transform.position + (direction * moveSpeed * Time.deltaTime);
+    float angle = AngleBetween(new Vector3(moveObj.transform.forward.x, 0.0f, moveObj.transform.forward.z),
+                               new Vector3(location.x, 0.0f, location.z),
+                               Vector3.up);
+    if (angle < 2.0f)
+    {
+      moveRigidbody.transform.position = moveRigidbody.transform.position + (location.normalized * moveSpeed * Time.deltaTime);
+    }
   }
 
   public void FaceDirection(Vector3 location)
   {
-    Vector3 direction = location - moveObj.transform.position;
-    float angle = Vector3.Angle(new Vector3(moveObj.transform.forward.x, 0.0f, moveObj.transform.forward.z),
-                                new Vector3(location.x, 0.0f, location.z));
+    float angle = AngleBetween(new Vector3(moveObj.transform.forward.x, 0.0f, moveObj.transform.forward.z),
+                               new Vector3(location.x, 0.0f, location.z),
+                               Vector3.up);
 
     float rotate;
-
-    if (angle > 2.0f)
-    {
-      rotate = -rotateSpeed;
-    }
-    else
-    if (angle < -2.0f)
+    if (angle > 2 && angle <= 180.0f)
     {
       rotate = rotateSpeed;
+    }
+    else
+      if (angle > 180.0f)
+    {
+      rotate = -rotateSpeed;
     }
     else
     {
@@ -53,5 +58,25 @@ public class MoveableObject
       moveObj.transform.localEulerAngles.x,
       moveObj.transform.localEulerAngles.y + (rotate * Time.deltaTime),
       moveObj.transform.localEulerAngles.z);
+  }
+
+  public float AngleBetween(Vector3 a, Vector3 b, Vector3 n)
+  {
+    //[0,180]
+    float angle = Vector3.Angle(a, b);
+    float sign = Mathf.Sign(Vector3.Dot(n, Vector3.Cross(a, b)));  
+    //[-179,180]
+    float signed_angle = angle * sign;
+
+    // angle in [0,360] (not used but included here for completeness)
+    float angle360 = (signed_angle + 180) % 360;
+    angle360 += 180;
+    if (angle360 >= 360.0f)
+    {
+      angle360 -= 360.0f;
+      ;
+    }
+
+    return angle360;
   }
 }

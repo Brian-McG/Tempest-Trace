@@ -72,22 +72,21 @@ public class EnemySighting : MonoBehaviour
     {
       targetedPlayer = 0;
       Vector3 direction = other.transform.position - transform.position;
-      float angle = Vector3.Angle(direction, transform.forward);
-      if (angle < FieldOfViewAngle * 0.5f)
+      RaycastHit hit;
+      Debug.DrawLine(transform.position, transform.position + direction.normalized * (collider.radius * transform.localScale.x));
+      if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius * transform.localScale.x, inverseLayer))
       {
-        RaycastHit hit;
-        Debug.DrawRay(transform.position, direction.normalized);
-        if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius, inverseLayer))
+        Debug.Log(hit.collider.name);
+        if (hit.collider.gameObject.tag == "PlayerOne")
         {
-          Debug.Log(hit.collider.name);
-          if (hit.collider.gameObject == playerOne)
-          {
-            targetedPlayer = 1;
-            lastPlayerSighting.Position = playerOne.transform.position;
-          }
+          targetedPlayer = 1;
+          lastPlayerSighting.Position = playerOne.transform.position;
+          Debug.Log("Update Player Position");
         }
       }
     }
+    // Disabled until player one is completed
+    /*
     else if (other.gameObject.tag == "PlayerTwo" && targetedPlayer != 1)
     {
       targetedPlayer = 0;
@@ -99,7 +98,7 @@ public class EnemySighting : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius, inverseLayer))
         {
-          if (hit.collider.gameObject == playerTwo)
+          if (hit.collider.gameObject.tag == "PlayerTwo")
           {
             targetedPlayer = 2;
             lastPlayerSighting.Position = playerTwo.transform.position;
@@ -107,5 +106,10 @@ public class EnemySighting : MonoBehaviour
         }
       }
     }
+    */
+  }
+  internal void OnTriggerExit(Collider other)
+  {
+    targetedPlayer = 0;
   }
 }
