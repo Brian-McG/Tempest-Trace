@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-using System;
+﻿// <copyright file="InputSplitter.cs" company="University of Cape Town">
+//     Jacques Heunis
+//     HNSJAC003
+// </copyright>
+using UnityEngine;
 
 public class InputSplitter
 {
@@ -17,6 +20,7 @@ public class InputSplitter
     {
       return Input.GetAxis("HorizontalJoy");
     }
+
     return 0.0f;
   }
 
@@ -30,6 +34,7 @@ public class InputSplitter
     {
       return Input.GetAxis("VerticalJoy");
     }
+
     return 0.0f;
   }
 
@@ -43,6 +48,7 @@ public class InputSplitter
     {
       return Input.GetButtonDown("JumpJoy");
     }
+
     return false;
   }
 }

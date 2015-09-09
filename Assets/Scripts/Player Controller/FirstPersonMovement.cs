@@ -34,7 +34,7 @@ public enum DefinedMotion
 
 public class FirstPersonMovement : MonoBehaviour
 {
-  public int playerID;
+  public int PlayerID;
   public float DefaultRunSpeed;
   public float JumpForce;
   public float MaxSafeYVelocity;
@@ -147,8 +147,9 @@ public class FirstPersonMovement : MonoBehaviour
     float distanceTerm = MaximumVaultHeight;
     float discriminantSquared = (velocityTerm * velocityTerm) - (4 * accelerateTerm * distanceTerm);
     float discriminant = Mathf.Sqrt(discriminantSquared);
-    float solution1 = ((-velocityTerm + discriminant) / (2.0f * accelerateTerm));
-    float solution2 = ((-velocityTerm - discriminant) / (2.0f * accelerateTerm));
+    float solution1 = (-velocityTerm + discriminant) / (2.0f * accelerateTerm);
+    float solution2 = (-velocityTerm - discriminant) / (2.0f * accelerateTerm);
+
     // NOTE: We're assuming here that we get solutions where sol1 > sol2 and sol1,sol2 > 0
     float vaultCollideTime = solution2;
 
@@ -294,8 +295,8 @@ public class FirstPersonMovement : MonoBehaviour
 
   private void UpdateOnPlayerInput()
   {
-    float movementZ = InputSplitter.GetVerticalAxis(playerID);
-    float movementX = InputSplitter.GetHorizontalAxis(playerID);
+    float movementZ = InputSplitter.GetVerticalAxis(PlayerID);
+    float movementX = InputSplitter.GetHorizontalAxis(PlayerID);
     Vector3 moveVector = new Vector3(movementX, 0, movementZ);
     
     if (moveVector != Vector3.zero)
@@ -324,7 +325,7 @@ public class FirstPersonMovement : MonoBehaviour
     
     // TODO: Since velocity has been update here, we have the velocity based on the input alone
     //       and does not consider the actual velocity based on collision
-    bool shouldJump = InputSplitter.GetJumpPressed(playerID);
+    bool shouldJump = InputSplitter.GetJumpPressed(PlayerID);
     if (charController.isGrounded && shouldJump)
     {
       CheckForVaultClimbMotion();
