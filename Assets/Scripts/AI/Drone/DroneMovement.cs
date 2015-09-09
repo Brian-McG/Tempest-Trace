@@ -11,15 +11,21 @@ public class DroneMovement : MonoBehaviour
   public float RotationSpeed;
   public float RiseSpeed;
   public GameObject[] Waypoints;
+  public float StoppingDistance;
+  public float ChaseWaitTime;
   private float defaultFloatHeight;
   private Drone drone;
   private int inverseLayer;
+  private EnemySighting enemySighting;
+  private LastPlayerSighting lastPlayerSighting;
 
-  internal void Start()
+  internal void Awake()
   {  
-    drone = new Drone(MoveSpeed, RotationSpeed, RiseSpeed, this.gameObject, Waypoints);
+    enemySighting = GetComponent<EnemySighting>();
     defaultFloatHeight = this.transform.position.y;
     inverseLayer = ~(1 << LayerMask.NameToLayer("Drone"));
+    lastPlayerSighting = GameObject.FindGameObjectWithTag("GameManager").GetComponent<LastPlayerSighting>();
+    drone = new Drone(MoveSpeed, RotationSpeed, RiseSpeed, this.gameObject, Waypoints, enemySighting, StoppingDistance, ChaseWaitTime, lastPlayerSighting);
   }
 
   internal void Update()
@@ -29,6 +35,14 @@ public class DroneMovement : MonoBehaviour
       || Physics.Raycast(this.transform.position, -this.transform.up, 2.0f, inverseLayer))
     {
       drone.Rise();
+    }
+    else if (enemySighting.TargetedPlayer != 0)
+    {
+      drone.Shoot();
+    }
+    else if (enemySighting.PreviousSighting != lastPlayerSighting.ResetPosition)
+    {
+      drone.Chase();
     }
     else
     {
