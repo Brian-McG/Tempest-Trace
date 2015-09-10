@@ -72,8 +72,11 @@ public class Drone : MoveableObject
 
     Vector3 sightingDeltaPos = enemySighting.PersonalLastSighting - drone.transform.position;
     currentTarget = enemySighting.PersonalLastSighting;
-    float remainingDistance = (currentTarget - drone.transform.position).magnitude;
-    if (stoppingDistance < remainingDistance)
+    Vector3 moveTarget = new Vector3(currentTarget.x, 0, currentTarget.z);
+    Vector3 droneLocation = new Vector3(drone.transform.position.x, 0, drone.transform.position.z);
+    float remainingDistance = (moveTarget - droneLocation).magnitude;
+
+    if (remainingDistance < stoppingDistance)
     {
       chaseTimer += Time.deltaTime;
       if (chaseTimer >= chaseWaitTime)
@@ -87,6 +90,7 @@ public class Drone : MoveableObject
     {
       chaseTimer = 0.0f;
     }
+    // Debug.Log(chaseTimer);
     Vector3 difference = currentTarget - drone.transform.position;
     Vector3 differenceLevel = new Vector3(difference.x, 0, difference.z).normalized;
     if (enemySighting.TargetedPlayer != 0)
@@ -104,7 +108,7 @@ public class Drone : MoveableObject
   {
     // TODO: Add shoot
     currentTarget = enemySighting.PersonalLastSighting;
-
+    
   }
 
   public void Rise()
@@ -141,5 +145,15 @@ public class Drone : MoveableObject
       Debug.Log("Patrol");
       Patrol();
     }
+  }
+
+  private void CalculateShootOffset()
+  {
+    
+  }
+
+  private void TimeTrackedShootOffset()
+  {
+
   }
 }
