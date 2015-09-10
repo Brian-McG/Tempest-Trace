@@ -22,42 +22,48 @@ public class MoveableObject
     rotateSpeed = rotSpeed;
   }
 
+  public float MoveSpeed
+  {
+    get
+    {
+      return moveSpeed;
+    }
+  }
+
+  public float RotateSpeed
+  {
+    get
+    {
+      return rotateSpeed;
+    }
+  }
+
   public void Move(Vector3 location)
   {
     float angle = AngleBetween(new Vector3(moveObj.transform.forward.x, 0.0f, moveObj.transform.forward.z),
                                new Vector3(location.x, 0.0f, location.z),
                                Vector3.up);
-    if (angle < 2.0f)
+    if (angle < 2.0f || angle > 358.0f)
     {
       moveRigidbody.transform.position = moveRigidbody.transform.position + (location.normalized * moveSpeed * Time.deltaTime);
     }
   }
 
-  public void FaceDirection(Vector3 location)
+  public void FaceDirection(Vector3 direction)
   {
     float angle = AngleBetween(new Vector3(moveObj.transform.forward.x, 0.0f, moveObj.transform.forward.z),
-                               new Vector3(location.x, 0.0f, location.z),
+                               new Vector3(direction.x, 0.0f, direction.z),
                                Vector3.up);
-
-    float rotate;
-    if (angle > 2 && angle <= 180.0f)
+    if (angle < 90.0f || angle > 270.0f)
     {
-      rotate = rotateSpeed;
-    }
-    else
-      if (angle > 180.0f)
-    {
-      rotate = -rotateSpeed;
+      Vector3 increment = Vector3.RotateTowards(moveObj.transform.forward, direction, rotateSpeed * Time.deltaTime, 0.0f);
+      moveObj.transform.rotation = Quaternion.LookRotation(increment);
     }
     else
     {
-      rotate = 0.0f;
+      Vector3 increment = Vector3.RotateTowards(moveObj.transform.forward, new Vector3(direction.x, 0.0f, direction.z), rotateSpeed * Time.deltaTime, 0.0f);
+      moveObj.transform.rotation = Quaternion.LookRotation(increment);
     }
-
-    moveObj.transform.localEulerAngles = new Vector3(
-      moveObj.transform.localEulerAngles.x,
-      moveObj.transform.localEulerAngles.y + (rotate * Time.deltaTime),
-      moveObj.transform.localEulerAngles.z);
   }
 
   public float AngleBetween(Vector3 a, Vector3 b, Vector3 n)

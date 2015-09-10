@@ -16,6 +16,7 @@ public class EnemySighting : MonoBehaviour
   private Vector3 previousSighting;
   private byte targetedPlayer;
   private int inverseLayer;
+  private Vector3 heightOffset;
 
   public byte TargetedPlayer
   {
@@ -55,6 +56,7 @@ public class EnemySighting : MonoBehaviour
     previousSighting = lastPlayerSighting.ResetPosition;
     targetedPlayer = 0;
     inverseLayer = ~(1 << LayerMask.NameToLayer("Drone"));
+    heightOffset = new Vector3(0, playerOne.GetComponent<CapsuleCollider>().center.y, 0);
   }
 
   internal void Update()
@@ -76,12 +78,12 @@ public class EnemySighting : MonoBehaviour
       Debug.DrawLine(transform.position, transform.position + direction.normalized * (collider.radius * transform.localScale.x));
       if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius * transform.localScale.x, inverseLayer))
       {
-        Debug.Log(hit.collider.name);
+        //Debug.Log(hit.collider.name);
         if (hit.collider.gameObject.tag == "PlayerOne")
         {
           targetedPlayer = 1;
-          lastPlayerSighting.Position = playerOne.transform.position;
-          Debug.Log("Update Player Position");
+          lastPlayerSighting.Position = playerOne.transform.position + heightOffset;
+//          Debug.Log("Update Player Position");
         }
       }
     }

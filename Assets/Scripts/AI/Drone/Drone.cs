@@ -52,15 +52,15 @@ public class Drone : MoveableObject
     this.collider = drone.GetComponent<SphereCollider>();
   }
 
-  public void Move()
+  public void Patrol()
   {
-    Vector3 currentTarget = patrolRoute[index].transform.position;
-    Vector3 difference = currentTarget - drone.transform.position;
+    Vector3 currentWaypoint = patrolRoute[index].transform.position;
+    Vector3 difference = currentWaypoint - drone.transform.position;
     if (difference.magnitude < 5f)
     {
       index = (index + 1) % patrolRoute.Length;
-      currentTarget = patrolRoute[index].transform.position;
-      difference = currentTarget - drone.transform.position;
+      currentWaypoint = patrolRoute[index].transform.position;
+      difference = currentWaypoint - drone.transform.position;
     }
 
     FaceDirection(difference);
@@ -69,9 +69,8 @@ public class Drone : MoveableObject
 
   public void Chase()
   {
-    Debug.Log("Chase Mode");
+
     Vector3 sightingDeltaPos = enemySighting.PersonalLastSighting - drone.transform.position;
-    Debug.Log("SqrMag = " + sightingDeltaPos.sqrMagnitude);
     currentTarget = enemySighting.PersonalLastSighting;
     float remainingDistance = (currentTarget - drone.transform.position).magnitude;
     if (stoppingDistance < remainingDistance)
@@ -84,9 +83,20 @@ public class Drone : MoveableObject
         chaseTimer = 0.0f;
       }
     }
+    else
+    {
+      chaseTimer = 0.0f;
+    }
     Vector3 difference = currentTarget - drone.transform.position;
-    Vector3 differenceLevel = new Vector3(difference.x, 0.0f, difference.z);
-    FaceDirection(differenceLevel);
+    Vector3 differenceLevel = new Vector3(difference.x, 0, difference.z).normalized;
+    if (enemySighting.TargetedPlayer != 0)
+    {
+      FaceDirection(difference);
+    }
+    else
+    {
+      FaceDirection(differenceLevel);
+    }
     Move(differenceLevel);
   }
 
@@ -94,7 +104,7 @@ public class Drone : MoveableObject
   {
     // TODO: Add shoot
     currentTarget = enemySighting.PersonalLastSighting;
-    Debug.Log("Shoot: Pew Pew!");
+
   }
 
   public void Rise()
@@ -104,27 +114,32 @@ public class Drone : MoveableObject
 
   public void UpdateState()
   {
-    Vector3 difference = currentTarget - drone.transform.position;
-    Vector3 differenceLevel = new Vector3(difference.x, 0.0f, difference.z);
-    float angle = AngleBetween(new Vector3(drone.transform.forward.x, 0.0f, drone.transform.forward.z),
-                               new Vector3(differenceLevel.x, 0.0f, differenceLevel.z),
-                               Vector3.up);
-    if (Physics.Raycast(drone.transform.position, drone.transform.forward, 10.0f, inverseLayer)
-      || Physics.Raycast(drone.transform.position, -drone.transform.up, 2.0f, inverseLayer))
+    Vector3 difference = (currentTarget - drone.transform.position).normalized;
+    Debug.DrawLine(currentTarget, drone.transform.position);
+    // Debug.Log((difference - drone.transform.forward.normalized).magnitude);
+    Vector3 horizontalForward = drone.transform.forward;
+    horizontalForward.y = 0;
+    horizontalForward = horizontalForward.normalized;
+    if (Physics.Raycast(drone.transform.position, horizontalForward, 10.0f, inverseLayer)
+      || Physics.Raycast(drone.transform.position, Vector3.down, 2.0f, inverseLayer))
     {
+      Debug.Log("Rise");
       Rise();
     }
-    else if (enemySighting.TargetedPlayer != 0 && angle < actionBufferAngle /* && (currentTarget - drone.transform.position).magnitude < ((collider.radius * drone.transform.localScale.x) / 2.0f)*/)
+    else if (enemySighting.TargetedPlayer != 0 && (difference - drone.transform.forward.normalized).magnitude < 0.1 /* && (currentTarget - drone.transform.position).magnitude < ((collider.radius * drone.transform.localScale.x) / 2.0f)*/)
     {
+      Debug.Log("Shoot: Pew Pew!");
       Shoot();
     }
     else if (enemySighting.PreviousSighting != lastPlayerSighting.ResetPosition)
     {
+      Debug.Log("Chase Mode");
       Chase();
     }
     else
     {
-      Move();
+      Debug.Log("Patrol");
+      Patrol();
     }
   }
 }
