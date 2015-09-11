@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿// <copyright file="InteractHandler.cs" company="University of Cape Town">
+//     Jacques Heunis
+//     HNSJAC003
+// </copyright>
+using UnityEngine;
 
 public class InteractHandler : MonoBehaviour
 {
@@ -8,14 +11,14 @@ public class InteractHandler : MonoBehaviour
   private int interactLayer = 1 << 8;
   private FirstPersonMovement fpsMove;
   private Transform cameraTransform;
-
-  void Awake()
+  
+  private void Awake()
   {
     fpsMove = GetComponent<FirstPersonMovement>();
     cameraTransform = GetComponentInChildren<Camera>().transform;
   }
-
-	void Update ()
+  
+  private void Update()
   {
     if (InputSplitter.GetInteractPressed(fpsMove.PlayerID))
     {
@@ -24,12 +27,12 @@ public class InteractHandler : MonoBehaviour
                           InteractDistance, interactLayer))
       {
         GameObject hitObj = hitInfo.transform.parent.gameObject;
-        Aircon acController = hitObj.GetComponent<Aircon>();
-        if (acController)
+        Aircon airconController = hitObj.GetComponent<Aircon>();
+        if (airconController)
         {
-          acController.Activate();
+          airconController.Activate();
         }
       }
     }
-	}
+  }
 }

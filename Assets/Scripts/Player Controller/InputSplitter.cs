@@ -20,6 +20,7 @@ public class InputSplitter
     {
       return Input.GetAxis("ViewXJoy");
     }
+
     return 0.0f;
   }
 
@@ -33,6 +34,7 @@ public class InputSplitter
     {
       return Input.GetAxis("ViewYJoy");
     }
+
     return 0.0f;
   }
 
@@ -88,6 +90,7 @@ public class InputSplitter
     {
       return Input.GetButtonDown("SlideJoy");
     }
+
     return false;
   }
 
@@ -101,6 +104,7 @@ public class InputSplitter
     {
       return Input.GetButton("SlideJoy");
     }
+
     return false;
   }
 
@@ -114,6 +118,7 @@ public class InputSplitter
     {
       return Input.GetButtonDown("InteractJoy");
     }
+
     return false;
   }
 
@@ -127,6 +132,7 @@ public class InputSplitter
     {
       return Input.GetButtonDown("SmokeJoy");
     }
+
     return false;
   }
 }

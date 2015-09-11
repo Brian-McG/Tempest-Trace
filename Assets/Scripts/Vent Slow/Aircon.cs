@@ -16,12 +16,6 @@ public class Aircon : MonoBehaviour
   private Animator airconAnimator;
   private ParticleSystem airconParticle;
 
-  internal void Awake()
-  {
-    airconAnimator = AirconAnimator.GetComponent<Animator>();
-    airconParticle = AirconParticle.GetComponent<ParticleSystem>();
-  }
-
   public void Activate()
   {
     if (!Status)
@@ -32,5 +26,11 @@ public class Aircon : MonoBehaviour
       airconAnimator.SetBool("AirConOn", Status);
       airconParticle.Play();
     }
+  }
+
+  internal void Awake()
+  {
+    airconAnimator = AirconAnimator.GetComponent<Animator>();
+    airconParticle = AirconParticle.GetComponent<ParticleSystem>();
   }
 }
