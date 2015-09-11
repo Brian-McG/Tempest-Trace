@@ -379,6 +379,7 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
+    tileSizeHint: 0
   m_NavMesh: {fileID: 19400000, guid: e44197b47b496be45bc286bb05d17b55, type: 2}
 --- !u!1 &2171611
 GameObject:
@@ -10178,8 +10179,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreReversedGraphics: 1
-  blockingObjects: 0
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -34989,6 +34990,10 @@ Prefab:
       propertyPath: playerID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11441682, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: PlayerID
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
   m_RootGameObject: {fileID: 1145835354}
@@ -36597,7 +36602,6 @@ MonoBehaviour:
   UnlockedMaterial: {fileID: 2100000, guid: 68fb0f92aad2d5247a7df27ff92c7f9b, type: 2}
   AirconAnimator: {fileID: 2076405459}
   AirconParticle: {fileID: 1101714357}
-  RayCastDistance: 2
 --- !u!65 &568447017
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -53799,8 +53803,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreReversedGraphics: 1
-  blockingObjects: 0
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -64358,8 +64362,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
+  m_SubmitButton: Interact
+  m_CancelButton: Smoke
   m_InputActionsPerSecond: 10
   m_AllowActivationOnMobileDevice: 0
 --- !u!114 &953947639
@@ -74909,6 +74913,7 @@ GameObject:
   - 114: {fileID: 1145835357}
   - 114: {fileID: 1145835356}
   - 114: {fileID: 1145835363}
+  - 114: {fileID: 1145835364}
   m_Layer: 10
   m_Name: PlayerTwo
   m_TagString: PlayerTwo
@@ -75017,7 +75022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac7999c811c1614b82e1d1992cdd0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerID: 0
+  PlayerID: 1
   DefaultRunSpeed: 8
   JumpForce: 5
   MaxSafeYVelocity: 17
@@ -75057,6 +75062,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SmokeBomb: {fileID: 146614, guid: b73bceea6a063b046a95eb4f4673b9e8, type: 2}
+--- !u!114 &1145835364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11458314, guid: 7c9f54af8d9a2cc409bdf72780990d9a,
+    type: 2}
+  m_PrefabInternal: {fileID: 517954290}
+  m_GameObject: {fileID: 1145835354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959d9e1ae54d1df4e9c159eb11664ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractDistance: 2
 --- !u!1 &1147150342
 GameObject:
   m_ObjectHideFlags: 0
@@ -77583,6 +77601,7 @@ GameObject:
   - 114: {fileID: 1200851975}
   - 114: {fileID: 1200851976}
   - 114: {fileID: 1200851977}
+  - 114: {fileID: 1200851979}
   - 136: {fileID: 1200851978}
   m_Layer: 9
   m_Name: PlayerOne
@@ -77745,6 +77764,19 @@ CapsuleCollider:
   m_Height: 1.79999995
   m_Direction: 1
   m_Center: {x: 0, y: .899999976, z: 0}
+--- !u!114 &1200851979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11458314, guid: 7c9f54af8d9a2cc409bdf72780990d9a,
+    type: 2}
+  m_PrefabInternal: {fileID: 2032078255}
+  m_GameObject: {fileID: 1200851968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959d9e1ae54d1df4e9c159eb11664ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractDistance: 2
 --- !u!1 &1200896122
 GameObject:
   m_ObjectHideFlags: 0
