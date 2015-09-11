@@ -89,29 +89,20 @@ public class EnemySighting : MonoBehaviour
         }
       }
     }
-
-    // Disabled until player one is completed
-    /*
     else if (other.gameObject.tag == "PlayerTwo" && targetedPlayer != 1)
     {
       targetedPlayer = 0;
-      Vector3 direction = other.transform.position - transform.position;
-      float angle = Vector3.Angle(direction, transform.forward);
-      Debug.Log(angle + " : " + FieldOfViewAngle * 0.5f);
-      if (angle < FieldOfViewAngle * 0.5f)
+      Vector3 direction = (other.transform.position + heightOffset) - transform.position;
+      RaycastHit hit;
+      if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius * transform.localScale.x, inverseLayer))
       {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius, inverseLayer))
+        if (hit.collider.gameObject.tag == "PlayerTwo")
         {
-          if (hit.collider.gameObject.tag == "PlayerTwo")
-          {
-            targetedPlayer = 2;
-            lastPlayerSighting.Position = playerTwo.transform.position;
-          }
+          targetedPlayer = 2;
+          lastPlayerSighting.Position = playerTwo.transform.position + heightOffset;
         }
       }
     }
-    */
   }
 
   internal void OnTriggerExit(Collider other)
