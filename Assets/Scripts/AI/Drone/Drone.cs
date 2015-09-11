@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class Drone : MoveableObject
 {
+  private const float ActionBufferAngle = 2.0f;
   private int index;
   private GameObject drone;
   private GameObject[] patrolRoute;
@@ -19,9 +20,13 @@ public class Drone : MoveableObject
   private float stoppingDistance;
   private float chaseWaitTime;
   private float defaultFloatHeight;
-  private const float actionBufferAngle = 2.0f;
   private int inverseLayer;
   private SphereCollider collider;
+  private float trackTime;
+  private GameObject playerOne;
+  private GameObject playerTwo;
+  private FirstPersonMovement playerOneMovement;
+  private FirstPersonMovement playerTwoMovement;
 
   public Drone(float movementSpeed,
                float rotationSpeed,
@@ -50,6 +55,12 @@ public class Drone : MoveableObject
     this.defaultFloatHeight = defaultFloatHeight;
     inverseLayer = ~(1 << LayerMask.NameToLayer("Drone"));
     this.collider = drone.GetComponent<SphereCollider>();
+    Random.seed = System.Environment.TickCount;
+    trackTime = 0.0f;
+    playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
+    playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
+    playerOneMovement = playerOne.GetComponent<FirstPersonMovement>();
+    playerTwoMovement = playerTwo.GetComponent<FirstPersonMovement>();
   }
 
   public void Patrol()
@@ -69,7 +80,6 @@ public class Drone : MoveableObject
 
   public void Chase()
   {
-
     Vector3 sightingDeltaPos = enemySighting.PersonalLastSighting - drone.transform.position;
     currentTarget = enemySighting.PersonalLastSighting;
     Vector3 moveTarget = new Vector3(currentTarget.x, 0, currentTarget.z);
@@ -84,12 +94,15 @@ public class Drone : MoveableObject
         lastPlayerSighting.Position = lastPlayerSighting.ResetPosition;
         enemySighting.PersonalLastSighting = lastPlayerSighting.ResetPosition;
         chaseTimer = 0.0f;
+        trackTime = 0.0f;
       }
     }
     else
     {
+      trackTime += Time.deltaTime;
       chaseTimer = 0.0f;
     }
+
     // Debug.Log(chaseTimer);
     Vector3 difference = currentTarget - drone.transform.position;
     Vector3 differenceLevel = new Vector3(difference.x, 0, difference.z).normalized;
@@ -101,14 +114,15 @@ public class Drone : MoveableObject
     {
       FaceDirection(differenceLevel);
     }
+
     Move(differenceLevel);
   }
 
   public void Shoot()
   {
     // TODO: Add shoot
+    trackTime += Time.deltaTime;
     currentTarget = enemySighting.PersonalLastSighting;
-    
   }
 
   public void Rise()
@@ -118,8 +132,8 @@ public class Drone : MoveableObject
 
   public void UpdateState()
   {
-    Vector3 difference = (currentTarget - drone.transform.position).normalized;
-    Debug.DrawLine(currentTarget, drone.transform.position);
+    Vector3 difference = currentTarget - drone.transform.position;
+
     // Debug.Log((difference - drone.transform.forward.normalized).magnitude);
     Vector3 horizontalForward = drone.transform.forward;
     horizontalForward.y = 0;
@@ -130,8 +144,17 @@ public class Drone : MoveableObject
       Debug.Log("Rise");
       Rise();
     }
-    else if (enemySighting.TargetedPlayer != 0 && (difference - drone.transform.forward.normalized).magnitude < 0.1 /* && (currentTarget - drone.transform.position).magnitude < ((collider.radius * drone.transform.localScale.x) / 2.0f)*/)
+    else if (enemySighting.TargetedPlayer != 0 && (difference.normalized - drone.transform.forward.normalized).magnitude < 0.1 /* && (currentTarget - drone.transform.position).magnitude < ((collider.radius * drone.transform.localScale.x) / 2.0f)*/)
     {
+      float offsetMagnitude = CalculateShootOffset(difference.magnitude);
+
+      // Debug.Log(offsetMagnitude);
+      float offsetHalf = offsetMagnitude / 2.0f;
+      float offsetX = (Random.value * offsetMagnitude) - offsetHalf;
+      float offsetY = (Random.value * offsetMagnitude) - offsetHalf;
+      float offsetZ = (Random.value * offsetMagnitude) - offsetHalf;
+      Vector3 debugTarget = new Vector3(currentTarget.x + offsetX, currentTarget.y + offsetY, currentTarget.z + offsetZ);
+      Debug.DrawLine(drone.transform.position, debugTarget, Color.red, 2.0f, false);
       Debug.Log("Shoot: Pew Pew!");
       Shoot();
     }
@@ -147,13 +170,35 @@ public class Drone : MoveableObject
     }
   }
 
-  private void CalculateShootOffset()
+  private float CalculateShootOffset(float distance)
   {
-    
+    float timeTrackOffset = TimeTrackedShootOffset(trackTime);
+    float playerMoveSpeedShootOffset;
+    if (enemySighting.TargetedPlayer == 1)
+    {
+      playerMoveSpeedShootOffset = PlayerMoveSpeedShootOffset(playerOneMovement.Velocity.magnitude);
+    }
+    else
+    {
+      playerMoveSpeedShootOffset = PlayerMoveSpeedShootOffset(playerTwoMovement.Velocity.magnitude);
+    }
+
+    float distanceToPlayerOffset = DistanceToPlayerOffset(distance);
+    return timeTrackOffset + playerMoveSpeedShootOffset + distanceToPlayerOffset;
   }
 
-  private void TimeTrackedShootOffset()
+  private float TimeTrackedShootOffset(float timeTracked)
   {
+    return 5.0f * Mathf.Pow(0.5f, timeTracked);
+  }
 
+  private float PlayerMoveSpeedShootOffset(float moveSpeed)
+  {
+    return 0.1f * moveSpeed;
+  }
+
+  private float DistanceToPlayerOffset(float distance)
+  {
+    return 0.1f * distance;
   }
 }

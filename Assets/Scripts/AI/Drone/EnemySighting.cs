@@ -40,6 +40,7 @@ public class EnemySighting : MonoBehaviour
     {
       return personalLastSighting;
     }
+
     set
     {
       personalLastSighting = value;
@@ -65,6 +66,7 @@ public class EnemySighting : MonoBehaviour
     {
       personalLastSighting = lastPlayerSighting.Position;
     }
+
     previousSighting = lastPlayerSighting.Position;
   }
 
@@ -73,20 +75,21 @@ public class EnemySighting : MonoBehaviour
     if (other.gameObject.tag == "PlayerOne" && targetedPlayer != 2)
     {
       targetedPlayer = 0;
-      Vector3 direction = other.transform.position - transform.position;
+      Vector3 direction = (other.transform.position + heightOffset) - transform.position;
       RaycastHit hit;
-      Debug.DrawLine(transform.position, transform.position + direction.normalized * (collider.radius * transform.localScale.x));
       if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius * transform.localScale.x, inverseLayer))
       {
-        //Debug.Log(hit.collider.name);
+        // Debug.Log(hit.collider.name);
         if (hit.collider.gameObject.tag == "PlayerOne")
         {
           targetedPlayer = 1;
           lastPlayerSighting.Position = playerOne.transform.position + heightOffset;
-//          Debug.Log("Update Player Position");
+
+          // Debug.Log("Update Player Position");
         }
       }
     }
+
     // Disabled until player one is completed
     /*
     else if (other.gameObject.tag == "PlayerTwo" && targetedPlayer != 1)
@@ -110,6 +113,7 @@ public class EnemySighting : MonoBehaviour
     }
     */
   }
+
   internal void OnTriggerExit(Collider other)
   {
     targetedPlayer = 0;
