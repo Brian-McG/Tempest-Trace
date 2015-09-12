@@ -27,6 +27,14 @@ public class Drone : MoveableObject
   private GameObject playerTwo;
   private FirstPersonMovement playerOneMovement;
   private FirstPersonMovement playerTwoMovement;
+  private Animator droneAnimator;
+  private float shootRate;
+  private float currentShootInverval;
+  private GameObject[] muzzleFlash;
+  private float flashInterval;
+  private float droneDamage;
+  private PlayerHealth playerOneHealth;
+  private PlayerHealth playerTwoHealth;
 
   public Drone(float movementSpeed,
                float rotationSpeed,
@@ -37,7 +45,10 @@ public class Drone : MoveableObject
                float stoppingDistance,
                float chaseWaitTime,
                LastPlayerSighting lastPlayerSighting,
-               float defaultFloatHeight)
+               float defaultFloatHeight,
+               float shootRate,
+               GameObject[] muzzleFlash,
+               float droneDamage)
         : base(movementSpeed,
                rotationSpeed,
                drone)
@@ -61,6 +72,14 @@ public class Drone : MoveableObject
     playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
     playerOneMovement = playerOne.GetComponent<FirstPersonMovement>();
     playerTwoMovement = playerTwo.GetComponent<FirstPersonMovement>();
+    droneAnimator = drone.GetComponent<Animator>();
+    this.shootRate = 1.0f / shootRate;
+    currentShootInverval = 0.0f;
+    this.muzzleFlash = muzzleFlash;
+    flashInterval = 0.0f;
+    this.droneDamage = droneDamage;
+    playerOneHealth = playerOne.GetComponent<PlayerHealth>();
+    playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
   }
 
   public void Patrol()
@@ -118,11 +137,57 @@ public class Drone : MoveableObject
     Move(differenceLevel);
   }
 
-  public void Shoot()
+  public void Shoot(Vector3 deltaTargetDrone)
   {
-    // TODO: Add shoot
     trackTime += Time.deltaTime;
     currentTarget = enemySighting.PersonalLastSighting;
+    currentShootInverval += Time.deltaTime;
+    flashInterval += Time.deltaTime;
+    if (flashInterval > 0.05f)
+    {
+      foreach (GameObject muzzle in muzzleFlash)
+      {
+        muzzle.light.enabled = false;
+      }
+    }
+
+    if (!droneAnimator.GetCurrentAnimatorStateInfo(1).IsName("Shoot"))
+    {
+      droneAnimator.SetBool("Shooting", false);
+    }
+
+    if (currentShootInverval > shootRate)
+    {
+      currentShootInverval -= shootRate;
+      droneAnimator.SetBool("Shooting", true);
+      foreach (GameObject muzzle in muzzleFlash)
+      {
+        muzzle.light.enabled = true;
+        muzzle.particleSystem.Play();
+        flashInterval = 0.0f;
+      }
+
+      float offsetMagnitude = CalculateShootOffset(deltaTargetDrone.magnitude);
+      float offsetHalf = offsetMagnitude / 2.0f;
+      float offsetX = (Random.value * offsetMagnitude) - offsetHalf;
+      float offsetY = (Random.value * offsetMagnitude) - offsetHalf;
+      float offsetZ = (Random.value * offsetMagnitude) - offsetHalf;
+      Vector3 bulletTarget = new Vector3(currentTarget.x + offsetX, currentTarget.y + offsetY, currentTarget.z + offsetZ);
+      Debug.DrawLine(drone.transform.position, bulletTarget, Color.red, 2.0f, false);
+      Vector3 direction = bulletTarget - drone.transform.position;
+      RaycastHit hit;
+      Physics.Raycast(drone.transform.position, direction, out hit, 100.0f, inverseLayer);
+      if (hit.collider.gameObject.tag == "PlayerOne")
+      {
+        playerOneHealth.DeductHP(droneDamage);
+      }
+      else if (hit.collider.gameObject.tag == "PlayerTwo")
+      {
+        playerTwoHealth.DeductHP(droneDamage);
+      }
+
+      // Debug.Log("Shoot: Pew Pew!")
+    }
   }
 
   public void Rise()
@@ -133,40 +198,39 @@ public class Drone : MoveableObject
   public void UpdateState()
   {
     Vector3 difference = currentTarget - drone.transform.position;
-
-    // Debug.Log((difference - drone.transform.forward.normalized).magnitude);
+    bool isShooting = false;
     Vector3 horizontalForward = drone.transform.forward;
     horizontalForward.y = 0;
     horizontalForward = horizontalForward.normalized;
     if (Physics.Raycast(drone.transform.position, horizontalForward, 10.0f, inverseLayer)
       || Physics.Raycast(drone.transform.position, Vector3.down, 2.0f, inverseLayer))
     {
-      Debug.Log("Rise");
+      // Debug.Log("Rise");
       Rise();
     }
     else if (enemySighting.TargetedPlayer != 0 && (difference.normalized - drone.transform.forward.normalized).magnitude < 0.1 /* && (currentTarget - drone.transform.position).magnitude < ((collider.radius * drone.transform.localScale.x) / 2.0f)*/)
     {
-      float offsetMagnitude = CalculateShootOffset(difference.magnitude);
-
-      // Debug.Log(offsetMagnitude);
-      float offsetHalf = offsetMagnitude / 2.0f;
-      float offsetX = (Random.value * offsetMagnitude) - offsetHalf;
-      float offsetY = (Random.value * offsetMagnitude) - offsetHalf;
-      float offsetZ = (Random.value * offsetMagnitude) - offsetHalf;
-      Vector3 debugTarget = new Vector3(currentTarget.x + offsetX, currentTarget.y + offsetY, currentTarget.z + offsetZ);
-      Debug.DrawLine(drone.transform.position, debugTarget, Color.red, 2.0f, false);
-      Debug.Log("Shoot: Pew Pew!");
-      Shoot();
+      isShooting = true;
+      Shoot(difference);
     }
     else if (enemySighting.PreviousSighting != lastPlayerSighting.ResetPosition)
     {
-      Debug.Log("Chase Mode");
+      // Debug.Log("Chase Mode");
       Chase();
     }
     else
     {
       Debug.Log("Patrol");
       Patrol();
+    }
+
+    if (!isShooting)
+    {
+      droneAnimator.SetBool("Shooting", false);
+      foreach (GameObject muzzle in muzzleFlash)
+      {
+        muzzle.light.enabled = false;
+      }
     }
   }
 

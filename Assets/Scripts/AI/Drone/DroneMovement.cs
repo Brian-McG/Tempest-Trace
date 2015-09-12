@@ -13,6 +13,9 @@ public class DroneMovement : MonoBehaviour
   public GameObject[] Waypoints;
   public float StoppingDistance;
   public float ChaseWaitTime;
+  public float ShotsPerSecond;
+  public GameObject[] MuzzleFlash;
+  public float Damage;
   private float defaultFloatHeight;
   private Drone drone;
   private EnemySighting enemySighting;
@@ -23,7 +26,7 @@ public class DroneMovement : MonoBehaviour
     enemySighting = GetComponent<EnemySighting>();
     defaultFloatHeight = this.transform.position.y;
     lastPlayerSighting = GameObject.FindGameObjectWithTag("GameManager").GetComponent<LastPlayerSighting>();
-    drone = new Drone(MoveSpeed, RotationSpeed, RiseSpeed, this.gameObject, Waypoints, enemySighting, StoppingDistance, ChaseWaitTime, lastPlayerSighting, defaultFloatHeight);
+    drone = new Drone(MoveSpeed, RotationSpeed, RiseSpeed, this.gameObject, Waypoints, enemySighting, StoppingDistance, ChaseWaitTime, lastPlayerSighting, defaultFloatHeight, ShotsPerSecond, MuzzleFlash, Damage);
   }
 
   internal void Update()

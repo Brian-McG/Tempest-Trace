@@ -12,23 +12,22 @@ public class PlayerLifeHandler : MonoBehaviour
   public float FadeInSpeed;
   public float FadeTriggerVelocity;
   public RawImage Fadeout;
+  private PlayerHealth playerHealth;
   private FirstPersonMovement firstPersonMovement;
   private Checkpoint checkpoint;
   private bool isEnabled;
   private float total;
-
+  private bool killInitiated;
+  
   public void KillPlayer()
   {
-    isEnabled = true;
-    Fadeout.color = Color.black;
-    firstPersonMovement.ResetState();
-    transform.position = checkpoint.Position;
-    transform.localEulerAngles = checkpoint.Orientation;
+    killInitiated = true;
   }
 
   internal void Awake()
   {  
     firstPersonMovement = this.gameObject.GetComponent<FirstPersonMovement>();
+    playerHealth = GetComponent<PlayerHealth>();
     checkpoint = GetComponent<Checkpoint>();
     Fadeout.enabled = false;
     Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
@@ -42,10 +41,25 @@ public class PlayerLifeHandler : MonoBehaviour
     {
       FadeOverlay();
     }
+    else if (killInitiated)
+    {
+      FadeOverlay();
+    }
     else
     {
       UnFadeOverlay();
     }
+  }
+
+  private void Kill()
+  {
+    killInitiated = false;
+    isEnabled = true;
+    Fadeout.color = Color.black;
+    firstPersonMovement.ResetState();
+    transform.position = checkpoint.Position;
+    transform.localEulerAngles = checkpoint.Orientation;
+    playerHealth.ResetHP();
   }
 
   private void FadeOverlay()
@@ -56,7 +70,7 @@ public class PlayerLifeHandler : MonoBehaviour
     if (Fadeout.color.a > 0.99f)
     {
       total = 0.0f;
-      KillPlayer();
+      Kill();
     }
   }
 
