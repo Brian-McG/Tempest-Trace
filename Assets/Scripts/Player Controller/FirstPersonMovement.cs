@@ -160,7 +160,7 @@ public class FirstPersonMovement : MonoBehaviour
     Vector3 currentPosition = transform.position;
     Vector3 forwardDir = transform.forward;
     
-    int checkLayerMask = ~(1 << 12);
+    int checkLayerMask = ~((1 << 12) | (1 << 11));
 
     RaycastHit vaultCheckInfo;
     Vector3 vaultCheckPosition = currentPosition + new Vector3(0.0f, MinimumObstacleScanHeight, 0.0f);
@@ -341,7 +341,7 @@ public class FirstPersonMovement : MonoBehaviour
       velocity.y -= 9.81f * Time.fixedDeltaTime;
     }
 
-    bool shouldSlide = Input.GetKeyDown(KeyCode.LeftShift);
+    bool shouldSlide = InputSplitter.GetSlidePressed(PlayerID);
     if (charController.isGrounded && !shouldJump && shouldSlide)
     {
       CheckForSlideMotion();
@@ -432,7 +432,7 @@ public class FirstPersonMovement : MonoBehaviour
   private void UpdateSlideMotion()
   {
     float movementZ = 1.0f;
-    float movementX = Input.GetAxis("Horizontal");
+    float movementX = InputSplitter.GetHorizontalAxis(PlayerID);
     Vector3 moveVector = new Vector3(movementX, 0, movementZ);
     
     if (moveVector != Vector3.zero)
@@ -470,7 +470,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     // Check that we're still holding the slide key, otherwise go back to standard running
-    if (!Input.GetKey(KeyCode.LeftShift))
+    if (!InputSplitter.GetSlide(PlayerID))
     {
       currentMotion = DefinedMotion.NONE;
       animator.SetBool(animParamSlide, false);

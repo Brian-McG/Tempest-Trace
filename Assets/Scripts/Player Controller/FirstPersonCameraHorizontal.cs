@@ -8,11 +8,19 @@ public class FirstPersonCameraHorizontal : MonoBehaviour
 {
   public float Sensitivity = 6.0f;
 
+  private FirstPersonMovement fpsMove;
+
+  private void Awake()
+  {
+    fpsMove = transform.GetComponent<FirstPersonMovement>();
+  }
+
   private void Update()
   {
     Vector3 currentRotation = transform.localEulerAngles;
 
-    float deltaRotationY = Input.GetAxis("Mouse X") * Sensitivity;
+    float horizontalViewAxis = InputSplitter.GetHorizontalViewAxis(fpsMove.PlayerID);
+    float deltaRotationY = horizontalViewAxis * Sensitivity;
     float rotationY = currentRotation.y + deltaRotationY;
 
     transform.localEulerAngles = new Vector3(currentRotation.x, rotationY, currentRotation.z);

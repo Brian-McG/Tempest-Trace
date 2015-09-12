@@ -10,6 +10,34 @@ public class InputSplitter
   {
   }
 
+  public static float GetHorizontalViewAxis(int player)
+  {
+    if (player == 0)
+    {
+      return Input.GetAxis("ViewX");
+    }
+    else if (player == 1)
+    {
+      return Input.GetAxis("ViewXJoy");
+    }
+
+    return 0.0f;
+  }
+
+  public static float GetVerticalViewAxis(int player)
+  {
+    if (player == 0)
+    {
+      return Input.GetAxis("ViewY");
+    }
+    else if (player == 1)
+    {
+      return Input.GetAxis("ViewYJoy");
+    }
+
+    return 0.0f;
+  }
+
   public static float GetHorizontalAxis(int player)
   {
     if (player == 0)
@@ -47,6 +75,62 @@ public class InputSplitter
     else if (player == 1)
     {
       return Input.GetButtonDown("JumpJoy");
+    }
+
+    return false;
+  }
+
+  public static bool GetSlidePressed(int player)
+  {
+    if (player == 0)
+    {
+      return Input.GetButtonDown("Slide");
+    }
+    else if (player == 1)
+    {
+      return Input.GetButtonDown("SlideJoy");
+    }
+
+    return false;
+  }
+
+  public static bool GetSlide(int player)
+  {
+    if (player == 0)
+    {
+      return Input.GetButton("Slide");
+    }
+    else if (player == 1)
+    {
+      return Input.GetButton("SlideJoy");
+    }
+
+    return false;
+  }
+
+  public static bool GetInteractPressed(int player)
+  {
+    if (player == 0)
+    {
+      return Input.GetButtonDown("Interact");
+    }
+    else if (player == 1)
+    {
+      return Input.GetButtonDown("InteractJoy");
+    }
+
+    return false;
+  }
+
+  public static bool GetSmokePressed(int player)
+  {
+    if (player == 0)
+    {
+      return Input.GetButtonDown("Smoke");
+    }
+    else if (player == 1)
+    {
+      return Input.GetButtonDown("SmokeJoy");
     }
 
     return false;

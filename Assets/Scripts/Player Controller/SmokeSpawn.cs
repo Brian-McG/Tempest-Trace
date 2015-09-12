@@ -10,24 +10,27 @@ public class SmokeSpawn : MonoBehaviour
   public GameObject SmokeBomb;
   private GameObject hand;
 
+  private FirstPersonMovement fpsMove;
+
   internal void Awake()
-  { 
-    if (!depthFirstSearch("RightHand_bind", transform))
+  {
+    if (!DepthFirstSearch("RightHand_bind", transform))
     {
       Debug.LogError("Failed to find player hand for bomb throw.");
     }
+
+    fpsMove = GetComponent<FirstPersonMovement>();
   }
 
   internal void Update()
   {
-    if ((Input.GetButtonDown("Smoke_P1") && this.gameObject.tag == "PlayerOne") ||
-      (Input.GetButtonDown("Smoke_P2") && this.gameObject.tag == "PlayerTwo"))
+    if (InputSplitter.GetSmokePressed(fpsMove.PlayerID))
     {
       Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
     }
   }
 
-  private bool depthFirstSearch(string searchName, Transform currentTransform)
+  private bool DepthFirstSearch(string searchName, Transform currentTransform)
   {
     foreach (Transform t in currentTransform)
     {
@@ -38,11 +41,14 @@ public class SmokeSpawn : MonoBehaviour
       }
       else
       {
-        bool result = depthFirstSearch(searchName, t);
+        bool result = DepthFirstSearch(searchName, t);
         if (result)
+        {
           return true;
+        }
       }
     }
+
     return false;
   }
 }

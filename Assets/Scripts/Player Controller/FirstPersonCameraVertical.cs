@@ -13,6 +13,8 @@ public class FirstPersonCameraVertical : MonoBehaviour
 
   private float currentAngle;
 
+  private FirstPersonMovement fpsMove;
+
   public void ResetState()
   {
     currentAngle = 0.0f;
@@ -21,13 +23,16 @@ public class FirstPersonCameraVertical : MonoBehaviour
   private void Awake()
   {
     currentAngle = transform.localEulerAngles.x;
+
+    fpsMove = transform.parent.GetComponent<FirstPersonMovement>();
   }
 
   private void Update()
   {
     Vector3 currentRotation = transform.localEulerAngles;
 
-    float deltaRotationX = Input.GetAxis("Mouse Y") * Sensitivity;
+    float verticalViewAxis = InputSplitter.GetVerticalViewAxis(fpsMove.PlayerID);
+    float deltaRotationX = verticalViewAxis * Sensitivity;
     currentAngle -= deltaRotationX;
     currentAngle = Mathf.Clamp(currentAngle, MinimumAngle, MaximumAngle);
 

@@ -1136,6 +1136,7 @@ GameObject:
   - 114: {fileID: 11490836}
   - 136: {fileID: 13645200}
   - 114: {fileID: 11445200}
+  - 114: {fileID: 11442712}
   m_Layer: 9
   m_Name: Player
   m_TagString: PlayerOne
@@ -2310,6 +2311,18 @@ MonoBehaviour:
   Sensitivity: 6
   MinimumAngle: -60
   MaximumAngle: 60
+--- !u!114 &11442712
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959d9e1ae54d1df4e9c159eb11664ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractDistance: 2
 --- !u!114 &11445200
 MonoBehaviour:
   m_ObjectHideFlags: 1
