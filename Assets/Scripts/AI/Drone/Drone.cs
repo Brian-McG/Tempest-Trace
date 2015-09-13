@@ -173,8 +173,8 @@ public class Drone : MoveableObject
       float offsetY = (Random.value * offsetMagnitude) - offsetHalf;
       float offsetZ = (Random.value * offsetMagnitude) - offsetHalf;
       Vector3 bulletTarget = new Vector3(currentTarget.x + offsetX, currentTarget.y + offsetY, currentTarget.z + offsetZ);
-      Debug.DrawLine(drone.transform.position, bulletTarget, Color.red, 2.0f, false);
       Vector3 direction = bulletTarget - drone.transform.position;
+      Debug.DrawLine(drone.transform.position, drone.transform.position + (direction * 100.0f), Color.red, 2.0f, false);
       RaycastHit hit;
       Physics.Raycast(drone.transform.position, direction, out hit, 100.0f, inverseLayer);
       if (hit.collider.gameObject.tag == "PlayerOne")
@@ -258,11 +258,11 @@ public class Drone : MoveableObject
 
   private float PlayerMoveSpeedShootOffset(float moveSpeed)
   {
-    return 0.1f * moveSpeed;
+    return 0.05f * moveSpeed;
   }
 
   private float DistanceToPlayerOffset(float distance)
   {
-    return 0.1f * distance;
+    return 0.05f * distance;
   }
 }

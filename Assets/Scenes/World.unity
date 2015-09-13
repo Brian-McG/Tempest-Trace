@@ -119498,7 +119498,7 @@ MonoBehaviour:
   MuzzleFlash:
   - {fileID: 1111581111}
   - {fileID: 185484150}
-  Damage: 10
+  Damage: 30
 --- !u!114 &2056835615
 MonoBehaviour:
   m_ObjectHideFlags: 0
