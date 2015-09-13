@@ -36198,6 +36198,10 @@ Prefab:
       propertyPath: playerID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11441682, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: PlayerID
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
   m_RootGameObject: {fileID: 1145835354}
@@ -77379,7 +77383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac7999c811c1614b82e1d1992cdd0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerID: 0
+  PlayerID: 1
   DefaultRunSpeed: 8
   JumpForce: 5
   MaxSafeYVelocity: 17
