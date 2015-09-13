@@ -5132,7 +5132,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 441678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 141678, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
       propertyPath: m_Name
@@ -77419,6 +77419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SmokeBomb: {fileID: 146614, guid: b73bceea6a063b046a95eb4f4673b9e8, type: 2}
+  NumberOfBombs: 2
 --- !u!114 &1145835364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80139,6 +80140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SmokeBomb: {fileID: 146614, guid: b73bceea6a063b046a95eb4f4673b9e8, type: 2}
+  NumberOfBombs: 2
 --- !u!136 &1200851978
 CapsuleCollider:
   m_ObjectHideFlags: 0

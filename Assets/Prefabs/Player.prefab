@@ -2337,6 +2337,7 @@ MonoBehaviour:
   DefaultHP: 100
   TimeToStartRegeneratingAfterDamaged: 4
   RegenerationRate: 10
+  HitOverlay: {fileID: 0}
 --- !u!114 &11483678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2442,6 +2443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SmokeBomb: {fileID: 146614, guid: b73bceea6a063b046a95eb4f4673b9e8, type: 2}
+  NumberOfBombs: 2
 --- !u!124 &12441678
 Behaviour:
   m_ObjectHideFlags: 1

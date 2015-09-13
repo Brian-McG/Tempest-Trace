@@ -8,7 +8,9 @@ using UnityEngine;
 public class SmokeSpawn : MonoBehaviour
 {
   public GameObject SmokeBomb;
+  public int NumberOfBombs;
   private GameObject hand;
+  private int currentBombCount;
 
   private FirstPersonMovement fpsMove;
 
@@ -18,15 +20,16 @@ public class SmokeSpawn : MonoBehaviour
     {
       Debug.LogError("Failed to find player hand for bomb throw.");
     }
-
+    currentBombCount = 0;
     fpsMove = GetComponent<FirstPersonMovement>();
   }
 
   internal void Update()
   {
-    if (InputSplitter.GetSmokePressed(fpsMove.PlayerID))
+    if (InputSplitter.GetSmokePressed(fpsMove.PlayerID) && currentBombCount < NumberOfBombs)
     {
       Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
+      ++currentBombCount;
     }
   }
 
