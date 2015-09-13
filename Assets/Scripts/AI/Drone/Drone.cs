@@ -118,7 +118,14 @@ public class Drone : MoveableObject
     }
     else
     {
-      trackTime += Time.deltaTime;
+      if (enemySighting.TargetedPlayer != 0)
+      {
+        trackTime += Time.deltaTime;
+      }
+      else
+      {
+        trackTime = 0.0f;
+      }
       chaseTimer = 0.0f;
     }
 
@@ -179,11 +186,17 @@ public class Drone : MoveableObject
       Physics.Raycast(drone.transform.position, direction, out hit, 100.0f, inverseLayer);
       if (hit.collider.gameObject.tag == "PlayerOne")
       {
-        playerOneHealth.DeductHP(droneDamage);
+        if (playerOneHealth.DeductHP(droneDamage))
+        {
+          trackTime = 0.0f;
+        }
       }
       else if (hit.collider.gameObject.tag == "PlayerTwo")
       {
-        playerTwoHealth.DeductHP(droneDamage);
+        if (playerTwoHealth.DeductHP(droneDamage))
+        {
+          trackTime = 0.0f;
+        }
       }
 
       // Debug.Log("Shoot: Pew Pew!")
@@ -253,6 +266,7 @@ public class Drone : MoveableObject
 
   private float TimeTrackedShootOffset(float timeTracked)
   {
+    Debug.Log(5.0f * Mathf.Pow(0.5f, timeTracked));
     return 5.0f * Mathf.Pow(0.5f, timeTracked);
   }
 

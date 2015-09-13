@@ -4,12 +4,14 @@
 // </copyright>
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
   public float DefaultHP;
   public float TimeToStartRegeneratingAfterDamaged;
   public float RegenerationRate;
+  public RawImage HitOverlay;
   private float hp;
   private PlayerLifeHandler playerLifeHandler;
   private float regenTimer;
@@ -28,7 +30,10 @@ public class PlayerHealth : MonoBehaviour
     regenTimer = TimeToStartRegeneratingAfterDamaged;
   }
 
-  public void DeductHP(float deduction)
+  /// <summary>
+  /// Returns true if player is killed from the action
+  /// </summary>
+  public bool DeductHP(float deduction)
   {
     hp -= deduction;
     regenTimer = 0.0f;
@@ -36,7 +41,9 @@ public class PlayerHealth : MonoBehaviour
     {
       hp = DefaultHP;
       playerLifeHandler.KillPlayer();
+      return true;
     }
+    return false;
   }
   
   internal void Awake()
@@ -48,7 +55,7 @@ public class PlayerHealth : MonoBehaviour
   
   internal void Update()
   {
-    Debug.Log("HP: " + hp);
+    // Debug.Log("HP: " + hp);
     if (regenTimer > TimeToStartRegeneratingAfterDamaged)
     {
       if (hp < DefaultHP)
