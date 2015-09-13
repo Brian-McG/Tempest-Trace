@@ -5146,6 +5146,10 @@ Prefab:
       propertyPath: Fadeout
       value: 
       objectReference: {fileID: 377018952}
+    - target: {fileID: 11445200, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
+      propertyPath: HitOverlay
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c9f54af8d9a2cc409bdf72780990d9a, type: 2}
   m_RootGameObject: {fileID: 1200851968}
@@ -77430,6 +77434,7 @@ MonoBehaviour:
   DefaultHP: 100
   TimeToStartRegeneratingAfterDamaged: 4
   RegenerationRate: 10
+  HitOverlay: {fileID: 0}
 --- !u!136 &1145835365
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -80163,6 +80168,7 @@ MonoBehaviour:
   DefaultHP: 100
   TimeToStartRegeneratingAfterDamaged: 4
   RegenerationRate: 10
+  HitOverlay: {fileID: 0}
 --- !u!114 &1200851980
 MonoBehaviour:
   m_ObjectHideFlags: 0

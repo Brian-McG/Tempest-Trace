@@ -12,7 +12,7 @@ GameObject:
   - 114: {fileID: 11446614}
   - 54: {fileID: 5460940}
   - 65: {fileID: 6560940}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: SmokeBomb
   m_TagString: SmokeBomb
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ GameObject:
   - 4: {fileID: 456170}
   - 199: {fileID: 19956170}
   - 198: {fileID: 19856170}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -21,6 +21,7 @@ public class Drone : MoveableObject
   private float chaseWaitTime;
   private float defaultFloatHeight;
   private int inverseLayer;
+  private int inverseShootLayer;
   private SphereCollider collider;
   private float trackTime;
   private GameObject playerOne;
@@ -65,6 +66,7 @@ public class Drone : MoveableObject
     this.lastPlayerSighting = lastPlayerSighting;
     this.defaultFloatHeight = defaultFloatHeight;
     inverseLayer = ~(1 << LayerMask.NameToLayer("Drone"));
+    inverseShootLayer = ~(1 << LayerMask.NameToLayer("Drone") | 1 << LayerMask.NameToLayer("SmokeBomb"));
     this.collider = drone.GetComponent<SphereCollider>();
     Random.seed = System.Environment.TickCount;
     trackTime = 0.0f;
@@ -183,23 +185,23 @@ public class Drone : MoveableObject
       Vector3 direction = bulletTarget - drone.transform.position;
       Debug.DrawLine(drone.transform.position, drone.transform.position + (direction * 100.0f), Color.red, 2.0f, false);
       RaycastHit hit;
-      Physics.Raycast(drone.transform.position, direction, out hit, 100.0f, inverseLayer);
-      if (hit.collider.gameObject.tag == "PlayerOne")
+      if (Physics.Raycast(drone.transform.position, direction, out hit, 100.0f, inverseShootLayer))
       {
-        if (playerOneHealth.DeductHP(droneDamage))
+        if (hit.collider.gameObject.tag == "PlayerOne")
         {
-          trackTime = 0.0f;
+          if (playerOneHealth.DeductHP(droneDamage))
+          {
+            trackTime = 0.0f;
+          }
+        }
+        else if (hit.collider.gameObject.tag == "PlayerTwo")
+        {
+          if (playerTwoHealth.DeductHP(droneDamage))
+          {
+            trackTime = 0.0f;
+          }
         }
       }
-      else if (hit.collider.gameObject.tag == "PlayerTwo")
-      {
-        if (playerTwoHealth.DeductHP(droneDamage))
-        {
-          trackTime = 0.0f;
-        }
-      }
-
-      // Debug.Log("Shoot: Pew Pew!")
     }
   }
 
