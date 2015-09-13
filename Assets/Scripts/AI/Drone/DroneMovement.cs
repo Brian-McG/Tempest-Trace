@@ -21,11 +21,12 @@ public class DroneMovement : MonoBehaviour
   private EnemySighting enemySighting;
   private LastPlayerSighting lastPlayerSighting;
 
-  internal void Awake()
+  // Ensure that this remains Start to maintain correct ordering of script startup.
+  internal void Start()
   {  
     enemySighting = GetComponent<EnemySighting>();
     defaultFloatHeight = this.transform.position.y;
-    lastPlayerSighting = GameObject.FindGameObjectWithTag("GameManager").GetComponent<LastPlayerSighting>();
+    lastPlayerSighting = enemySighting.LastSighting;
     drone = new Drone(MoveSpeed, RotationSpeed, RiseSpeed, this.gameObject, Waypoints, enemySighting, StoppingDistance, ChaseWaitTime, lastPlayerSighting, defaultFloatHeight, ShotsPerSecond, MuzzleFlash, Damage);
   }
 
@@ -36,6 +37,9 @@ public class DroneMovement : MonoBehaviour
 
   internal void OnCollisionStay(Collision collision)
   {
-    drone.Rise();
+    if (collision.gameObject.tag != "Drone")
+    {
+      drone.Rise();
+    }
   }
 }

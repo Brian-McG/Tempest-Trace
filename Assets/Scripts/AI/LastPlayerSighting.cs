@@ -5,7 +5,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class LastPlayerSighting : MonoBehaviour
+public class LastPlayerSighting
 {
   public Vector3 Position = new Vector3(1000f, 1000f, 1000f);
   private Vector3 resetPosition = new Vector3(1000f, 1000f, 1000f);
@@ -16,13 +16,5 @@ public class LastPlayerSighting : MonoBehaviour
     {
       return resetPosition;
     }
-  }
-
-  internal void Awake()
-  {  
-  }
-
-  internal void Update()
-  {
   }
 }

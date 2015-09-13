@@ -47,10 +47,18 @@ public class EnemySighting : MonoBehaviour
     }
   }
 
+  public LastPlayerSighting LastSighting
+  {
+    get
+    {
+      return lastPlayerSighting;
+    }
+  }
+
   internal void Awake()
   {  
     collider = GetComponent<SphereCollider>();
-    lastPlayerSighting = GameObject.FindGameObjectWithTag("GameManager").GetComponent<LastPlayerSighting>();
+    lastPlayerSighting = new LastPlayerSighting();
     playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
     playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
     personalLastSighting = lastPlayerSighting.ResetPosition;
