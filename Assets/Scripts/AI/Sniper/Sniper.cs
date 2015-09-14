@@ -162,7 +162,6 @@ public class Sniper : DirectableObject
   private void GenerateRandomTarget()
   {
     int randomIndex = Random.Range(0, colliders.Length);
-    Debug.Log(randomIndex);
     float randomX = Random.Range(colliders[randomIndex].bounds.min.x, colliders[randomIndex].bounds.max.x);
     float minY = colliders[0].bounds.min.y;
     float randomZ = Random.Range(colliders[randomIndex].bounds.min.z, colliders[randomIndex].bounds.max.z);
