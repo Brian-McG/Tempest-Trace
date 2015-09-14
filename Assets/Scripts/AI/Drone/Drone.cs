@@ -1,4 +1,4 @@
-﻿// <copyright file="Drone.cs" company="University of Cape Town">
+// <copyright file="Drone.cs" company="University of Cape Town">
 //     Brian Mc George
 //     MCGBRI004
 // </copyright>
@@ -235,7 +235,7 @@ public class Drone : MoveableObject
     }
     else
     {
-      Debug.Log("Patrol");
+      // Debug.Log("Patrol");
       Patrol();
     }
 
