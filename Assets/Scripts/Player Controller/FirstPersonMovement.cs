@@ -160,7 +160,7 @@ public class FirstPersonMovement : MonoBehaviour
     Vector3 currentPosition = transform.position;
     Vector3 forwardDir = transform.forward;
     
-    int checkLayerMask = ~((1 << 12) | (1 << 11));
+    int checkLayerMask = ~((1 << 12) | (1 << 11) | (1 << 13) | (1 << 14) | (1 << 15));
 
     RaycastHit vaultCheckInfo;
     Vector3 vaultCheckPosition = currentPosition + new Vector3(0.0f, MinimumObstacleScanHeight, 0.0f);
