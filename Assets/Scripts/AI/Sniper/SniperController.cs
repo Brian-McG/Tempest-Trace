@@ -9,11 +9,22 @@ public class SniperController : MonoBehaviour
 {
   public float RotationSpeed;
   public GameObject[] ActivationColliders;
+  public float ShootDelay;
+  public float SpeedPenalty;
+  public float Damage;
   private Sniper sniper;
+
+  public Sniper SniperObj
+  {
+    get
+    {
+      return sniper;
+    }
+  }
   
   internal void Awake()
   {  
-    sniper = new Sniper(RotationSpeed, ActivationColliders, this.gameObject);
+    sniper = new Sniper(RotationSpeed, ActivationColliders, this.gameObject, ShootDelay, SpeedPenalty, Damage);
   }
   
   internal void Update()
