@@ -39,7 +39,7 @@ public class PlayerSlow : MonoBehaviour
     generalLerpDownTime = lerpDownTime;
     currentDuration = 0.0f;
     generalSlowSpeed = defaultRunSpeed / slowFactor;
-    currentLerpTime = currentLerpTime = Mathf.Clamp(generalLerpDownTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - generalSlowSpeed), 0, generalLerpDownTime);
+    currentLerpTime = Mathf.Clamp(generalLerpDownTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - generalSlowSpeed), 0, generalLerpDownTime);
     ;
   }
 
@@ -98,12 +98,9 @@ public class PlayerSlow : MonoBehaviour
   {
     if (calledSlow && calledSlowEnabled)
     {
-
       currentLerpTime += Time.deltaTime;
       float percentage = currentLerpTime / generalLerpDownTime;
       firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
-      Debug.Log("Slow Down: " + firstPersonMovement.RunSpeed);
-      Debug.Log("LerpDownTime: " + generalLerpDownTime);
       if (generalLerpDownTime - currentLerpTime < 0.01f)
       {
         currentDuration += Time.deltaTime;
@@ -116,11 +113,9 @@ public class PlayerSlow : MonoBehaviour
     }
     else if (calledSlow && !calledSlowEnabled && generalLerpUpTime - currentLerpTime < (generalLerpUpTime - 0.01f))
     {
-      Debug.Log("LerpUPTime: " + generalLerpUpTime);
       currentLerpTime -= Time.deltaTime;
       float percentage = currentLerpTime / generalLerpUpTime;
       firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
-      Debug.Log("Speed up: " + firstPersonMovement.RunSpeed);
       if (generalLerpUpTime - currentLerpTime > (generalLerpUpTime - 0.01f))
       {
         calledSlow = false;

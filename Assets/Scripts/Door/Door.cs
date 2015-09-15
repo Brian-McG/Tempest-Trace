@@ -11,7 +11,6 @@ public class Door : MonoBehaviour
   public float DegreesToOpen;
   private bool status;
   private bool played;
-  private float startAngle;
   private float totalOpened;
 
   public void Activate()
@@ -26,7 +25,6 @@ public class Door : MonoBehaviour
   {  
     status = false;
     played = false;
-    startAngle = transform.localEulerAngles.y;
     totalOpened = 0.0f;
   }
 

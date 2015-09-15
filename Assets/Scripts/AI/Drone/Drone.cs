@@ -11,7 +11,6 @@ public class Drone : MoveableObject
   private int index;
   private GameObject drone;
   private GameObject[] patrolRoute;
-  private float riseSpeed;
   private float movementSpeed;
   private EnemySighting enemySighting;
   private LastPlayerSighting lastPlayerSighting;
@@ -19,10 +18,8 @@ public class Drone : MoveableObject
   private Vector3 currentTarget;
   private float stoppingDistance;
   private float chaseWaitTime;
-  private float defaultFloatHeight;
   private int inverseLayer;
   private int inverseShootLayer;
-  private SphereCollider collider;
   private float trackTime;
   private GameObject playerOne;
   private GameObject playerTwo;
@@ -39,14 +36,12 @@ public class Drone : MoveableObject
 
   public Drone(float movementSpeed,
                float rotationSpeed,
-               float riseSpeed,
                GameObject drone,
                GameObject[] patrolRoute,
                EnemySighting enemySighting,
                float stoppingDistance,
                float chaseWaitTime,
                LastPlayerSighting lastPlayerSighting,
-               float defaultFloatHeight,
                float shootRate,
                GameObject[] muzzleFlash,
                float droneDamage)
@@ -58,16 +53,13 @@ public class Drone : MoveableObject
     chaseTimer = 0.0f;
     this.drone = drone;
     this.patrolRoute = patrolRoute;
-    this.riseSpeed = riseSpeed;
     this.movementSpeed = movementSpeed;
     this.enemySighting = enemySighting;
     this.stoppingDistance = stoppingDistance;
     this.chaseWaitTime = chaseWaitTime;
     this.lastPlayerSighting = lastPlayerSighting;
-    this.defaultFloatHeight = defaultFloatHeight;
     inverseLayer = ~(1 << LayerMask.NameToLayer("Drone"));
     inverseShootLayer = ~(1 << LayerMask.NameToLayer("Drone") | 1 << LayerMask.NameToLayer("SmokeBomb"));
-    this.collider = drone.GetComponent<SphereCollider>();
     Random.seed = System.Environment.TickCount;
     trackTime = 0.0f;
     playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
@@ -101,7 +93,6 @@ public class Drone : MoveableObject
 
   public void Chase()
   {
-    Vector3 sightingDeltaPos = enemySighting.PersonalLastSighting - drone.transform.position;
     currentTarget = enemySighting.PersonalLastSighting;
     Vector3 moveTarget = new Vector3(currentTarget.x, 0, currentTarget.z);
     Vector3 droneLocation = new Vector3(drone.transform.position.x, 0, drone.transform.position.z);

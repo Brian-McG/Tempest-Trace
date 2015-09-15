@@ -9,7 +9,7 @@ public class EnemySighting : MonoBehaviour
 {
   public float FieldOfViewAngle = 110f;
   private Vector3 personalLastSighting;
-  private SphereCollider collider;
+  private SphereCollider sphereCollider;
   private LastPlayerSighting lastPlayerSighting;
   private GameObject playerOne;
   private GameObject playerTwo;
@@ -57,7 +57,7 @@ public class EnemySighting : MonoBehaviour
 
   internal void Awake()
   {  
-    collider = GetComponent<SphereCollider>();
+    sphereCollider = GetComponent<SphereCollider>();
     lastPlayerSighting = new LastPlayerSighting();
     playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
     playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
@@ -85,7 +85,7 @@ public class EnemySighting : MonoBehaviour
       targetedPlayer = 0;
       Vector3 direction = (other.transform.position + heightOffset) - transform.position;
       RaycastHit hit;
-      if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius * transform.localScale.x, inverseLayer))
+      if (Physics.Raycast(transform.position, direction.normalized, out hit, sphereCollider.radius * transform.localScale.x, inverseLayer))
       {
         if (hit.collider.gameObject.tag == "PlayerOne")
         {
@@ -101,7 +101,7 @@ public class EnemySighting : MonoBehaviour
       targetedPlayer = 0;
       Vector3 direction = (other.transform.position + heightOffset) - transform.position;
       RaycastHit hit;
-      if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius * transform.localScale.x, inverseLayer))
+      if (Physics.Raycast(transform.position, direction.normalized, out hit, sphereCollider.radius * transform.localScale.x, inverseLayer))
       {
         if (hit.collider.gameObject.tag == "PlayerTwo")
         {

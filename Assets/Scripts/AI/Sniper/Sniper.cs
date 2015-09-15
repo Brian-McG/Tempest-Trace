@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class Sniper : DirectableObject
 {
-  private float rotationSpeed;
   private GameObject sniper;
   private BoxCollider[] colliders;
   private LineRenderer lineRenderer;
@@ -30,7 +29,6 @@ public class Sniper : DirectableObject
   public Sniper(float rotationSpeed, GameObject[] activationColliders, GameObject sniper, float shootDelay, float speedPenalty, float damage)
     : base(rotationSpeed, sniper)
   {
-    this.rotationSpeed = rotationSpeed;
     this.sniper = sniper;
     this.playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
     this.playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
@@ -91,7 +89,6 @@ public class Sniper : DirectableObject
   {
     UpdatePlayerTarget();
     Vector3 direction = currentTarget - sniper.transform.position;
-    RaycastHit hit;
     if (targetedPlayer != 0 && (direction.normalized - sniper.transform.forward.normalized).magnitude < 0.005f)
     {
       Shoot();
