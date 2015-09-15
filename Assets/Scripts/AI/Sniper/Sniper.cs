@@ -25,6 +25,7 @@ public class Sniper : DirectableObject
   private PlayerHealth playerTwoHealth;
   private PlayerSlow playerOneSlow;
   private PlayerSlow playerTwoSlow;
+  private HitFlash hitFlash;
   
   public Sniper(float rotationSpeed, GameObject[] activationColliders, GameObject sniper, float shootDelay, float speedPenalty, float damage)
     : base(rotationSpeed, sniper)
@@ -36,6 +37,7 @@ public class Sniper : DirectableObject
     this.playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
     this.playerOneSlow = playerOne.GetComponent<PlayerSlow>();
     this.playerTwoSlow = playerTwo.GetComponent<PlayerSlow>();
+    this.hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
     this.shootDelay = shootDelay;
     this.speedPenalty = speedPenalty;
     this.damage = damage;
@@ -168,12 +170,14 @@ public class Sniper : DirectableObject
         Debug.Log("Player one shot");
         playerOneHealth.DeductHP(damage);
         playerOneSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
+        hitFlash.FlashCamera(1);
       }
       else if (hit.collider.tag == "PlayerTwo")
       {
         Debug.Log("Player two shot");
         playerTwoHealth.DeductHP(damage);
         playerTwoSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
+        hitFlash.FlashCamera(2);
       }
       currentShootDelay = 0.0f;
     }

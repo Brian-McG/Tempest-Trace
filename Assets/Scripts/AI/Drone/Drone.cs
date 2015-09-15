@@ -33,6 +33,7 @@ public class Drone : MoveableObject
   private float droneDamage;
   private PlayerHealth playerOneHealth;
   private PlayerHealth playerTwoHealth;
+  private HitFlash hitFlash;
 
   public Drone(float movementSpeed,
                float rotationSpeed,
@@ -74,6 +75,7 @@ public class Drone : MoveableObject
     this.droneDamage = droneDamage;
     playerOneHealth = playerOne.GetComponent<PlayerHealth>();
     playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
+    hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
   }
 
   public void Patrol()
@@ -180,6 +182,7 @@ public class Drone : MoveableObject
       {
         if (hit.collider.gameObject.tag == "PlayerOne")
         {
+          hitFlash.FlashCamera(1);
           if (playerOneHealth.DeductHP(droneDamage))
           {
             trackTime = 0.0f;
@@ -187,6 +190,7 @@ public class Drone : MoveableObject
         }
         else if (hit.collider.gameObject.tag == "PlayerTwo")
         {
+          hitFlash.FlashCamera(2);
           if (playerTwoHealth.DeductHP(droneDamage))
           {
             trackTime = 0.0f;

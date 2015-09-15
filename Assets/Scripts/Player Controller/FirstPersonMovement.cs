@@ -108,6 +108,8 @@ public class FirstPersonMovement : MonoBehaviour
     animator.SetBool(animParamClimb, false);
     animator.SetBool(animParamSlide, false);
     velocity  = Vector3.zero;
+    RunSpeed = DefaultRunSpeed;
+    
 
     Transform cameraChild = transform.Find("Camera");
     FirstPersonCameraVertical cameraVerticalControl = cameraChild.GetComponent<FirstPersonCameraVertical>();
