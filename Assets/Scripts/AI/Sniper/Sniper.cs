@@ -24,6 +24,8 @@ public class Sniper : DirectableObject
   private float damage;
   private PlayerHealth playerOneHealth;
   private PlayerHealth playerTwoHealth;
+  private PlayerSlow playerOneSlow;
+  private PlayerSlow playerTwoSlow;
   
   public Sniper(float rotationSpeed, GameObject[] activationColliders, GameObject sniper, float shootDelay, float speedPenalty, float damage)
     : base(rotationSpeed, sniper)
@@ -34,6 +36,8 @@ public class Sniper : DirectableObject
     this.playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
     this.playerOneHealth = playerOne.GetComponent<PlayerHealth>();
     this.playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
+    this.playerOneSlow = playerOne.GetComponent<PlayerSlow>();
+    this.playerTwoSlow = playerTwo.GetComponent<PlayerSlow>();
     this.shootDelay = shootDelay;
     this.speedPenalty = speedPenalty;
     this.damage = damage;
@@ -54,6 +58,22 @@ public class Sniper : DirectableObject
     GenerateRandomTarget();
   }
 
+  public GameObject SniperGameObj
+  {
+    get
+    {
+      return sniper;
+    }
+  }
+
+  public int IgnoredColliders
+  {
+    get
+    {
+      return ignoredColliders;
+    }
+  }
+
   public byte TargetedPlayer
   {
     get
@@ -71,6 +91,7 @@ public class Sniper : DirectableObject
   {
     UpdatePlayerTarget();
     Vector3 direction = currentTarget - sniper.transform.position;
+    RaycastHit hit;
     if (targetedPlayer != 0 && (direction.normalized - sniper.transform.forward.normalized).magnitude < 0.005f)
     {
       Shoot();
@@ -106,7 +127,7 @@ public class Sniper : DirectableObject
     }
 
     previousDirection = sniper.transform.localEulerAngles;
-    FaceDirection(direction);
+    FaceDirection(direction, 0.01f);
   }
 
   public void Chase()
@@ -149,11 +170,13 @@ public class Sniper : DirectableObject
       {
         Debug.Log("Player one shot");
         playerOneHealth.DeductHP(damage);
+        playerOneSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
       }
       else if (hit.collider.tag == "PlayerTwo")
       {
         Debug.Log("Player two shot");
         playerTwoHealth.DeductHP(damage);
+        playerTwoSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
       }
       currentShootDelay = 0.0f;
     }

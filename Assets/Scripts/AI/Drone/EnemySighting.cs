@@ -64,7 +64,7 @@ public class EnemySighting : MonoBehaviour
     personalLastSighting = lastPlayerSighting.ResetPosition;
     previousSighting = lastPlayerSighting.ResetPosition;
     targetedPlayer = 0;
-    inverseLayer = ~(1 << LayerMask.NameToLayer("Drone"));
+    inverseLayer = ~(1 << LayerMask.NameToLayer("Drone") | (1 << 17));
     heightOffset = new Vector3(0, playerOne.GetComponent<CapsuleCollider>().center.y, 0);
   }
 
@@ -87,7 +87,6 @@ public class EnemySighting : MonoBehaviour
       RaycastHit hit;
       if (Physics.Raycast(transform.position, direction.normalized, out hit, collider.radius * transform.localScale.x, inverseLayer))
       {
-        // Debug.Log(hit.collider.name);
         if (hit.collider.gameObject.tag == "PlayerOne")
         {
           targetedPlayer = 1;

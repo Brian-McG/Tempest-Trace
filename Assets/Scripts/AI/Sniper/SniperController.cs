@@ -10,7 +10,9 @@ public class SniperController : MonoBehaviour
   public float RotationSpeed;
   public GameObject[] ActivationColliders;
   public float ShootDelay;
-  public float SpeedPenalty;
+  [Tooltip("The slow factor applied to the player when shot")]
+  public float
+    SpeedPenalty;
   public float Damage;
   private Sniper sniper;
 

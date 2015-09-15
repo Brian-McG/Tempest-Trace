@@ -2257,9 +2257,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Aircon: {fileID: 0}
-  LerpDownTime: .400000006
-  LerpUpTime: 1
-  SlowFactor: 3
+  AirconLerpDownTime: 1
+  AirconLerpUpTime: 5
+  AirconSlowFactor: 3
 --- !u!114 &11441680
 MonoBehaviour:
   m_ObjectHideFlags: 1

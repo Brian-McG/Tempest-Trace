@@ -25,19 +25,25 @@ public class DirectableObject
     }
   }
   
-  public void FaceDirection(Vector3 direction)
+  public void FaceDirection(Vector3 direction, float rotationRate = 9001.0f)
   {
+    float localRotationRate = this.rotateSpeed;
+    if (System.Math.Abs(rotationRate - 9001.0f) > Mathf.Epsilon)
+    {
+      localRotationRate = rotationRate;
+    }
+
     float angle = this.AngleBetween(new Vector3(this.directableObject.transform.forward.x, 0.0f, this.directableObject.transform.forward.z),
                                     new Vector3(direction.x, 0.0f, direction.z),
                                     Vector3.up);
     if (angle < 90.0f || angle > 270.0f)
     {
-      Vector3 increment = Vector3.RotateTowards(this.directableObject.transform.forward, direction, this.rotateSpeed * Time.deltaTime, 0.0f);
+      Vector3 increment = Vector3.RotateTowards(this.directableObject.transform.forward, direction, localRotationRate * Time.deltaTime, 0.0f);
       this.directableObject.transform.rotation = Quaternion.LookRotation(increment);
     }
     else
     {
-      Vector3 increment = Vector3.RotateTowards(this.directableObject.transform.forward, new Vector3(direction.x, 0.0f, direction.z), this.rotateSpeed * Time.deltaTime, 0.0f);
+      Vector3 increment = Vector3.RotateTowards(this.directableObject.transform.forward, new Vector3(direction.x, 0.0f, direction.z), localRotationRate * Time.deltaTime, 0.0f);
       this.directableObject.transform.rotation = Quaternion.LookRotation(increment);
     }
   }
