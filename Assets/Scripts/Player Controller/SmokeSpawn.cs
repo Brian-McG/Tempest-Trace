@@ -13,6 +13,8 @@ public class SmokeSpawn : MonoBehaviour
   private int currentBombCount;
 
   private FirstPersonMovement fpsMove;
+  private Animator animator;
+  private int animParamThrowing;
 
   internal void Awake()
   {
@@ -22,14 +24,19 @@ public class SmokeSpawn : MonoBehaviour
     }
     currentBombCount = 0;
     fpsMove = GetComponent<FirstPersonMovement>();
+    animator = GetComponentInChildren<Animator>();
+    animParamThrowing = Animator.StringToHash("IsThrowing");
   }
 
   internal void Update()
   {
+    animator.SetBool(animParamThrowing, false);
+
     if (InputSplitter.GetSmokePressed(fpsMove.PlayerID) && currentBombCount < NumberOfBombs)
     {
       Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
       ++currentBombCount;
+      animator.SetBool(animParamThrowing, true);
     }
   }
 
