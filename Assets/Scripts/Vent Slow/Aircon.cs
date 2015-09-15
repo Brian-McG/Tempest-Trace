@@ -8,8 +8,6 @@ using UnityEngine;
 public class Aircon : MonoBehaviour
 {
   public bool Status = false;
-  public GameObject PlayerOneCamera;
-  public GameObject PlayerTwoCamera;
   public Material UnlockedMaterial;
   public GameObject AirconAnimator;
   public GameObject AirconParticle;

@@ -10,8 +10,11 @@ TagManager:
   - PlayerTwo
   - SmokeBomb
   - Checkpoint
-  - 
-  - 
+  - ElevatorFloor
+  - ElevatorDoor
+  - ElevatorSlowTerminal
+  - ElevatorTerminal
+  - ElevatorSparks
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
@@ -31,8 +34,8 @@ TagManager:
   User Layer 15: SniperCollider
   User Layer 16: SteamArea
   User Layer 17: CircleGarden
-  User Layer 18: 
-  User Layer 19: 
+  User Layer 18: ElevatorActivate
+  User Layer 19: ElevatorSlowTerminal
   User Layer 20: 
   User Layer 21: 
   User Layer 22: 
