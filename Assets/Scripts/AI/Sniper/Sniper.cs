@@ -26,6 +26,7 @@ public class Sniper : DirectableObject
   private PlayerSlow playerOneSlow;
   private PlayerSlow playerTwoSlow;
   private HitFlash hitFlash;
+  private Vector3 transformScale;
   
   public Sniper(float rotationSpeed, GameObject[] activationColliders, GameObject sniper, float shootDelay, float speedPenalty, float damage)
     : base(rotationSpeed, sniper)
@@ -46,6 +47,7 @@ public class Sniper : DirectableObject
     {
       colliders[i] = activationColliders[i].GetComponent<BoxCollider>();
     }
+
     Random.seed = System.Environment.TickCount;
     lineRenderer = sniper.GetComponent<LineRenderer>();
     currentTarget = Vector3.zero;
@@ -54,7 +56,9 @@ public class Sniper : DirectableObject
     targetedPlayer = 0;
     heightOffset = new Vector3(0, playerOne.GetComponent<CapsuleCollider>().center.y, 0);
     currentShootDelay = 0.0f;
-
+    transformScale = new Vector3(1.0f / sniper.transform.lossyScale.x,
+                                         1.0f / sniper.transform.lossyScale.y,
+                                         1.0f / sniper.transform.lossyScale.z);
     GenerateRandomTarget();
   }
 
@@ -114,15 +118,16 @@ public class Sniper : DirectableObject
 
     Vector3 direction = currentTarget - sniper.transform.position;
     RaycastHit hit;
+
     if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
     {
-      // Debug.Log("HIT: " + hit.collider.name);
-      Vector3 currentDirection = hit.transform.position - sniper.transform.position;
-      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude));
+      Vector3 currentDirection = hit.point - sniper.transform.position;
+
+      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude * transformScale.z));
     }
     else
     {
-      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude));
+      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude * transformScale.z));
     }
 
     previousDirection = sniper.transform.localEulerAngles;
@@ -137,12 +142,13 @@ public class Sniper : DirectableObject
     if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
     {
       Vector3 currentDirection = hit.transform.position - sniper.transform.position;
-      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude));
+      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude * transformScale.z));
     }
     else
     {
-      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude));
+      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude * transformScale.z));
     }
+
     previousDirection = currentTarget - sniper.transform.position;
     FaceDirection(direction);
   }
@@ -155,13 +161,14 @@ public class Sniper : DirectableObject
     if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
     {
       Vector3 currentDirection = hit.transform.position - sniper.transform.position;
-      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude));
+      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude * transformScale.z));
     }
     else
     {
       Vector3 direction = currentTarget - sniper.transform.position;
-      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude));
+      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude * transformScale.z));
     }
+
     currentShootDelay += Time.deltaTime;
     if (currentShootDelay > shootDelay && Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
     {
@@ -179,6 +186,7 @@ public class Sniper : DirectableObject
         playerTwoSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
         hitFlash.FlashCamera(2);
       }
+
       currentShootDelay = 0.0f;
     }
   }
