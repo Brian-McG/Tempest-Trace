@@ -27,8 +27,9 @@ public class Sniper : DirectableObject
   private PlayerSlow playerTwoSlow;
   private HitFlash hitFlash;
   private Vector3 transformScale;
+  private AudioSource sniperFire;
   
-  public Sniper(float rotationSpeed, GameObject[] activationColliders, GameObject sniper, float shootDelay, float speedPenalty, float damage)
+  public Sniper(float rotationSpeed, GameObject[] activationColliders, GameObject sniper, float shootDelay, float speedPenalty, float damage, AudioSource sniperFire)
     : base(rotationSpeed, sniper)
   {
     this.sniper = sniper;
@@ -42,6 +43,7 @@ public class Sniper : DirectableObject
     this.shootDelay = shootDelay;
     this.speedPenalty = speedPenalty;
     this.damage = damage;
+    this.sniperFire = sniperFire;
     colliders = new BoxCollider[activationColliders.Length];
     for (int i = 0; i < activationColliders.Length; ++i)
     {
@@ -172,6 +174,7 @@ public class Sniper : DirectableObject
     currentShootDelay += Time.deltaTime;
     if (currentShootDelay > shootDelay && Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
     {
+      sniperFire.Play();
       if (hit.collider.tag == "PlayerOne")
       {
         Debug.Log("Player one shot");

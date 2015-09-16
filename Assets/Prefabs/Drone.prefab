@@ -755,7 +755,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 5
   RotationSpeed: 2
-  RiseSpeed: 1
   Waypoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -767,6 +766,7 @@ MonoBehaviour:
   - {fileID: 165620}
   - {fileID: 165642}
   Damage: 30
+  DroneFireSound: {fileID: 191746, guid: 04169452b6339584f8c9d71a1fc70604, type: 2}
 --- !u!135 &13565640
 SphereCollider:
   m_ObjectHideFlags: 1

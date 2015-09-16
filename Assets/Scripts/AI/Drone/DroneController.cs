@@ -15,6 +15,7 @@ public class DroneController : MonoBehaviour
   public float ShotsPerSecond;
   public GameObject[] MuzzleFlash;
   public float Damage;
+  public GameObject DroneFireSound;
   private Drone drone;
   private EnemySighting enemySighting;
   private LastPlayerSighting lastPlayerSighting;
@@ -24,7 +25,7 @@ public class DroneController : MonoBehaviour
   {  
     enemySighting = GetComponent<EnemySighting>();
     lastPlayerSighting = enemySighting.LastSighting;
-    drone = new Drone(MoveSpeed, RotationSpeed, this.gameObject, Waypoints, enemySighting, StoppingDistance, ChaseWaitTime, lastPlayerSighting, ShotsPerSecond, MuzzleFlash, Damage);
+    drone = new Drone(MoveSpeed, RotationSpeed, this.gameObject, Waypoints, enemySighting, StoppingDistance, ChaseWaitTime, lastPlayerSighting, ShotsPerSecond, MuzzleFlash, Damage, DroneFireSound);
   }
 
   internal void Update()

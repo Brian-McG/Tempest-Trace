@@ -34,6 +34,7 @@ public class Drone : MoveableObject
   private PlayerHealth playerOneHealth;
   private PlayerHealth playerTwoHealth;
   private HitFlash hitFlash;
+  private GameObject droneFireSound;
 
   public Drone(float movementSpeed,
                float rotationSpeed,
@@ -45,7 +46,8 @@ public class Drone : MoveableObject
                LastPlayerSighting lastPlayerSighting,
                float shootRate,
                GameObject[] muzzleFlash,
-               float droneDamage)
+               float droneDamage,
+               GameObject droneFireSound)
         : base(movementSpeed,
                rotationSpeed,
                drone)
@@ -59,6 +61,7 @@ public class Drone : MoveableObject
     this.stoppingDistance = stoppingDistance;
     this.chaseWaitTime = chaseWaitTime;
     this.lastPlayerSighting = lastPlayerSighting;
+    this.droneFireSound = droneFireSound;
     inverseLayer = ~(1 << LayerMask.NameToLayer("Drone"));
     inverseShootLayer = ~(1 << LayerMask.NameToLayer("Drone") | 1 << LayerMask.NameToLayer("SmokeBomb"));
     Random.seed = System.Environment.TickCount;
@@ -164,6 +167,7 @@ public class Drone : MoveableObject
       droneAnimator.SetBool("Shooting", true);
       foreach (GameObject muzzle in muzzleFlash)
       {
+        GameObject.Instantiate(droneFireSound, drone.transform.position, Quaternion.identity);
         muzzle.light.enabled = true;
         muzzle.particleSystem.Play();
         flashInterval = 0.0f;

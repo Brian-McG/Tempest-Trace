@@ -10,11 +10,12 @@ public class SniperController : MonoBehaviour
   public float RotationSpeed;
   public GameObject[] ActivationColliders;
   public float ShootDelay;
+  public AudioSource SniperFireSound;
+  public float Damage;
   [Tooltip("The slow factor applied to the player when shot")]
   public float
     SpeedPenalty;
-
-  public float Damage;
+  
   private Sniper sniper;
 
   public Sniper SniperObj
@@ -27,7 +28,7 @@ public class SniperController : MonoBehaviour
   
   internal void Awake()
   {  
-    sniper = new Sniper(RotationSpeed, ActivationColliders, this.gameObject, ShootDelay, SpeedPenalty, Damage);
+    sniper = new Sniper(RotationSpeed, ActivationColliders, this.gameObject, ShootDelay, SpeedPenalty, Damage, SniperFireSound);
   }
   
   internal void Update()
