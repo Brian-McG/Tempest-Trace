@@ -262,13 +262,13 @@ public class Drone : MoveableObject
     }
 
     float distanceToPlayerOffset = DistanceToPlayerOffset(distance);
+    Debug.Log(timeTrackOffset + playerMoveSpeedShootOffset + distanceToPlayerOffset);
     return timeTrackOffset + playerMoveSpeedShootOffset + distanceToPlayerOffset;
   }
 
   private float TimeTrackedShootOffset(float timeTracked)
   {
-    Debug.Log(5.0f * Mathf.Pow(0.5f, timeTracked));
-    return 5.0f * Mathf.Pow(0.5f, timeTracked);
+    return 1.0f * Mathf.Pow(0.5f, timeTracked);
   }
 
   private float PlayerMoveSpeedShootOffset(float moveSpeed)
