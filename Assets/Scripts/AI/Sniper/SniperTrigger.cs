@@ -19,7 +19,7 @@ public class SniperTrigger : MonoBehaviour
   {  
     sniper = SniperControl.SniperObj;
     currentDelay = 0.0f;
-    heightOffset = new Vector3(0, GameObject.FindGameObjectWithTag("PlayerOne").GetComponent<CapsuleCollider>().center.y, 0);
+    heightOffset = new Vector3(0, GameObject.FindGameObjectWithTag("PlayerOne").GetComponent<CharacterController>().center.y, 0);
   }
 
   internal void OnTriggerStay(Collider other)

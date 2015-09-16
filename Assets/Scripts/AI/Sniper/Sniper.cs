@@ -54,7 +54,7 @@ public class Sniper : DirectableObject
     previousDirection = new Vector3(1000f, 1000f, 1000f);
     ignoredColliders = ~(1 << LayerMask.NameToLayer("SniperCollider") | 1 << LayerMask.NameToLayer("Checkpoint"));
     targetedPlayer = 0;
-    heightOffset = new Vector3(0, playerOne.GetComponent<CapsuleCollider>().center.y, 0);
+    heightOffset = new Vector3(0, playerOne.GetComponent<CharacterController>().center.y, 0);
     currentShootDelay = 0.0f;
     transformScale = new Vector3(1.0f / sniper.transform.lossyScale.x,
                                          1.0f / sniper.transform.lossyScale.y,

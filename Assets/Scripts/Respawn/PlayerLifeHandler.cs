@@ -18,10 +18,17 @@ public class PlayerLifeHandler : MonoBehaviour
   private bool isEnabled;
   private float total;
   private bool killInitiated;
+  private bool completedCourse;
   
   public void KillPlayer()
   {
     killInitiated = true;
+  }
+
+  public void CompletedCourse()
+  {
+    completedCourse = true;
+    firstPersonMovement.enabled = false;
   }
 
   internal void Awake()
@@ -33,6 +40,7 @@ public class PlayerLifeHandler : MonoBehaviour
     Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
     Fadeout.color = Color.clear;
     total = 0.0f;
+    completedCourse = false;
   }
 
   internal void Update()
@@ -41,7 +49,7 @@ public class PlayerLifeHandler : MonoBehaviour
     {
       FadeOverlay();
     }
-    else if (killInitiated)
+    else if (killInitiated || completedCourse)
     {
       FadeOverlay();
     }
@@ -67,10 +75,20 @@ public class PlayerLifeHandler : MonoBehaviour
     Fadeout.enabled = true;
     total += FadeOutSpeed * Time.deltaTime;
     Fadeout.color = Color.Lerp(Fadeout.color, Color.black, total);
-    if (Fadeout.color.a > 0.99f)
+    if (Fadeout.color.a > 0.99f && !completedCourse)
     {
       total = 0.0f;
       Kill();
+    }
+    else if (Fadeout.color.a > 0.99f && completedCourse)
+    {
+      firstPersonMovement.enabled = true;
+      rigidbody.useGravity = false;
+      firstPersonMovement.ResetState();
+      transform.position = GameObject.FindGameObjectWithTag("FinishLine").transform.position;
+      firstPersonMovement.enabled = false;
+      GetComponent<FirstPersonCameraHorizontal>().enabled = false;
+      this.transform.FindChild("Camera").GetComponent<FirstPersonCameraVertical>().enabled = false;
     }
   }
 

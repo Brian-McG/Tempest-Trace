@@ -65,7 +65,7 @@ public class EnemySighting : MonoBehaviour
     previousSighting = lastPlayerSighting.ResetPosition;
     targetedPlayer = 0;
     inverseLayer = ~(1 << LayerMask.NameToLayer("Drone") | (1 << 17));
-    heightOffset = new Vector3(0, playerOne.GetComponent<CapsuleCollider>().center.y, 0);
+    heightOffset = new Vector3(0, playerOne.GetComponent<CharacterController>().center.y, 0);
   }
 
   internal void Update()
