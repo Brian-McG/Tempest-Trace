@@ -5,6 +5,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Manages state and behaviour of the sniper.
+/// </summary>
 public class Sniper : DirectableObject
 {
   private GameObject sniper;
@@ -64,6 +67,10 @@ public class Sniper : DirectableObject
     GenerateRandomTarget();
   }
 
+  /// <summary>
+  /// Returns a reference to the sniper game object within unity.
+  /// </summary>
+  /// <value>The sniper game object.</value>
   public GameObject SniperGameObj
   {
     get
@@ -72,6 +79,10 @@ public class Sniper : DirectableObject
     }
   }
 
+  /// <summary>
+  /// Gets the colliders which are ignored by the sniper
+  /// </summary>
+  /// <value>The ignored colliders.</value>
   public int IgnoredColliders
   {
     get
@@ -80,6 +91,10 @@ public class Sniper : DirectableObject
     }
   }
 
+  /// <summary>
+  /// Gets or sets the player targeted.
+  /// </summary>
+  /// <value>The targeted player.</value>
   public byte TargetedPlayer
   {
     get
@@ -92,7 +107,10 @@ public class Sniper : DirectableObject
       targetedPlayer = value;
     }
   }
-  
+
+  /// <summary>
+  /// Sets the state of the sniper and executes its behaviour
+  /// </summary>
   public void UpdateState()
   {
     UpdatePlayerTarget();
@@ -111,67 +129,47 @@ public class Sniper : DirectableObject
     }
   }
 
+  /// <summary>
+  /// Patrol behaviour for the sniper.
+  /// </summary>
   public void Patrol()
   {
+    // Calculate a new position for laser to move towards if laser has reached its target.
     if (sniper.transform.localEulerAngles == previousDirection)
     {
       GenerateRandomTarget();
     }
 
     Vector3 direction = currentTarget - sniper.transform.position;
-    RaycastHit hit;
-
-    if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
-    {
-      Vector3 currentDirection = hit.point - sniper.transform.position;
-
-      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude * transformScale.z));
-    }
-    else
-    {
-      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude * transformScale.z));
-    }
-
+    UpdateLaser(direction);
     previousDirection = sniper.transform.localEulerAngles;
     FaceDirection(direction, 0.01f);
   }
 
+  /// <summary>
+  /// Chase bahaviour of the sniper.
+  /// </summary>
   public void Chase()
   {
     UpdatePlayerTarget();
     Vector3 direction = currentTarget - sniper.transform.position;
-    RaycastHit hit;
-    if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
-    {
-      Vector3 currentDirection = hit.transform.position - sniper.transform.position;
-      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude * transformScale.z));
-    }
-    else
-    {
-      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude * transformScale.z));
-    }
-
+    UpdateLaser(direction);
     previousDirection = currentTarget - sniper.transform.position;
     FaceDirection(direction);
   }
 
+  /// <summary>
+  /// Shoot bahaviour of the sniper.
+  /// </summary>
   public void Shoot()
   {
     UpdatePlayerTarget();
     sniper.transform.LookAt(currentTarget);
     RaycastHit hit;
-    if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
-    {
-      Vector3 currentDirection = hit.transform.position - sniper.transform.position;
-      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude * transformScale.z));
-    }
-    else
-    {
-      Vector3 direction = currentTarget - sniper.transform.position;
-      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude * transformScale.z));
-    }
-
+    UpdateLaser(currentTarget - sniper.transform.position);
     currentShootDelay += Time.deltaTime;
+
+    // Fire towards player
     if (currentShootDelay > shootDelay && Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
     {
       sniperFire.Play();
@@ -194,6 +192,28 @@ public class Sniper : DirectableObject
     }
   }
 
+  /// <summary>
+  /// // Set length of laser as long as distance between sniper and the point it collides with.
+  /// </summary>
+  /// <param name="direction">Direction towards target.</param>
+  private void UpdateLaser(Vector3 direction)
+  {
+    RaycastHit hit;
+    if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
+    {
+      Vector3 currentDirection = hit.transform.position - sniper.transform.position;
+      lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude * transformScale.z));
+    }
+    else
+    {
+      lineRenderer.SetPosition(1, new Vector3(0, 0, direction.magnitude * transformScale.z));
+    }
+  }
+
+  /// <summary>
+  /// Sets a random position within the sniper colliders for laser to track towards.
+  /// The y value of the random target is always the minimum y value of the collider.
+  /// </summary>
   private void GenerateRandomTarget()
   {
     int randomIndex = Random.Range(0, colliders.Length);
@@ -203,6 +223,9 @@ public class Sniper : DirectableObject
     currentTarget = new Vector3(randomX, minY, randomZ);
   }
 
+  /// <summary>
+  /// Update current target based on targeted player.
+  /// </summary>
   private void UpdatePlayerTarget()
   {
     if (targetedPlayer == 1)

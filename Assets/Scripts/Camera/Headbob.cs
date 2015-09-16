@@ -5,10 +5,17 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Moves camera up and down in a realistic fashion when player is running.
+/// </summary>
 public class Headbob : MonoBehaviour
 {
-  public GameObject PlayerOne;
-  public GameObject PlayerTwo;
+  [Tooltip("Player one object")]
+  public GameObject
+    PlayerOne;
+  [Tooltip("Player two object")]
+  public GameObject
+    PlayerTwo;
   [Tooltip("Time it takes for x movement to switch to opposite direction")]
   public float
     XSwapTime;
@@ -55,22 +62,37 @@ public class Headbob : MonoBehaviour
     playerTwoYTime = 0.0f;
   }
 
+  /// <summary>
+  /// Update headbob position
+  /// </summary>
   internal void Update()
+  {
+    ApplyHeadbob();
+  }
+
+  /// <summary>
+  /// Updates head position foreach player.
+  /// </summary>
+  private void ApplyHeadbob()
   {
     // Update Player one head position
     if (playerOneMovement.Velocity.magnitude > 0.0f && playerOneMovement.IsGrounded && playerOneMovement.CurrentMotion == DefinedMotion.NONE)
     {
+      // Set head position
       playerOneCamera.transform.localPosition = new Vector3(playerOneCamera.transform.localPosition.x + (playerOneXMovement * Time.deltaTime),
                                                             playerOneCamera.transform.localPosition.y + (playerOneYMovement * Time.deltaTime),
                                                             playerOneCamera.transform.localPosition.z);
       playerOneXTime += Time.deltaTime;
       playerOneYTime += Time.deltaTime;
+
+      // Swap horizontal head movement direction
       if (playerOneXTime > XSwapTime)
       {
         playerOneXMovement *= -1.0f;
         playerOneXTime -= XSwapTime;
       }
-      
+
+      // Swap vertical head movement direction
       if (playerOneYTime > YSwapTime)
       {
         playerOneYMovement *= -1.0f;
@@ -79,6 +101,7 @@ public class Headbob : MonoBehaviour
     }
     else
     {
+      // Reset head position 
       playerOneCamera.transform.localPosition = defaultPlayerOneCameraPosition;
     }
     

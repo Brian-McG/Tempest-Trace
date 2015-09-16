@@ -5,6 +5,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// An object that can face some direction.
+/// </summary>
 public class DirectableObject
 {
   private float rotateSpeed;
@@ -24,7 +27,12 @@ public class DirectableObject
       return this.rotateSpeed;
     }
   }
-  
+
+  /// <summary>
+  /// Rotates object by an increment to a given direction.
+  /// </summary>
+  /// <param name="direction">Direction.</param>
+  /// <param name="rotationRate">Rotation rate.</param>
   public void FaceDirection(Vector3 direction, float rotationRate = 9001.0f)
   {
     float localRotationRate = this.rotateSpeed;
@@ -47,12 +55,19 @@ public class DirectableObject
       this.directableObject.transform.rotation = Quaternion.LookRotation(increment);
     }
   }
-  
-  public float AngleBetween(Vector3 a, Vector3 b, Vector3 n)
+
+  /// <summary>
+  /// Calcualates angle between directionOne and directionTwo for a given normal.
+  /// </summary>
+  /// <returns>An angle</returns>
+  /// <param name="directionOne">Direction one.</param>
+  /// <param name="directionTwo">Direction two.</param>
+  /// <param name="normal">Normal.</param>
+  public float AngleBetween(Vector3 directionOne, Vector3 directionTwo, Vector3 normal)
   {
     // [0,180]
-    float angle = Vector3.Angle(a, b);
-    float sign = Mathf.Sign(Vector3.Dot(n, Vector3.Cross(a, b))); 
+    float angle = Vector3.Angle(directionOne, directionTwo);
+    float sign = Mathf.Sign(Vector3.Dot(normal, Vector3.Cross(directionOne, directionTwo))); 
     
     // [-179,180]
     float signed_angle = angle * sign;

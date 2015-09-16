@@ -7,15 +7,33 @@ using UnityEngine;
 
 public class Elavator : MonoBehaviour
 {
-  public bool Status;
-  public bool SlowStatus;
-  public Material UnlockedMaterial;
-  public float DescendSpeed;
-  public float DoorCloseSpeed;
-  public float SlowFactor;
-  public float SlowDuration;
-  public AudioSource ActivatorSound;
-  public AudioSource SlowActivatorSound;
+  [Tooltip("If elevator is active")]
+  public bool
+    Status;
+  [Tooltip("If elvator has been slowed.")]
+  public bool
+    SlowStatus;
+  [Tooltip("Material to change termimal status image to once it is pressed.")]
+  public Material
+    UnlockedMaterial;
+  [Tooltip("Rate at which the elevator moves.")]
+  public float
+    DescendSpeed;
+  [Tooltip("Rate at which the elevator door closes.")]
+  public float
+    DoorCloseSpeed;
+  [Tooltip("Factor by which the elevator is slowed when slowTerminal is activated.")]
+  public float
+    SlowFactor;
+  [Tooltip("How long the elevator is slowed when slowTerminal is activated..")]
+  public float
+    SlowDuration;
+  [Tooltip("Sound played when terminal is pressed.")]
+  public AudioSource
+    ActivatorSound;
+  [Tooltip("Sound played when slowTerminal is pressed.")]
+  public AudioSource
+    SlowActivatorSound;
   private const float RaiseHeight = 3.0f;
   private GameObject elevatorFloor;
   private GameObject elevatorDoor;
@@ -27,7 +45,12 @@ public class Elavator : MonoBehaviour
   private float currentSlowDuration;
   private float slowDescendSpeed;
   private AudioSource elevatorSoundEffect;
-  
+
+  /// <summary>
+  /// Start moving elevator.
+  /// Play elevator sound effect
+  /// Set terminal to activated.
+  /// </summary>
   public void Activate()
   {
     if (!Status)
@@ -42,6 +65,11 @@ public class Elavator : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Start slowing elevator movement.
+  /// Set terminal to activated.
+  /// Play spark particle effect.
+  /// </summary>
   public void ActivateSlow()
   {
     if (Status && !SlowStatus)
@@ -76,40 +104,52 @@ public class Elavator : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Update elevator
+  /// </summary>
   internal void Update()
   {
     if (Status)
     {
-      if (currentAmountDescended < dropHeight)
-      {
-        float deltaHeight;
-        if (SlowStatus && currentSlowDuration < SlowDuration)
-        {
-          deltaHeight = slowDescendSpeed * Time.deltaTime;
-          currentSlowDuration += Time.deltaTime;
-        }
-        else
-        {
-          deltaHeight = DescendSpeed * Time.deltaTime;
-        }
+      MoveElevator();
+    }
+  }
 
-        elevatorFloor.transform.position = elevatorFloor.transform.position + (Vector3.down * deltaHeight);
-        currentAmountDescended += deltaHeight;
+  /// <summary>
+  /// Moves elevator some increment
+  /// Closes elevator door
+  /// </summary>
+  private void MoveElevator()
+  {
+    if (currentAmountDescended < dropHeight)
+    {
+      float deltaHeight;
+      if (SlowStatus && currentSlowDuration < SlowDuration)
+      {
+        deltaHeight = slowDescendSpeed * Time.deltaTime;
+        currentSlowDuration += Time.deltaTime;
       }
       else
       {
-        elevatorSoundEffect.Stop();
+        deltaHeight = DescendSpeed * Time.deltaTime;
       }
-
-      if (currentDoorAscended < RaiseHeight)
+      
+      elevatorFloor.transform.position = elevatorFloor.transform.position + (Vector3.down * deltaHeight);
+      currentAmountDescended += deltaHeight;
+    }
+    else
+    {
+      elevatorSoundEffect.Stop();
+    }
+    
+    if (currentDoorAscended < RaiseHeight)
+    {
+      float deltaHeight = DoorCloseSpeed * Time.deltaTime;
+      elevatorDoor.transform.localPosition = elevatorDoor.transform.localPosition + (Vector3.up * deltaHeight);
+      currentDoorAscended += deltaHeight;
+      if (currentDoorAscended > RaiseHeight)
       {
-        float deltaHeight = DoorCloseSpeed * Time.deltaTime;
-        elevatorDoor.transform.localPosition = elevatorDoor.transform.localPosition + (Vector3.up * deltaHeight);
-        currentDoorAscended += deltaHeight;
-        if (currentDoorAscended > RaiseHeight)
-        {
-          elevatorDoor.transform.localPosition = new Vector3(elevatorDoor.transform.localPosition.x, -3.0f, elevatorDoor.transform.localPosition.z);
-        }
+        elevatorDoor.transform.localPosition = new Vector3(elevatorDoor.transform.localPosition.x, -3.0f, elevatorDoor.transform.localPosition.z);
       }
     }
   }

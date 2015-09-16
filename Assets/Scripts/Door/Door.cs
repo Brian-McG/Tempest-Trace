@@ -5,14 +5,24 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Opens door when activated.
+/// </summary>
 public class Door : MonoBehaviour
 {
-  public float OpenRate;
-  public float DegreesToOpen;
+  [Tooltip("Rate at which door opens.")]
+  public float
+    OpenRate;
+  [Tooltip("Total degrees that door must open.")]
+  public float
+    DegreesToOpen;
   private bool status;
   private bool played;
   private float totalOpened;
 
+  /// <summary>
+  /// Start opening door.
+  /// </summary>
   public void Activate()
   {
     if (!status)
@@ -28,13 +38,24 @@ public class Door : MonoBehaviour
     totalOpened = 0.0f;
   }
 
+  /// <summary>
+  /// Update door
+  /// </summary>
   internal void Update()
   {
     if (status && !played && totalOpened < DegreesToOpen)
     {
-      float deltaAngle = OpenRate * Time.deltaTime;
-      totalOpened += deltaAngle;
-      transform.Rotate(new Vector3(0, deltaAngle, 0));
+      OpenDoor();
     }
+  }
+
+  /// <summary>
+  /// Opens the door some increment
+  /// </summary>
+  private void OpenDoor()
+  {
+    float deltaAngle = OpenRate * Time.deltaTime;
+    totalOpened += deltaAngle;
+    transform.Rotate(new Vector3(0, deltaAngle, 0));
   }
 }

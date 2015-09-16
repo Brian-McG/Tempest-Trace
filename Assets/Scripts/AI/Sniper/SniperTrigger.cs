@@ -5,13 +5,19 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Triggers sniper to target player.
+/// </summary>
 public class SniperTrigger : MonoBehaviour
 {
   [Tooltip("The number of seconds it takes for the player to become tracked once inside the collider")]
   public float
     ReactionDelay;
 
-  public SniperController SniperControl;
+  [Tooltip("The controller that manages a specific sniper")]
+  public SniperController
+    SniperControl;
+
   private Sniper sniper;
   private float currentDelay;
   private Vector3 heightOffset;
@@ -23,6 +29,10 @@ public class SniperTrigger : MonoBehaviour
     heightOffset = new Vector3(0, GameObject.FindGameObjectWithTag("PlayerOne").GetComponent<CharacterController>().center.y, 0);
   }
 
+  /// <summary>
+  /// Set targeted player
+  /// </summary>
+  /// <param name="other">Object collided with.</param>
   internal void OnTriggerStay(Collider other)
   {
     if (sniper != null)
@@ -53,9 +63,16 @@ public class SniperTrigger : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Reset targeted player when player exists collider.
+  /// </summary>
+  /// <param name="other">Object collided with.</param>
   internal void OnTriggerExit(Collider other)
   {
-    sniper.TargetedPlayer = 0;
-    currentDelay = 0.0f;
+    if (other.tag == "PlayerOne" || other.tag == "PlayerTwo")
+    {
+      sniper.TargetedPlayer = 0;
+      currentDelay = 0.0f;
+    }
   }
 }

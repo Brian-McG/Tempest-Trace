@@ -5,6 +5,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Maintains the position that the player was last spotted.
+/// </summary>
 public class LastPlayerSighting
 {
   public Vector3 Position = new Vector3(1000f, 1000f, 1000f);

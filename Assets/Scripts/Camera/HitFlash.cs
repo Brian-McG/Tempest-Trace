@@ -6,11 +6,20 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Flash screen when player is shot
+/// </summary>
 public class HitFlash : MonoBehaviour
 {
-  public RawImage FlashPlayerOne;
-  public RawImage FlashPlayerTwo;
-  public float ClearRate;
+  [Tooltip("Player one flash image.")]
+  public RawImage
+    FlashPlayerOne;
+  [Tooltip("Player two flash image.")]
+  public RawImage
+    FlashPlayerTwo;
+  [Tooltip("Rate at which screen should clear flash.")]
+  public float
+    ClearRate;
   private Color defaultColor;
   private float currentDurationPlayerOne;
   private float currentDurationPlayerTwo;
@@ -26,6 +35,9 @@ public class HitFlash : MonoBehaviour
     defaultColor = FlashPlayerOne.color;
   }
 
+  /// <summary>
+  /// Update flash overlay
+  /// </summary>
   internal void Update()
   {
     if (FlashPlayerOne.enabled)
@@ -39,7 +51,11 @@ public class HitFlash : MonoBehaviour
       UnFadeOverlay(2);
     }
   }
-  
+
+  /// <summary>
+  /// Flashes camera of a given player.
+  /// </summary>
+  /// <param name="player">Player to flash the camera for.</param>
   public void FlashCamera(byte player)
   {
     if (player == 0 || player == 1)
@@ -56,6 +72,10 @@ public class HitFlash : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Incrementally unfades the flash overlay.
+  /// </summary>
+  /// <param name="player">Player to clear the overlay for.</param>
   private void UnFadeOverlay(byte player)
   {
     if (player == 0 || player == 1)

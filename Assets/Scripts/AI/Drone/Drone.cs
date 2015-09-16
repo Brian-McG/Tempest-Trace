@@ -5,6 +5,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Manages state and behaviour of the drone.
+/// </summary>
 public class Drone : MoveableObject
 {
   private const float ActionBufferAngle = 2.0f;
@@ -81,10 +84,15 @@ public class Drone : MoveableObject
     hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
   }
 
+  /// <summary>
+  /// Patrol behavior for the drone.
+  /// </summary>
   public void Patrol()
   {
     Vector3 currentWaypoint = patrolRoute[index].transform.position;
     Vector3 difference = currentWaypoint - drone.transform.position;
+
+    // Move towards next waypoint
     if (difference.magnitude < 5f)
     {
       index = (index + 1) % patrolRoute.Length;
@@ -96,6 +104,9 @@ public class Drone : MoveableObject
     Move(difference);
   }
 
+  /// <summary>
+  /// Behaviour to chase after player
+  /// </summary>
   public void Chase()
   {
     currentTarget = enemySighting.PersonalLastSighting;
@@ -108,6 +119,7 @@ public class Drone : MoveableObject
       chaseTimer += Time.deltaTime;
       if (chaseTimer >= chaseWaitTime)
       {
+        // Reset drone state
         lastPlayerSighting.Position = lastPlayerSighting.ResetPosition;
         enemySighting.PersonalLastSighting = lastPlayerSighting.ResetPosition;
         chaseTimer = 0.0f;
@@ -118,18 +130,22 @@ public class Drone : MoveableObject
     {
       if (enemySighting.TargetedPlayer != 0)
       {
+        // Update time player is tracked
         trackTime += Time.deltaTime;
       }
       else
       {
+        // Reset track time as player is no longer spotted.
         trackTime = 0.0f;
       }
       chaseTimer = 0.0f;
     }
 
-    // Debug.Log(chaseTimer);
     Vector3 difference = currentTarget - drone.transform.position;
     Vector3 differenceLevel = new Vector3(difference.x, 0, difference.z).normalized;
+
+    // If player is targeted then directly face the player
+    // Else, stay upright and move to last seen position
     if (enemySighting.TargetedPlayer != 0)
     {
       FaceDirection(difference);
@@ -142,12 +158,18 @@ public class Drone : MoveableObject
     Move(differenceLevel);
   }
 
-  public void Shoot(Vector3 deltaTargetDrone)
+  /// <summary>
+  /// Behaviour for the drone to shoot the tracked player.
+  /// </summary>
+  /// <param name="playerDirection">Vector towards the tracked player.</param>
+  public void Shoot(Vector3 playerDirection)
   {
     trackTime += Time.deltaTime;
     currentTarget = enemySighting.PersonalLastSighting;
     currentShootInverval += Time.deltaTime;
     flashInterval += Time.deltaTime;
+
+    // Turn off muzzle flash light
     if (flashInterval > 0.05f)
     {
       foreach (GameObject muzzle in muzzleFlash)
@@ -156,6 +178,7 @@ public class Drone : MoveableObject
       }
     }
 
+    // Turn off shoot animation state if shoot animation is complete
     if (!droneAnimator.GetCurrentAnimatorStateInfo(1).IsName("Shoot"))
     {
       droneAnimator.SetBool("Shooting", false);
@@ -165,15 +188,20 @@ public class Drone : MoveableObject
     {
       currentShootInverval -= shootRate;
       droneAnimator.SetBool("Shooting", true);
+
+      // Shoot sound
+      GameObject.Instantiate(droneFireSound, drone.transform.position, Quaternion.identity);
+
+      // Start muzzle flash effect
       foreach (GameObject muzzle in muzzleFlash)
       {
-        GameObject.Instantiate(droneFireSound, drone.transform.position, Quaternion.identity);
         muzzle.light.enabled = true;
         muzzle.particleSystem.Play();
         flashInterval = 0.0f;
       }
 
-      float offsetMagnitude = CalculateShootOffset(deltaTargetDrone.magnitude);
+      // Calculate bullet direction
+      float offsetMagnitude = CalculateShootOffset(playerDirection.magnitude);
       float offsetHalf = offsetMagnitude / 2.0f;
       float offsetX = (Random.value * offsetMagnitude) - offsetHalf;
       float offsetY = (Random.value * offsetMagnitude) - offsetHalf;
@@ -181,6 +209,8 @@ public class Drone : MoveableObject
       Vector3 bulletTarget = new Vector3(currentTarget.x + offsetX, currentTarget.y + offsetY, currentTarget.z + offsetZ);
       Vector3 direction = bulletTarget - drone.transform.position;
       Debug.DrawLine(drone.transform.position, drone.transform.position + (direction * 100.0f), Color.red, 2.0f, false);
+
+      // Raycast in bullet direction
       RaycastHit hit;
       if (Physics.Raycast(drone.transform.position, direction, out hit, 100.0f, inverseShootLayer))
       {
@@ -204,11 +234,17 @@ public class Drone : MoveableObject
     }
   }
 
+  /// <summary>
+  /// Drone moves up vertically
+  /// </summary>
   public void Rise()
   {
     drone.transform.position = drone.transform.position + (Vector3.up * movementSpeed * Time.deltaTime);
   }
 
+  /// <summary>
+  /// Sets the state of the drone and runs that behaviour
+  /// </summary>
   public void UpdateState()
   {
     Vector3 difference = currentTarget - drone.transform.position;
@@ -219,7 +255,6 @@ public class Drone : MoveableObject
     if (Physics.Raycast(drone.transform.position, horizontalForward, 10.0f, inverseLayer)
       || Physics.Raycast(drone.transform.position, Vector3.down, 2.0f, inverseLayer))
     {
-      // Debug.Log("Rise");
       Rise();
     }
     else if (enemySighting.TargetedPlayer != 0 && (difference.normalized - drone.transform.forward.normalized).magnitude < 0.1 /* && (currentTarget - drone.transform.position).magnitude < ((collider.radius * drone.transform.localScale.x) / 2.0f)*/)
@@ -227,17 +262,16 @@ public class Drone : MoveableObject
       isShooting = true;
       Shoot(difference);
     }
-    else if (enemySighting.PreviousSighting != lastPlayerSighting.ResetPosition)
+    else if (enemySighting.PersonalLastSighting != lastPlayerSighting.ResetPosition)
     {
-      // Debug.Log("Chase Mode");
       Chase();
     }
     else
     {
-      // Debug.Log("Patrol");
       Patrol();
     }
 
+    // Turn off muzzle flash if not in a shooting state
     if (!isShooting)
     {
       droneAnimator.SetBool("Shooting", false);
@@ -248,6 +282,15 @@ public class Drone : MoveableObject
     }
   }
 
+  /// <summary>
+  /// Calculates the amount the direction of the bullet is offset.
+  /// The offset is made up of three parts:
+  ///   The time player has been tracked for
+  ///   The movement speed of the tracked player
+  ///   The distance from the player
+  /// </summary>
+  /// <returns>The shoot offset.</returns>
+  /// <param name="distance">Distance to target.</param>
   private float CalculateShootOffset(float distance)
   {
     float timeTrackOffset = TimeTrackedShootOffset(trackTime);
@@ -266,16 +309,31 @@ public class Drone : MoveableObject
     return timeTrackOffset + playerMoveSpeedShootOffset + distanceToPlayerOffset;
   }
 
+  /// <summary>
+  /// Offset is calculated using an exponential decay function based on timed tracked.
+  /// </summary>
+  /// <returns>An offset.</returns>
+  /// <param name="timeTracked">Time tracked.</param>
   private float TimeTrackedShootOffset(float timeTracked)
   {
     return 1.0f * Mathf.Pow(0.5f, timeTracked);
   }
 
+  /// <summary>
+  /// Offset is calculated using a linear function based on movement speed of player.
+  /// </summary>
+  /// <returns>An offset.</returns>
+  /// <param name="moveSpeed">Move speed.</param>
   private float PlayerMoveSpeedShootOffset(float moveSpeed)
   {
     return 0.05f * moveSpeed;
   }
 
+  /// <summary>
+  /// Offset is calcualted using a linear function based on distance from drone to player.
+  /// </summary>
+  /// <returns>An offset</returns>
+  /// <param name="distance">Distance.</param>
   private float DistanceToPlayerOffset(float distance)
   {
     return 0.05f * distance;

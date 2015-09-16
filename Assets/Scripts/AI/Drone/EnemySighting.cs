@@ -5,9 +5,11 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Controls sighting of drone.
+/// </summary>
 public class EnemySighting : MonoBehaviour
 {
-  public float FieldOfViewAngle = 110f;
   private Vector3 personalLastSighting;
   private SphereCollider sphereCollider;
   private LastPlayerSighting lastPlayerSighting;
@@ -18,6 +20,14 @@ public class EnemySighting : MonoBehaviour
   private int inverseLayer;
   private Vector3 heightOffset;
 
+  /// <summary>
+  /// Gets player that drone is targeting
+  /// </summary>
+  /// <value>
+  /// 0 if no player is targeted
+  /// 1 if player one is targeted
+  /// 2 if player two is targeted
+  /// </value>
   public byte TargetedPlayer
   {
     get
@@ -26,14 +36,10 @@ public class EnemySighting : MonoBehaviour
     }
   }
 
-  public Vector3 PreviousSighting
-  {
-    get
-    {
-      return previousSighting;
-    }
-  }
-
+  /// <summary>
+  /// Gets or sets last sighting of player by the drone.
+  /// </summary>
+  /// <value>Position of player</value>
   public Vector3 PersonalLastSighting
   {
     get
@@ -47,6 +53,10 @@ public class EnemySighting : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Gets Last player sighting
+  /// </summary>
+  /// <value>Reference to lastPlayerSighting object</value>
   public LastPlayerSighting LastSighting
   {
     get
@@ -68,8 +78,12 @@ public class EnemySighting : MonoBehaviour
     heightOffset = new Vector3(0, playerOne.GetComponent<CharacterController>().center.y, 0);
   }
 
+  /// <summary>
+  /// Update sighting variables.
+  /// </summary>
   internal void Update()
   {
+
     if (lastPlayerSighting.Position != previousSighting)
     {
       personalLastSighting = lastPlayerSighting.Position;
@@ -78,6 +92,10 @@ public class EnemySighting : MonoBehaviour
     previousSighting = lastPlayerSighting.Position;
   }
 
+  /// <summary>
+  /// Set sighting position and player targeted.
+  /// </summary>
+  /// <param name="other">Object collided with</param>
   internal void OnTriggerStay(Collider other)
   {
     if (other.gameObject.tag == "PlayerOne" && targetedPlayer != 2)
@@ -112,8 +130,15 @@ public class EnemySighting : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Set targeted player to not target any player.
+  /// </summary>
+  /// <param name="other">Object collided with.</param>
   internal void OnTriggerExit(Collider other)
   {
-    targetedPlayer = 0;
+    if (other.gameObject.tag == "PlayerOne" || other.gameObject.tag == "PlayerTwo")
+    {
+      targetedPlayer = 0;
+    }
   }
 }
