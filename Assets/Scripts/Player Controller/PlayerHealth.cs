@@ -11,7 +11,6 @@ public class PlayerHealth : MonoBehaviour
   public float DefaultHP;
   public float TimeToStartRegeneratingAfterDamaged;
   public float RegenerationRate;
-  public RawImage HitOverlay;
   private float hp;
   private PlayerLifeHandler playerLifeHandler;
   private float regenTimer;

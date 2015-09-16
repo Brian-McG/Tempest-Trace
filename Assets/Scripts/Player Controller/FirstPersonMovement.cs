@@ -64,6 +64,12 @@ public class FirstPersonMovement : MonoBehaviour
   public float SlideDeceleration;
   public float SlideStopSpeedThreshold;
 
+  [Header("Sound Paramters")]
+  public AudioSource JumpSound;
+  public AudioSource ClimbSound;
+  public AudioSource VaultSound;
+  public AudioSource SlideSound;
+
   private Animator animator;
   private int animParamSpeed;
   private int animParamSlide;
@@ -199,6 +205,7 @@ public class FirstPersonMovement : MonoBehaviour
         vaultMidpoint.y = vaultApex.y;
         
         Debug.Log("Vault");
+        VaultSound.Play();
         currentMotion = DefinedMotion.VAULT;
         motionProgress = 0;
         motionTargets.Clear();
@@ -260,6 +267,7 @@ public class FirstPersonMovement : MonoBehaviour
         climbMidpoint.y = climbTarget.y;
         
         Debug.Log("Climb "+climbCheckInfo.collider.gameObject.name+" - "+climbCheckInfo.collider.transform.GetInstanceID());
+        ClimbSound.Play();
         currentMotion = DefinedMotion.CLIMB;
         animator.SetBool(animParamClimb, true);
         motionTargets.Clear();
@@ -279,6 +287,7 @@ public class FirstPersonMovement : MonoBehaviour
     if (horizontalVelocity.sqrMagnitude > horizontalVelocityThreshold *
                                          horizontalVelocityThreshold)
     {
+      SlideSound.Play();
       currentMotion = DefinedMotion.SLIDE;
       animator.SetBool(animParamSlide, true);
       transform.localScale = new Vector3(1.0f, 0.5f, 1.0f);
@@ -335,6 +344,7 @@ public class FirstPersonMovement : MonoBehaviour
       
       if (currentMotion == DefinedMotion.NONE)
       {
+        JumpSound.Play();
         isJumping = true;
         velocity.y = JumpForce;
       }
