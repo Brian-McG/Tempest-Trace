@@ -26,7 +26,6 @@ public class SniperController : MonoBehaviour
   
   internal void Awake()
   {  
-    Debug.Log(transform.position);
     sniper = new Sniper(RotationSpeed, ActivationColliders, this.gameObject, ShootDelay, SpeedPenalty, Damage);
   }
   

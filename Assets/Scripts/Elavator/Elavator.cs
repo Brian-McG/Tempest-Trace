@@ -14,6 +14,8 @@ public class Elavator : MonoBehaviour
   public float DoorCloseSpeed;
   public float SlowFactor;
   public float SlowDuration;
+  public AudioSource ActivatorSound;
+  public AudioSource SlowActivatorSound;
   private const float RaiseHeight = 3.0f;
   private GameObject elevatorFloor;
   private GameObject elevatorDoor;
@@ -24,16 +26,19 @@ public class Elavator : MonoBehaviour
   private float currentDoorAscended;
   private float currentSlowDuration;
   private float slowDescendSpeed;
+  private AudioSource elevatorSoundEffect;
   
   public void Activate()
   {
     if (!Status)
     {
+      ActivatorSound.Play();
       Status = true;
       Renderer screen = transform.Find("prop_switchUnit_screen").renderer;
       screen.material = UnlockedMaterial;
       currentAmountDescended = 0.0f;
       currentDoorAscended = 0.0f;
+      elevatorSoundEffect.Play();
     }
   }
 
@@ -41,6 +46,7 @@ public class Elavator : MonoBehaviour
   {
     if (Status && !SlowStatus)
     {
+      SlowActivatorSound.Play();
       Renderer screen = elevatorSlowTerminal.transform.Find("prop_switchUnit_screen").renderer;
       screen.material = UnlockedMaterial;
       currentSlowDuration = 0.0f;
@@ -56,6 +62,7 @@ public class Elavator : MonoBehaviour
     RaycastHit hit;
     slowDescendSpeed = DescendSpeed / SlowFactor;
     elevatorFloor = GameObject.FindGameObjectWithTag("ElevatorFloor");
+    elevatorSoundEffect = elevatorFloor.GetComponent<AudioSource>();
     elevatorDoor = GameObject.FindGameObjectWithTag("ElevatorDoor");
     elevatorSlowTerminal = GameObject.FindGameObjectWithTag("ElevatorSlowTerminal");
     elevatorSparks = GameObject.FindGameObjectWithTag("ElevatorSparks");
@@ -88,6 +95,10 @@ public class Elavator : MonoBehaviour
 
         elevatorFloor.transform.position = elevatorFloor.transform.position + (Vector3.down * deltaHeight);
         currentAmountDescended += deltaHeight;
+      }
+      else
+      {
+        elevatorSoundEffect.Stop();
       }
 
       if (currentDoorAscended < RaiseHeight)

@@ -11,6 +11,7 @@ public class Aircon : MonoBehaviour
   public Material UnlockedMaterial;
   public GameObject AirconAnimator;
   public GameObject AirconParticle;
+  public AudioSource ActivatorSound;
   private Animator airconAnimator;
   private ParticleSystem airconParticle;
 
@@ -18,6 +19,7 @@ public class Aircon : MonoBehaviour
   {
     if (!Status)
     {
+      ActivatorSound.Play();
       Status = true;
       Renderer screen = transform.Find("prop_switchUnit_screen").renderer;
       screen.material = UnlockedMaterial;
