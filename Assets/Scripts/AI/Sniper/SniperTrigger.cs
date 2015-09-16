@@ -10,6 +10,7 @@ public class SniperTrigger : MonoBehaviour
   [Tooltip("The number of seconds it takes for the player to become tracked once inside the collider")]
   public float
     ReactionDelay;
+
   public SniperController SniperControl;
   private Sniper sniper;
   private float currentDelay;

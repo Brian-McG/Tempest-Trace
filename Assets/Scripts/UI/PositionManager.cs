@@ -45,7 +45,6 @@ public class PositionManager : MonoBehaviour
     }
     else
     {
-
       uint nextCheckpointIndex = checkpointP1.NumberPassed;
       /*
       uint currentCheckpointIndex = checkpointP1.NumberPassed - 1;

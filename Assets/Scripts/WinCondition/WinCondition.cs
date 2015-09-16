@@ -31,7 +31,6 @@ public class WinCondition : MonoBehaviour
   {
     if (other.tag == "PlayerOne" || other.tag == "PlayerTwo")
     {
-      Debug.Log("TRIGGER");
       PlayerLifeHandler lifeHandler = other.gameObject.GetComponent<PlayerLifeHandler>();
       if (other.tag == "PlayerOne")
       {
@@ -56,6 +55,7 @@ public class WinCondition : MonoBehaviour
   private void AllPlayersFinished()
   {
     Debug.Log("Transition to end-game screen");
+
     // TODO: End game screen
   }
 }

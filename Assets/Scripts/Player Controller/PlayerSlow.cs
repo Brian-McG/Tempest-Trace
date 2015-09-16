@@ -40,7 +40,6 @@ public class PlayerSlow : MonoBehaviour
     currentDuration = 0.0f;
     generalSlowSpeed = defaultRunSpeed / slowFactor;
     currentLerpTime = Mathf.Clamp(generalLerpDownTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - generalSlowSpeed), 0, generalLerpDownTime);
-    ;
   }
 
   internal void Awake()

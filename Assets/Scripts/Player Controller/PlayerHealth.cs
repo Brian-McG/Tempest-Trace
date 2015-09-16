@@ -42,6 +42,7 @@ public class PlayerHealth : MonoBehaviour
       playerLifeHandler.KillPlayer();
       return true;
     }
+
     return false;
   }
   

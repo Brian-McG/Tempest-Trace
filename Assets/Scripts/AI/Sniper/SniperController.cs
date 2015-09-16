@@ -1,4 +1,4 @@
-﻿// <copyright file="SniperMovement.cs" company="University of Cape Town">
+﻿// <copyright file="SniperController.cs" company="University of Cape Town">
 //     Brian Mc George
 //     MCGBRI004
 // </copyright>
@@ -13,6 +13,7 @@ public class SniperController : MonoBehaviour
   [Tooltip("The slow factor applied to the player when shot")]
   public float
     SpeedPenalty;
+
   public float Damage;
   private Sniper sniper;
 
