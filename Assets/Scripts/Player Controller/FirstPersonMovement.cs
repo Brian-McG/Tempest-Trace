@@ -80,6 +80,11 @@ public class FirstPersonMovement : MonoBehaviour
   private bool isJumping;
   private bool wasGrounded;
 
+  private float movementX;
+  private float movementZ;
+  private bool shouldJump;
+  private bool shouldSlide;
+
   public float RunSpeed
   {
     get;
@@ -254,7 +259,7 @@ public class FirstPersonMovement : MonoBehaviour
         Vector3 climbMidpoint = transform.position;
         climbMidpoint.y = climbTarget.y;
         
-        Debug.Log("Climb");
+        Debug.Log("Climb "+climbCheckInfo.collider.gameObject.name+" - "+climbCheckInfo.collider.transform.GetInstanceID());
         currentMotion = DefinedMotion.CLIMB;
         animator.SetBool(animParamClimb, true);
         motionTargets.Clear();
@@ -297,10 +302,7 @@ public class FirstPersonMovement : MonoBehaviour
 
   private void UpdateOnPlayerInput()
   {
-    float movementZ = InputSplitter.GetVerticalAxis(PlayerID);
-    float movementX = InputSplitter.GetHorizontalAxis(PlayerID);
     Vector3 moveVector = new Vector3(movementX, 0, movementZ);
-    
     if (moveVector != Vector3.zero)
     {
       float moveMagnitude = moveVector.magnitude;
@@ -327,7 +329,6 @@ public class FirstPersonMovement : MonoBehaviour
     
     // TODO: Since velocity has been update here, we have the velocity based on the input alone
     //       and does not consider the actual velocity based on collision
-    bool shouldJump = InputSplitter.GetJumpPressed(PlayerID);
     if (charController.isGrounded && shouldJump)
     {
       CheckForVaultClimbMotion();
@@ -343,7 +344,6 @@ public class FirstPersonMovement : MonoBehaviour
       velocity.y -= 9.81f * Time.fixedDeltaTime;
     }
 
-    bool shouldSlide = InputSplitter.GetSlidePressed(PlayerID);
     if (charController.isGrounded && !shouldJump && shouldSlide)
     {
       CheckForSlideMotion();
@@ -391,6 +391,8 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     wasGrounded = charController.isGrounded;
+    shouldJump = false;
+    shouldSlide = false;
   }
   
   /// <summary>
@@ -478,6 +480,20 @@ public class FirstPersonMovement : MonoBehaviour
       animator.SetBool(animParamSlide, false);
       RunSpeed = DefaultRunSpeed;
       transform.localScale = Vector3.one;
+    }
+  }
+
+  private void Update()
+  {
+    movementZ = InputSplitter.GetVerticalAxis(PlayerID);
+    movementX = InputSplitter.GetHorizontalAxis(PlayerID);
+    if(InputSplitter.GetSlidePressed(PlayerID))
+    {
+      shouldSlide = true;
+    }
+    if(InputSplitter.GetJumpPressed(PlayerID))
+    {
+      shouldJump = true;
     }
   }
 
