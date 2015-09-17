@@ -121,7 +121,6 @@ public class FirstPersonMovement : MonoBehaviour
     velocity  = Vector3.zero;
     RunSpeed = DefaultRunSpeed;
     
-
     Transform cameraChild = transform.Find("Camera");
     FirstPersonCameraVertical cameraVerticalControl = cameraChild.GetComponent<FirstPersonCameraVertical>();
     cameraChild.localRotation = Quaternion.identity;
@@ -264,13 +263,13 @@ public class FirstPersonMovement : MonoBehaviour
                           out climbCheckInfo, MaximumClimbHeight))
       {
         Transform climbCeilingTransform = climbCheckInfo.transform;
-        if(climbCheckTransform == climbCeilingTransform)
+        if (climbCheckTransform == climbCeilingTransform)
         {
           Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
           Vector3 climbMidpoint = transform.position;
           climbMidpoint.y = climbTarget.y;
           
-          Debug.Log("Climb "+climbCheckInfo.collider.gameObject.name+" - "+climbCheckInfo.collider.transform.GetInstanceID());
+          Debug.Log("Climb " + climbCheckInfo.collider.gameObject.name + " - " + climbCheckInfo.collider.transform.GetInstanceID());
           ClimbSound.Play();
           currentMotion = DefinedMotion.CLIMB;
           animator.SetBool(animParamClimb, true);
@@ -503,11 +502,12 @@ public class FirstPersonMovement : MonoBehaviour
   {
     movementZ = InputSplitter.GetVerticalAxis(PlayerID);
     movementX = InputSplitter.GetHorizontalAxis(PlayerID);
-    if(InputSplitter.GetSlidePressed(PlayerID))
+    if (InputSplitter.GetSlidePressed(PlayerID))
     {
       shouldSlide = true;
     }
-    if(InputSplitter.GetJumpPressed(PlayerID))
+
+    if (InputSplitter.GetJumpPressed(PlayerID))
     {
       shouldJump = true;
     }
