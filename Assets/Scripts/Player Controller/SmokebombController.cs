@@ -1,0 +1,87 @@
+﻿// <copyright file="SmokebombController.cs" company="University of Cape Town">
+//     Brian Mc George
+//     MCGBRI004
+// </copyright>
+using System.Collections;
+using UnityEngine;
+
+/// <summary>
+/// Controls the spawning of smoke bombs at the players hand.
+/// </summary>
+public class SmokebombController : MonoBehaviour
+{
+  [Tooltip("Smokebomb prefab.")]
+  public GameObject
+    SmokeBomb;
+  [Tooltip("Maximum number of bombs player can deploy.")]
+  public int
+    NumberOfBombs;
+
+  private GameObject hand;
+  private int currentBombCount;
+  private FirstPersonMovement fpsMove;
+  private Animator animator;
+  private int animParamThrowing;
+
+  internal void Awake()
+  {
+    if (!DepthFirstSearch("RightHand_bind", transform))
+    {
+      Debug.LogError("Failed to find player hand for bomb throw.");
+    }
+
+    currentBombCount = 0;
+    fpsMove = GetComponent<FirstPersonMovement>();
+    animator = GetComponentInChildren<Animator>();
+    animParamThrowing = Animator.StringToHash("IsThrowing");
+  }
+
+  internal void Update()
+  {
+    CheckSmokebombInput();
+  }
+
+  /// <summary>
+  /// Checks for player input to see if a smoke bomb should be deployed
+  /// Plays animation if smoke bomb should be deployed.
+  /// </summary>
+  private void CheckSmokebombInput()
+  {
+    animator.SetBool(animParamThrowing, false);
+    
+    if (InputSplitter.GetSmokePressed(fpsMove.PlayerID) && currentBombCount < NumberOfBombs)
+    {
+      Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
+      ++currentBombCount;
+      animator.SetBool(animParamThrowing, true);
+    }
+  }
+
+  /// <summary>
+  /// Set reference to hand object by searching player model tree until the hand is found.
+  /// </summary>
+  /// <returns><c>true</c>If the hand is found<c>false</c>Otherwise</returns>
+  /// <param name="searchName">Name of the game object</param>
+  /// <param name="currentTransform">Transform of current object traversed to</param>
+  private bool DepthFirstSearch(string searchName, Transform currentTransform)
+  {
+    foreach (Transform t in currentTransform)
+    {
+      if (t.name == searchName)
+      {
+        hand = t.gameObject;
+        return true;
+      }
+      else
+      {
+        bool result = DepthFirstSearch(searchName, t);
+        if (result)
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+}

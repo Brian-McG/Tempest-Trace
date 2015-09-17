@@ -20,6 +20,7 @@ public class HitFlash : MonoBehaviour
   [Tooltip("Rate at which screen should clear flash.")]
   public float
     ClearRate;
+
   private Color defaultColor;
   private float currentDurationPlayerOne;
   private float currentDurationPlayerTwo;
@@ -34,24 +35,7 @@ public class HitFlash : MonoBehaviour
     currentDurationPlayerTwo = 0.0f;
     defaultColor = FlashPlayerOne.color;
   }
-
-  /// <summary>
-  /// Update flash overlay
-  /// </summary>
-  internal void Update()
-  {
-    if (FlashPlayerOne.enabled)
-    {
-      currentDurationPlayerOne += Time.deltaTime;
-      UnFadeOverlay(1);
-    }
-    if (FlashPlayerTwo.enabled)
-    {
-      currentDurationPlayerTwo += Time.deltaTime;
-      UnFadeOverlay(2);
-    }
-  }
-
+  
   /// <summary>
   /// Flashes camera of a given player.
   /// </summary>
@@ -73,7 +57,25 @@ public class HitFlash : MonoBehaviour
   }
 
   /// <summary>
-  /// Incrementally unfades the flash overlay.
+  /// Update flash overlay
+  /// </summary>
+  internal void Update()
+  {
+    if (FlashPlayerOne.enabled)
+    {
+      currentDurationPlayerOne += Time.deltaTime;
+      UnFadeOverlay(1);
+    }
+    
+    if (FlashPlayerTwo.enabled)
+    {
+      currentDurationPlayerTwo += Time.deltaTime;
+      UnFadeOverlay(2);
+    }
+  }
+
+  /// <summary>
+  /// Incrementally un-fades the flash overlay.
   /// </summary>
   /// <param name="player">Player to clear the overlay for.</param>
   private void UnFadeOverlay(byte player)

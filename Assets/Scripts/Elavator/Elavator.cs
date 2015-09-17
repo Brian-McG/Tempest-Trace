@@ -34,6 +34,7 @@ public class Elavator : MonoBehaviour
   [Tooltip("Sound played when slowTerminal is pressed.")]
   public AudioSource
     SlowActivatorSound;
+
   private const float RaiseHeight = 3.0f;
   private GameObject elevatorFloor;
   private GameObject elevatorDoor;

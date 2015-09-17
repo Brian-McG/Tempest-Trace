@@ -5,6 +5,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Controls checkpoint input
+/// </summary>
 public class Checkpoint : MonoBehaviour
 {
   private Vector3 position;
@@ -12,6 +15,9 @@ public class Checkpoint : MonoBehaviour
   private Hashtable checkpoints;
   private uint count;
 
+  /// <summary>
+  /// Gets number of checkpoints passed.
+  /// </summary>
   public uint NumberPassed
   {
     get
@@ -20,6 +26,9 @@ public class Checkpoint : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Gets position of the checkpoint
+  /// </summary>
   public Vector3 Position
   {
     get
@@ -28,6 +37,9 @@ public class Checkpoint : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Gets orientation of the checkpoint
+  /// </summary>
   public Vector3 Orientation
   {
     get
@@ -44,6 +56,10 @@ public class Checkpoint : MonoBehaviour
     checkpoints = new Hashtable();
   }
 
+  /// <summary>
+  /// Player collides with checkpoint and has not collided with this checkpoint in the past.
+  /// </summary>
+  /// <param name="other">Object collided with</param>
   internal void OnTriggerEnter(Collider other)
   {
     if (other.tag == "Checkpoint" &&
@@ -53,6 +69,10 @@ public class Checkpoint : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Increment checkpoint counter and set next checkpoint.
+  /// </summary>
+  /// <param name="checkpoint">Checkpoint collided with</param>
   private void CheckpointReached(Collider checkpoint)
   {
     if (!checkpoints.ContainsKey(checkpoint.transform.position))

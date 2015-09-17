@@ -6,16 +6,36 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls the movement of the heads up display
+/// </summary>
 public class DynamicHUDMovement : MonoBehaviour
 {
-  public GameObject PlayerOne;
-  public GameObject PlayerTwo;
-  public GameObject[] PlayerOneHud;
-  public GameObject[] PlayerTwoHud;
-  public float XSwapTime;
-  public float YSwapTime;
-  public float XMovement;
-  public float YMovement;
+  [Tooltip("Reference to player one object")]
+  public GameObject
+    PlayerOne;
+  [Tooltip("Reference to player two object")]
+  public GameObject
+    PlayerTwo;
+  [Tooltip("Reference to player one heads up display objects")]
+  public GameObject[]
+    PlayerOneHud;
+  [Tooltip("Reference to player two heads up display objects")]
+  public GameObject[]
+    PlayerTwoHud;
+  [Tooltip("The time it takes for heads up display to inverse horizontal movement")]
+  public float
+    XSwapTime;
+  [Tooltip("The time it takes for heads up display to inverse vertical movement")]
+  public float
+    YSwapTime;
+  [Tooltip("Rate at which the heads up display moves horizontally")]
+  public float
+    XMovement;
+  [Tooltip("Rate at which the heads up display moves vertically")]
+  public float
+    YMovement;
+
   private FirstPersonMovement playerOneMovement;
   private FirstPersonMovement playerTwoMovement;
   private RectTransform[] playerOneHud;
@@ -61,11 +81,15 @@ public class DynamicHUDMovement : MonoBehaviour
   {
     UpdateHUDPosition();
   }
-  
+
+  /// <summary>
+  /// Updates the position of the heads up display and increments heads up display timers for each player if:
+  ///   Player is moving
+  ///   Player is on the ground
+  ///   Player is not in a contextual action
+  /// </summary>
   private void UpdateHUDPosition()
   {
-    // Should this effect play if you are not grounded?
-
     // Update Player one HUD
     if (playerOneMovement.Velocity.magnitude > 0.0f && playerOneMovement.IsGrounded && playerOneMovement.CurrentMotion == DefinedMotion.NONE)
     {
@@ -79,12 +103,15 @@ public class DynamicHUDMovement : MonoBehaviour
       
       playerOneXTime += Time.deltaTime;
       playerOneYTime += Time.deltaTime;
+
+      // Swap horizontal movement
       if (playerOneXTime > XSwapTime)
       {
         playerOneXMovement *= -1.0f;
         playerOneXTime -= XSwapTime;
       }
-      
+
+      // Swap vertical movement
       if (playerOneYTime > YSwapTime)
       {
         playerOneYMovement *= -1.0f;
