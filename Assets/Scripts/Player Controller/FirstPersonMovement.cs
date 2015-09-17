@@ -147,7 +147,7 @@ public class FirstPersonMovement : MonoBehaviour
   
   private void CheckForVaultClimbMotion()
   {
-    float epsilon = 0.0001f;
+    float epsilon = 0.02f;
     Vector3 horizontalVelocity = velocity;
     horizontalVelocity.y = 0;
     float horizontalSpeed = horizontalVelocity.magnitude;
@@ -255,6 +255,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
     else if (canClimb)
     {
+      Transform climbCheckTransform = climbCheckInfo.transform;
       Vector3 climbCheckPoint = climbCheckInfo.point + (forwardDir * epsilon);
       float climbCeilingHeight = MaximumClimbHeight - climbCheckHeight; // Subtract the height form our initial ray
       Vector3 climbCeiling = climbCheckPoint + new Vector3(0.0f, climbCeilingHeight, 0.0f);
@@ -262,18 +263,22 @@ public class FirstPersonMovement : MonoBehaviour
       if (Physics.Raycast(climbCeiling, Vector3.down,
                           out climbCheckInfo, MaximumClimbHeight))
       {
-        Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
-        Vector3 climbMidpoint = transform.position;
-        climbMidpoint.y = climbTarget.y;
-        
-        Debug.Log("Climb "+climbCheckInfo.collider.gameObject.name+" - "+climbCheckInfo.collider.transform.GetInstanceID());
-        ClimbSound.Play();
-        currentMotion = DefinedMotion.CLIMB;
-        animator.SetBool(animParamClimb, true);
-        motionTargets.Clear();
-        motionTargets.Add(climbMidpoint);
-        motionTargets.Add(climbTarget);
-        motionProgress = 0;
+        Transform climbCeilingTransform = climbCheckInfo.transform;
+        if(climbCheckTransform == climbCeilingTransform)
+        {
+          Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
+          Vector3 climbMidpoint = transform.position;
+          climbMidpoint.y = climbTarget.y;
+          
+          Debug.Log("Climb "+climbCheckInfo.collider.gameObject.name+" - "+climbCheckInfo.collider.transform.GetInstanceID());
+          ClimbSound.Play();
+          currentMotion = DefinedMotion.CLIMB;
+          animator.SetBool(animParamClimb, true);
+          motionTargets.Clear();
+          motionTargets.Add(climbMidpoint);
+          motionTargets.Add(climbTarget);
+          motionProgress = 0;
+        }
       }
     }
   }
