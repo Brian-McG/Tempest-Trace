@@ -379,7 +379,8 @@ public class FirstPersonMovement : MonoBehaviour
       velocity = actualMoveVelocity;
     }
 
-    animator.SetFloat(animParamSpeed, actualMoveVelocity.magnitude);
+    Vector2 actualHorizontalVelocity = new Vector3(actualMoveVelocity.x, actualMoveVelocity.z);
+    animator.SetFloat(animParamSpeed, actualHorizontalVelocity.magnitude);
     
     if (charController.isGrounded)
     {
