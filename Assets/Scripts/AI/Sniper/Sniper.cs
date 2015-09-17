@@ -64,7 +64,10 @@ public class Sniper : DirectableObject
     transformScale = new Vector3(1.0f / sniper.transform.lossyScale.x,
                                          1.0f / sniper.transform.lossyScale.y,
                                          1.0f / sniper.transform.lossyScale.z);
-    GenerateRandomTarget();
+    if (colliders.Length > 0)
+    {
+      GenerateRandomTarget();
+    }
   }
 
   /// <summary>
@@ -113,19 +116,22 @@ public class Sniper : DirectableObject
   /// </summary>
   public void UpdateState()
   {
-    UpdatePlayerTarget();
-    Vector3 direction = currentTarget - sniper.transform.position;
-    if (targetedPlayer != 0 && (direction.normalized - sniper.transform.forward.normalized).magnitude < 0.005f)
+    if (colliders.Length > 0)
     {
-      Shoot();
-    }
-    else if (targetedPlayer != 0)
-    {
-      Chase();
-    }
-    else
-    {
-      Patrol();
+      UpdatePlayerTarget();
+      Vector3 direction = currentTarget - sniper.transform.position;
+      if (targetedPlayer != 0 && (direction.normalized - sniper.transform.forward.normalized).magnitude < 0.005f)
+      {
+        Shoot();
+      }
+      else if (targetedPlayer != 0)
+      {
+        Chase();
+      }
+      else
+      {
+        Patrol();
+      }
     }
   }
 
