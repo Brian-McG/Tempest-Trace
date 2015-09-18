@@ -20,17 +20,8 @@ public class Sniper : DirectableObject
   private GameObject playerOne;
   private GameObject playerTwo;
   private Vector3 heightOffset;
-  private float shootDelay;
-  private float speedPenalty;
-  private float currentShootDelay;
-  private float damage;
-  private PlayerHealth playerOneHealth;
-  private PlayerHealth playerTwoHealth;
-  private PlayerSlow playerOneSlow;
-  private PlayerSlow playerTwoSlow;
-  private HitFlash hitFlash;
   private Vector3 transformScale;
-  private AudioSource sniperFire;
+  private SniperWeapon sniperWeapon;
   
   public Sniper(float rotationSpeed, GameObject[] activationColliders, GameObject sniper, float shootDelay, float speedPenalty, float damage, AudioSource sniperFire)
     : base(rotationSpeed, sniper)
@@ -38,15 +29,11 @@ public class Sniper : DirectableObject
     this.sniper = sniper;
     this.playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
     this.playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
-    this.playerOneHealth = playerOne.GetComponent<PlayerHealth>();
-    this.playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
-    this.playerOneSlow = playerOne.GetComponent<PlayerSlow>();
-    this.playerTwoSlow = playerTwo.GetComponent<PlayerSlow>();
-    this.hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
-    this.shootDelay = shootDelay;
-    this.speedPenalty = speedPenalty;
-    this.damage = damage;
-    this.sniperFire = sniperFire;
+    PlayerHealth playerOneHealth = playerOne.GetComponent<PlayerHealth>();
+    PlayerHealth playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
+    PlayerSlow playerOneSlow = playerOne.GetComponent<PlayerSlow>();
+    PlayerSlow playerTwoSlow = playerTwo.GetComponent<PlayerSlow>();
+    HitFlash hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
     colliders = new BoxCollider[activationColliders.Length];
     for (int i = 0; i < activationColliders.Length; ++i)
     {
@@ -60,10 +47,11 @@ public class Sniper : DirectableObject
     ignoredColliders = ~(1 << LayerMask.NameToLayer("SniperCollider") | 1 << LayerMask.NameToLayer("Checkpoint"));
     targetedPlayer = 0;
     heightOffset = new Vector3(0, playerOne.GetComponent<CharacterController>().center.y, 0);
-    currentShootDelay = 0.0f;
     transformScale = new Vector3(1.0f / sniper.transform.lossyScale.x,
                                          1.0f / sniper.transform.lossyScale.y,
                                          1.0f / sniper.transform.lossyScale.z);
+
+    sniperWeapon = new SniperWeapon(damage, shootDelay, playerOneHealth, playerTwoHealth, playerOneSlow, playerTwoSlow, sniperFire, hitFlash, speedPenalty);
     if (colliders.Length > 0)
     {
       GenerateRandomTarget();
@@ -171,31 +159,8 @@ public class Sniper : DirectableObject
   {
     UpdatePlayerTarget();
     sniper.transform.LookAt(currentTarget);
-    RaycastHit hit;
     UpdateLaser(currentTarget - sniper.transform.position);
-    currentShootDelay += Time.deltaTime;
-
-    // Fire towards player
-    if (currentShootDelay > shootDelay && Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
-    {
-      sniperFire.Play();
-      if (hit.collider.tag == "PlayerOne")
-      {
-        Debug.Log("Player one shot");
-        playerOneHealth.DeductHP(damage);
-        playerOneSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
-        hitFlash.FlashCamera(1);
-      }
-      else if (hit.collider.tag == "PlayerTwo")
-      {
-        Debug.Log("Player two shot");
-        playerTwoHealth.DeductHP(damage);
-        playerTwoSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
-        hitFlash.FlashCamera(2);
-      }
-
-      currentShootDelay = 0.0f;
-    }
+    sniperWeapon.Fire(sniper.transform.position, sniper.transform.forward, 1000.0f, ignoredColliders);
   }
 
   /// <summary>

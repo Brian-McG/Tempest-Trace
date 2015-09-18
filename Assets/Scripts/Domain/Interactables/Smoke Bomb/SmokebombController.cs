@@ -19,7 +19,6 @@ public class SmokebombController : MonoBehaviour
 
   private GameObject hand;
   private int currentBombCount;
-  private FirstPersonMovement fpsMove;
   private Animator animator;
   private int animParamThrowing;
 
@@ -31,25 +30,21 @@ public class SmokebombController : MonoBehaviour
     }
 
     currentBombCount = 0;
-    fpsMove = GetComponent<FirstPersonMovement>();
     animator = GetComponentInChildren<Animator>();
     animParamThrowing = Animator.StringToHash("IsThrowing");
   }
 
   internal void Update()
   {
-    CheckSmokebombInput();
+    animator.SetBool(animParamThrowing, false);
   }
 
   /// <summary>
-  /// Checks for player input to see if a smoke bomb should be deployed
   /// Plays animation if smoke bomb should be deployed.
   /// </summary>
-  private void CheckSmokebombInput()
+  public void Activate()
   {
-    animator.SetBool(animParamThrowing, false);
-    
-    if (InputSplitter.GetSmokePressed(fpsMove.PlayerID) && currentBombCount < NumberOfBombs)
+    if (currentBombCount < NumberOfBombs)
     {
       Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
       ++currentBombCount;

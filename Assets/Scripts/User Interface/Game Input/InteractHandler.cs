@@ -16,6 +16,7 @@ public class InteractHandler : MonoBehaviour
   private int elevatorActivateLayer;
   private int elevatorSlowActivateLayer;
   private GameObject elevatorTerminal;
+  private SmokebombController smokeBombController;
 
   private void Awake()
   {
@@ -27,6 +28,7 @@ public class InteractHandler : MonoBehaviour
     elevatorSlowActivateLayer = LayerMask.NameToLayer("ElevatorSlowTerminal");
     interactLayer = 1 << airconLayer | 1 << doorLayer | 1 << elevatorActivateLayer | 1 << elevatorSlowActivateLayer;
     elevatorTerminal = GameObject.FindGameObjectWithTag("ElevatorTerminal");
+    smokeBombController = GetComponent<SmokebombController>();
   }
   
   private void Update()
@@ -73,6 +75,10 @@ public class InteractHandler : MonoBehaviour
           }
         }
       }
+    }
+    if (InputSplitter.GetSmokePressed(fpsMove.PlayerID))
+    {
+      smokeBombController.Activate();
     }
   }
 }

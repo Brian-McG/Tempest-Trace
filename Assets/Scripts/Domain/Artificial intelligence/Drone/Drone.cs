@@ -29,15 +29,12 @@ public class Drone : MoveableObject
   private FirstPersonMovement playerOneMovement;
   private FirstPersonMovement playerTwoMovement;
   private Animator droneAnimator;
-  private float shootRate;
-  private float currentShootInverval;
   private GameObject[] muzzleFlash;
   private float flashInterval;
-  private float droneDamage;
   private PlayerHealth playerOneHealth;
   private PlayerHealth playerTwoHealth;
   private HitFlash hitFlash;
-  private GameObject droneFireSound;
+  private DroneWeapon droneWeapon;
 
   public Drone(float movementSpeed,
                float rotationSpeed,
@@ -64,7 +61,6 @@ public class Drone : MoveableObject
     this.stoppingDistance = stoppingDistance;
     this.chaseWaitTime = chaseWaitTime;
     this.lastPlayerSighting = lastPlayerSighting;
-    this.droneFireSound = droneFireSound;
     inverseLayer = ~(1 << LayerMask.NameToLayer("Drone"));
     inverseShootLayer = ~(1 << LayerMask.NameToLayer("Drone") | 1 << LayerMask.NameToLayer("SmokeBomb"));
     Random.seed = System.Environment.TickCount;
@@ -74,14 +70,11 @@ public class Drone : MoveableObject
     playerOneMovement = playerOne.GetComponent<FirstPersonMovement>();
     playerTwoMovement = playerTwo.GetComponent<FirstPersonMovement>();
     droneAnimator = drone.GetComponent<Animator>();
-    this.shootRate = 1.0f / shootRate;
-    currentShootInverval = 0.0f;
     this.muzzleFlash = muzzleFlash;
-    flashInterval = 0.0f;
-    this.droneDamage = droneDamage;
     playerOneHealth = playerOne.GetComponent<PlayerHealth>();
     playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
     hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
+    this.droneWeapon = new DroneWeapon(droneDamage, 1.0f / shootRate, playerOneHealth, playerTwoHealth, droneFireSound, hitFlash, muzzleFlash, droneAnimator);
   }
 
   /// <summary>
@@ -166,71 +159,19 @@ public class Drone : MoveableObject
   {
     trackTime += Time.deltaTime;
     currentTarget = enemySighting.PersonalLastSighting;
-    currentShootInverval += Time.deltaTime;
-    flashInterval += Time.deltaTime;
 
-    // Turn off muzzle flash light
-    if (flashInterval > 0.05f)
+    // Calculate bullet direction
+    float offsetMagnitude = CalculateShootOffset(playerDirection.magnitude);
+    float offsetHalf = offsetMagnitude / 2.0f;
+    float offsetX = (Random.value * offsetMagnitude) - offsetHalf;
+    float offsetY = (Random.value * offsetMagnitude) - offsetHalf;
+    float offsetZ = (Random.value * offsetMagnitude) - offsetHalf;
+    Vector3 bulletTarget = new Vector3(currentTarget.x + offsetX, currentTarget.y + offsetY, currentTarget.z + offsetZ);
+    Vector3 direction = bulletTarget - drone.transform.position;
+
+    if (droneWeapon.Fire(drone.transform.position, direction, 100.0f, inverseShootLayer))
     {
-      foreach (GameObject muzzle in muzzleFlash)
-      {
-        muzzle.light.enabled = false;
-      }
-    }
-
-    // Turn off shoot animation state if shoot animation is complete
-    if (!droneAnimator.GetCurrentAnimatorStateInfo(1).IsName("Shoot"))
-    {
-      droneAnimator.SetBool("Shooting", false);
-    }
-
-    if (currentShootInverval > shootRate)
-    {
-      currentShootInverval -= shootRate;
-      droneAnimator.SetBool("Shooting", true);
-
-      // Shoot sound
-      GameObject.Instantiate(droneFireSound, drone.transform.position, Quaternion.identity);
-
-      // Start muzzle flash effect
-      foreach (GameObject muzzle in muzzleFlash)
-      {
-        muzzle.light.enabled = true;
-        muzzle.particleSystem.Play();
-        flashInterval = 0.0f;
-      }
-
-      // Calculate bullet direction
-      float offsetMagnitude = CalculateShootOffset(playerDirection.magnitude);
-      float offsetHalf = offsetMagnitude / 2.0f;
-      float offsetX = (Random.value * offsetMagnitude) - offsetHalf;
-      float offsetY = (Random.value * offsetMagnitude) - offsetHalf;
-      float offsetZ = (Random.value * offsetMagnitude) - offsetHalf;
-      Vector3 bulletTarget = new Vector3(currentTarget.x + offsetX, currentTarget.y + offsetY, currentTarget.z + offsetZ);
-      Vector3 direction = bulletTarget - drone.transform.position;
-      Debug.DrawLine(drone.transform.position, drone.transform.position + (direction * 100.0f), Color.red, 2.0f, false);
-
-      // Raycast in bullet direction
-      RaycastHit hit;
-      if (Physics.Raycast(drone.transform.position, direction, out hit, 100.0f, inverseShootLayer))
-      {
-        if (hit.collider.gameObject.tag == "PlayerOne")
-        {
-          hitFlash.FlashCamera(1);
-          if (playerOneHealth.DeductHP(droneDamage))
-          {
-            trackTime = 0.0f;
-          }
-        }
-        else if (hit.collider.gameObject.tag == "PlayerTwo")
-        {
-          hitFlash.FlashCamera(2);
-          if (playerTwoHealth.DeductHP(droneDamage))
-          {
-            trackTime = 0.0f;
-          }
-        }
-      }
+      trackTime = 0.0f;
     }
   }
 
