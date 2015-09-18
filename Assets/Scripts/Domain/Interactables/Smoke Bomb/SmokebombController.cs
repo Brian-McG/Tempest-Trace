@@ -46,10 +46,16 @@ public class SmokebombController : MonoBehaviour
   {
     if (currentBombCount < NumberOfBombs)
     {
-      Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
+      StartCoroutine(ThrowSmokebomb());
       ++currentBombCount;
       animator.SetBool(animParamThrowing, true);
     }
+  }
+
+  private IEnumerator ThrowSmokebomb()
+  {
+    yield return new WaitForSeconds(0.7f);
+    Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
   }
 
   /// <summary>
