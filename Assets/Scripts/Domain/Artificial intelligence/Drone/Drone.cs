@@ -10,7 +10,6 @@ using UnityEngine;
 /// </summary>
 public class Drone : MoveableObject
 {
-  private const float ActionBufferAngle = 2.0f;
   private int index;
   private GameObject drone;
   private GameObject[] patrolRoute;
@@ -24,15 +23,11 @@ public class Drone : MoveableObject
   private int inverseLayer;
   private int inverseShootLayer;
   private float trackTime;
-  private GameObject playerOne;
-  private GameObject playerTwo;
   private FirstPersonMovement playerOneMovement;
   private FirstPersonMovement playerTwoMovement;
   private Animator droneAnimator;
   private GameObject[] muzzleFlash;
-  private float flashInterval;
-  private PlayerHealth playerOneHealth;
-  private PlayerHealth playerTwoHealth;
+
   private HitFlash hitFlash;
   private DroneWeapon droneWeapon;
 
@@ -65,14 +60,14 @@ public class Drone : MoveableObject
     inverseShootLayer = ~(1 << LayerMask.NameToLayer("Drone") | 1 << LayerMask.NameToLayer("SmokeBomb"));
     Random.seed = System.Environment.TickCount;
     trackTime = 0.0f;
-    playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
-    playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
+    GameObject playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
+    GameObject playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
     playerOneMovement = playerOne.GetComponent<FirstPersonMovement>();
     playerTwoMovement = playerTwo.GetComponent<FirstPersonMovement>();
     droneAnimator = drone.GetComponent<Animator>();
     this.muzzleFlash = muzzleFlash;
-    playerOneHealth = playerOne.GetComponent<PlayerHealth>();
-    playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
+    PlayerHealth playerOneHealth = playerOne.GetComponent<PlayerHealth>();
+    PlayerHealth playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
     hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
     this.droneWeapon = new DroneWeapon(droneDamage, 1.0f / shootRate, playerOneHealth, playerTwoHealth, droneFireSound, hitFlash, muzzleFlash, droneAnimator);
   }

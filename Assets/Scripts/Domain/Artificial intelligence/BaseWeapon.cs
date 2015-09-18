@@ -10,12 +10,18 @@ public abstract class BaseWeapon
   private float damage;
   private float shootRate;
   private float currentShootInverval;
+  private HitFlash hitFlash;
+  private PlayerHealth playerOneHealth;
+  private PlayerHealth playerTwoHealth;
 
-  public BaseWeapon(float damage, float shootRate)
+  public BaseWeapon(float damage, float shootRate, HitFlash hitFlash, PlayerHealth playerOneHealth, PlayerHealth playerTwoHealth)
   {  
     this.damage = damage;
     this.shootRate = shootRate;
     this.currentShootInverval = 0.0f;
+    this.hitFlash = hitFlash;
+    this.playerOneHealth = playerOneHealth;
+    this.playerTwoHealth = playerTwoHealth;
   }
 
   public float Damage
@@ -31,6 +37,30 @@ public abstract class BaseWeapon
     get
     {
       return this.shootRate;
+    }
+  }
+
+  public HitFlash HitFlash
+  {
+    get
+    {
+      return hitFlash;
+    }
+  }
+
+  public PlayerHealth PlayerOneHealth
+  {
+    get
+    {
+      return playerOneHealth;
+    }
+  }
+
+  public PlayerHealth PlayerTwoHealth
+  {
+    get
+    {
+      return playerTwoHealth;
     }
   }
 
@@ -56,22 +86,4 @@ public abstract class BaseWeapon
 /// <param name="range">Range.</param>
 /// <param name="ignoreLayer">Ignore layer.</param>
   public abstract bool Fire(Vector3 position, Vector3 direction, float range, int ignoreLayer);
-  /*
-    if (currentShootInverval > shootRate)
-    {
-      RaycastHit hit;
-      if (Physics.Raycast(position, direction, out hit, range, ignoreLayer))
-      {
-        if (hit.collider.tag == "PlayerOne")
-        {
-          return 1;
-        }
-        else if (hit.collider.tag == "PlayerTwo")
-        {
-          return 2;
-        }
-      }
-    }
-    return 0;
-*/
 }

@@ -45,7 +45,7 @@ public class SniperTrigger : MonoBehaviour
         {
           RaycastHit hit;
           Vector3 direction = (other.transform.position + heightOffset) - sniper.SniperGameObj.transform.position;
-          if (Physics.Raycast(sniper.SniperGameObj.transform.position, direction, out hit, 1000f, sniper.IgnoredColliders) && hit.collider.tag == "PlayerOne")
+          if (Physics.Raycast(sniper.SniperGameObj.transform.position, direction, out hit, 1000f, sniper.InverseIgnoredColliders) && hit.collider.tag == "PlayerOne")
           {
             sniper.TargetedPlayer = 1;
           }
@@ -54,7 +54,7 @@ public class SniperTrigger : MonoBehaviour
         {
           RaycastHit hit;
           Vector3 direction = (other.transform.position + heightOffset) - sniper.SniperGameObj.transform.position;
-          if (Physics.Raycast(sniper.SniperGameObj.transform.position, direction, out hit, 1000f, sniper.IgnoredColliders) && hit.collider.tag == "PlayerTwo")
+          if (Physics.Raycast(sniper.SniperGameObj.transform.position, direction, out hit, 1000f, sniper.InverseIgnoredColliders) && hit.collider.tag == "PlayerTwo")
           {
             sniper.TargetedPlayer = 2;
           }

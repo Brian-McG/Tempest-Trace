@@ -7,12 +7,9 @@ using UnityEngine;
 
 public class SniperWeapon : BaseWeapon
 {
-  private PlayerHealth playerOneHealth;
-  private PlayerHealth playerTwoHealth;
   private PlayerSlow playerOneSlow;
   private PlayerSlow playerTwoSlow;
   private AudioSource sniperFireSound;
-  private HitFlash hitFlash;
   private float speedPenalty;
 
   public SniperWeapon(float damage,
@@ -23,14 +20,11 @@ public class SniperWeapon : BaseWeapon
                       PlayerSlow playerTwoSlow,
                       AudioSource sniperFireSound,
                       HitFlash hitFlash,
-                      float speedPenalty) : base(damage, shootRate)
+                      float speedPenalty) : base(damage, shootRate, hitFlash, playerOneHealth, playerTwoHealth)
   {  
-    this.playerOneHealth = playerOneHealth;
-    this.playerTwoHealth = playerTwoHealth;
     this.playerOneSlow = playerOneSlow;
     this.playerTwoSlow = playerTwoSlow;
     this.sniperFireSound = sniperFireSound;
-    this.hitFlash = hitFlash;
     this.speedPenalty = speedPenalty;
   }
 
@@ -46,23 +40,23 @@ public class SniperWeapon : BaseWeapon
       if (hit.collider.tag == "PlayerOne")
       {
         Debug.Log("Player one shot");
-        if (playerOneHealth.DeductHP(Damage))
+        if (PlayerOneHealth.DeductHP(Damage))
         {
           returnValue = true;
         }
         playerOneSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
-        hitFlash.FlashCamera(1);
+        HitFlash.FlashCamera(1);
 
       }
       else if (hit.collider.tag == "PlayerTwo")
       {
         Debug.Log("Player two shot");
-        if (playerTwoHealth.DeductHP(Damage))
+        if (PlayerTwoHealth.DeductHP(Damage))
         {
           returnValue = true;
         }
         playerTwoSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
-        hitFlash.FlashCamera(2);
+        HitFlash.FlashCamera(2);
       }
       
       CurrentShootInverval -= ShootRate;

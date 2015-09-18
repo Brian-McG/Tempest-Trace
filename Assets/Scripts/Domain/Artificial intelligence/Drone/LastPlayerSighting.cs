@@ -10,8 +10,21 @@ using UnityEngine;
 /// </summary>
 public class LastPlayerSighting
 {
-  public Vector3 Position = new Vector3(1000f, 1000f, 1000f);
+  private Vector3 position = new Vector3(1000f, 1000f, 1000f);
   private Vector3 resetPosition = new Vector3(1000f, 1000f, 1000f);
+
+  public Vector3 Position
+  {
+    get
+    {
+      return position;
+    }
+
+    set
+    {
+      position = value;
+    }
+  }
 
   public Vector3 ResetPosition
   {

@@ -15,7 +15,7 @@ public class Sniper : DirectableObject
   private LineRenderer lineRenderer;
   private Vector3 currentTarget;
   private Vector3 previousDirection;
-  private int ignoredColliders;
+  private int inverseIgnoredColliders;
   private byte targetedPlayer;
   private GameObject playerOne;
   private GameObject playerTwo;
@@ -44,7 +44,7 @@ public class Sniper : DirectableObject
     lineRenderer = sniper.GetComponent<LineRenderer>();
     currentTarget = Vector3.zero;
     previousDirection = new Vector3(1000f, 1000f, 1000f);
-    ignoredColliders = ~(1 << LayerMask.NameToLayer("SniperCollider") | 1 << LayerMask.NameToLayer("Checkpoint"));
+    inverseIgnoredColliders = ~(1 << LayerMask.NameToLayer("SniperCollider") | 1 << LayerMask.NameToLayer("Checkpoint"));
     targetedPlayer = 0;
     heightOffset = new Vector3(0, playerOne.GetComponent<CharacterController>().center.y, 0);
     transformScale = new Vector3(1.0f / sniper.transform.lossyScale.x,
@@ -74,11 +74,11 @@ public class Sniper : DirectableObject
   /// Gets the colliders which are ignored by the sniper
   /// </summary>
   /// <value>The ignored colliders.</value>
-  public int IgnoredColliders
+  public int InverseIgnoredColliders
   {
     get
     {
-      return ignoredColliders;
+      return inverseIgnoredColliders;
     }
   }
 
@@ -160,7 +160,7 @@ public class Sniper : DirectableObject
     UpdatePlayerTarget();
     sniper.transform.LookAt(currentTarget);
     UpdateLaser(currentTarget - sniper.transform.position);
-    sniperWeapon.Fire(sniper.transform.position, sniper.transform.forward, 1000.0f, ignoredColliders);
+    sniperWeapon.Fire(sniper.transform.position, sniper.transform.forward, 1000.0f, inverseIgnoredColliders);
   }
 
   /// <summary>
@@ -170,7 +170,7 @@ public class Sniper : DirectableObject
   private void UpdateLaser(Vector3 direction)
   {
     RaycastHit hit;
-    if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, ignoredColliders))
+    if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, inverseIgnoredColliders))
     {
       Vector3 currentDirection = hit.transform.position - sniper.transform.position;
       lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude * transformScale.z));

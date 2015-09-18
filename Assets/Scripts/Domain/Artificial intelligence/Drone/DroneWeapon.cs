@@ -7,11 +7,8 @@ using UnityEngine;
 
 public class DroneWeapon : BaseWeapon
 {
-  private PlayerHealth playerOneHealth;
-  private PlayerHealth playerTwoHealth;
   private GameObject droneFireSound;
-  private HitFlash hitFlash;
-  private float flashInterval;
+  private float muzzleFlashInterval;
   private GameObject[] muzzleFlash;
   private Animator droneAnimator;
 
@@ -22,13 +19,10 @@ public class DroneWeapon : BaseWeapon
                      GameObject droneFireSound,
                      HitFlash hitFlash,
                      GameObject[] muzzleFlash,
-                     Animator droneAnimator) : base(damage, shootRate)
+                     Animator droneAnimator) : base(damage, shootRate, hitFlash, playerOneHealth, playerTwoHealth)
   {
-    this.playerOneHealth = playerOneHealth;
-    this.playerTwoHealth = playerTwoHealth;
     this.droneFireSound = droneFireSound;
-    this.hitFlash = hitFlash;
-    this.flashInterval = 0.0f;
+    this.muzzleFlashInterval = 0.0f;
     this.muzzleFlash = muzzleFlash;
     this.droneAnimator = droneAnimator;
   }
@@ -37,10 +31,10 @@ public class DroneWeapon : BaseWeapon
   {
     bool returnValue = false;
     CurrentShootInverval += Time.deltaTime;
-    flashInterval += Time.deltaTime;
+    muzzleFlashInterval += Time.deltaTime;
 
     // Turn off muzzle flash light
-    if (flashInterval > 0.05f)
+    if (muzzleFlashInterval > 0.05f)
     {
       foreach (GameObject muzzle in muzzleFlash)
       {
@@ -68,7 +62,7 @@ public class DroneWeapon : BaseWeapon
       {
         muzzle.light.enabled = true;
         muzzle.particleSystem.Play();
-        flashInterval = 0.0f;
+        muzzleFlashInterval = 0.0f;
       }
 
       // Raycast in bullet direction
@@ -77,16 +71,16 @@ public class DroneWeapon : BaseWeapon
       {
         if (hit.collider.gameObject.tag == "PlayerOne")
         {
-          hitFlash.FlashCamera(1);
-          if (playerOneHealth.DeductHP(Damage))
+          HitFlash.FlashCamera(1);
+          if (PlayerOneHealth.DeductHP(Damage))
           {
             returnValue = true;
           }
         }
         else if (hit.collider.gameObject.tag == "PlayerTwo")
         {
-          hitFlash.FlashCamera(2);
-          if (playerTwoHealth.DeductHP(Damage))
+          HitFlash.FlashCamera(2);
+          if (PlayerTwoHealth.DeductHP(Damage))
           {
             returnValue = true;
           }
