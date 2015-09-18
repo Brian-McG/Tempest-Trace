@@ -102,6 +102,16 @@ public class FirstPersonMovement : MonoBehaviour
     get { return velocity; }
   }
 
+  public Vector3 HorizontalVelocity
+  {
+    get
+    {
+      Vector3 velocity = Velocity;
+      velocity.y = 0.0f;
+      return velocity;
+    }
+  }
+
   public bool IsGrounded
   {
     get { return charController.isGrounded; }
@@ -147,9 +157,7 @@ public class FirstPersonMovement : MonoBehaviour
   private void CheckForVaultClimbMotion()
   {
     float epsilon = 0.02f;
-    Vector3 horizontalVelocity = velocity;
-    horizontalVelocity.y = 0;
-    float horizontalSpeed = horizontalVelocity.magnitude;
+    float horizontalSpeed = HorizontalVelocity.magnitude;
 
     // NOTE: We compute the time it would take the player to jump to the max vault height here
     //       This should prevent 'super-jumps' that come from colliding with an obstacle while
@@ -285,10 +293,7 @@ public class FirstPersonMovement : MonoBehaviour
   private void CheckForSlideMotion()
   {
     float horizontalVelocityThreshold = 1.0f;
-    Vector3 horizontalVelocity = velocity;
-    horizontalVelocity.y = 0;
-
-    if (horizontalVelocity.sqrMagnitude > horizontalVelocityThreshold *
+    if (HorizontalVelocity.sqrMagnitude > horizontalVelocityThreshold *
                                          horizontalVelocityThreshold)
     {
       SlideSound.Play();
