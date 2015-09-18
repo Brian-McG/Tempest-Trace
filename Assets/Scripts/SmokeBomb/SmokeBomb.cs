@@ -5,6 +5,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Manages behaviour of smokebomb
+/// </summary>
 public class SmokeBomb : MonoBehaviour
 {
   [Tooltip("The amount the radius of the collider grows per time interval.")]
@@ -27,6 +30,10 @@ public class SmokeBomb : MonoBehaviour
     activated = false;
   }
 
+  /// <summary>
+  /// Smokebomb activates when it hits the ground
+  /// </summary>
+  /// <param name="collision">Object collided with</param>
   internal void OnCollisionEnter(Collision collision)
   {
     if (!activated)
@@ -38,11 +45,22 @@ public class SmokeBomb : MonoBehaviour
 
   internal void Update()
   {
+    ExpandSmokebomb();
+  }
+
+  /// <summary>
+  /// Updates smoke bomb expansion
+  /// Increases radius of collider
+  /// Increases growth timer
+  /// Once the smoke bomb particle effect is complete, the smoke bomb is destroyed.
+  /// </summary>
+  private void ExpandSmokebomb()
+  {
     if (!smoke.isPlaying && activated)
     {
       Destroy(this.gameObject);
     }
-
+    
     if (timer < GrowthStopTime && activated)
     {
       smokeCollider.radius += ColliderGrowthRate * Time.deltaTime;

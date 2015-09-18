@@ -5,6 +5,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Lerp camera between a set of waypoints.
+/// </summary>
 public class CameraLerp : MonoBehaviour
 {
   public float Speed;
@@ -32,6 +35,11 @@ public class CameraLerp : MonoBehaviour
 
   internal void Update()
   {
+    ApplyCameraLerp();
+  }
+
+  private void ApplyCameraLerp()
+  {
     if (currentLocation + 2 < Locations.Length)
     {
       currentLerpTime += Time.deltaTime;
@@ -42,7 +50,7 @@ public class CameraLerp : MonoBehaviour
         startTransform = Locations[currentLocation].transform;
       }
     }
-   
+    
     float perc = currentLerpTime / lerpTime;
     LerpTransform(startTransform, Locations[currentLocation + 1].transform, perc);
   }

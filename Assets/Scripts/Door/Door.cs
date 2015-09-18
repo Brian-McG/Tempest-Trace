@@ -16,6 +16,7 @@ public class Door : MonoBehaviour
   [Tooltip("Total degrees that door must open.")]
   public float
     DegreesToOpen;
+
   private bool status;
   private bool played;
   private float totalOpened;

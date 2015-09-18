@@ -6,12 +6,24 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages behaviour and circumstatances to player death.
+/// </summary>
 public class PlayerLifeHandler : MonoBehaviour
 {
-  public float FadeOutSpeed;
-  public float FadeInSpeed;
-  public float FadeTriggerVelocity;
-  public RawImage Fadeout;
+  [Tooltip("Speed that screen fades to black after death.")]
+  public float
+    FadeOutSpeed;
+  [Tooltip("Speed that screen fades clear after respawn.")]
+  public float
+    FadeInSpeed;
+  [Tooltip("The velocity that player needs to be traveling for the death fade to kick in.")]
+  public float
+    FadeTriggerVelocity;
+  [Tooltip("Fadeout image.")]
+  public RawImage
+    Fadeout;
+
   private PlayerHealth playerHealth;
   private FirstPersonMovement firstPersonMovement;
   private Checkpoint checkpoint;
@@ -19,12 +31,19 @@ public class PlayerLifeHandler : MonoBehaviour
   private float total;
   private bool killInitiated;
   private bool completedCourse;
-  
+
+  /// <summary>
+  /// Kills this player.
+  /// </summary>
   public void KillPlayer()
   {
     killInitiated = true;
   }
 
+  /// <summary>
+  /// Fades screen to black
+  /// Player loses input control.
+  /// </summary>
   public void CompletedCourse()
   {
     completedCourse = true;
@@ -43,6 +62,9 @@ public class PlayerLifeHandler : MonoBehaviour
     completedCourse = false;
   }
 
+  /// <summary>
+  /// Update fade overlay state
+  /// </summary>
   internal void Update()
   {
     if (!isEnabled && firstPersonMovement.Velocity.y < FadeTriggerVelocity)
@@ -59,6 +81,9 @@ public class PlayerLifeHandler : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Carries out procedure to kill player.
+  /// </summary>
   private void Kill()
   {
     killInitiated = false;
@@ -70,6 +95,10 @@ public class PlayerLifeHandler : MonoBehaviour
     playerHealth.ResetHP();
   }
 
+  /// <summary>
+  /// Fades overlay to back by some increment.
+  /// Once overlay is sufficiently black the player is then killed.
+  /// </summary>
   private void FadeOverlay()
   {
     Fadeout.enabled = true;
@@ -92,6 +121,9 @@ public class PlayerLifeHandler : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Fades overlay back to clear.
+  /// </summary>
   private void UnFadeOverlay()
   {
     total += FadeInSpeed * Time.deltaTime;
@@ -103,6 +135,9 @@ public class PlayerLifeHandler : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Reset overlay to fully clear.
+  /// </summary>
   private void ClearScreenOverlay()
   {
     isEnabled = false;

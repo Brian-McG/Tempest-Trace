@@ -6,11 +6,21 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages health of the player
+/// </summary>
 public class PlayerHealth : MonoBehaviour
 {
-  public float DefaultHP;
-  public float TimeToStartRegeneratingAfterDamaged;
-  public float RegenerationRate;
+  [Tooltip("The amount of health the player starts with")]
+  public float
+    DefaultHP;
+  [Tooltip("The amount of time it takes the player to start regenerating health after taking damage")]
+  public float
+    TimeToStartRegeneratingAfterDamaged;
+  [Tooltip("The rate at which health is restored to the player")]
+  public float
+    RegenerationRate;
+
   private float hp;
   private PlayerLifeHandler playerLifeHandler;
   private float regenTimer;
@@ -23,6 +33,9 @@ public class PlayerHealth : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Reset health and regeneration timer to default
+  /// </summary>
   public void ResetHP()
   {
     hp = DefaultHP;
@@ -30,8 +43,11 @@ public class PlayerHealth : MonoBehaviour
   }
 
   /// <summary>
-  /// Returns true if player is killed from the action
+  /// Deducts a given amount of health from the player.
+  /// If the health equals or is below zero then the player is killed
   /// </summary>
+  /// <returns><c>true</c>If player is killed from the action<c>false</c>Otherwise</returns>
+  /// <param name="deduction">Amount of health to deduct</param>
   public bool DeductHP(float deduction)
   {
     hp -= deduction;
@@ -55,7 +71,15 @@ public class PlayerHealth : MonoBehaviour
   
   internal void Update()
   {
-    // Debug.Log("HP: " + hp);
+    UpdateHealth();
+  }
+
+  /// <summary>
+  /// Updates player health if the regen timer has been exceeded
+  /// Increments regen timer if it does not exceed the time to start regenerating
+  /// </summary>
+  private void UpdateHealth()
+  {
     if (regenTimer > TimeToStartRegeneratingAfterDamaged)
     {
       if (hp < DefaultHP)
