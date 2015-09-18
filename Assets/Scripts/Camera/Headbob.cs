@@ -6,16 +6,10 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Moves camera up and down in a realistic fashion when player is running.
+/// Moves the player camera up and down in a realistic fashion when player is running.
 /// </summary>
 public class Headbob : MonoBehaviour
 {
-  [Tooltip("Player one object")]
-  public GameObject
-    PlayerOne;
-  [Tooltip("Player two object")]
-  public GameObject
-    PlayerTwo;
   [Tooltip("Time it takes for x movement to switch to opposite direction")]
   public float
     XSwapTime;
@@ -29,105 +23,62 @@ public class Headbob : MonoBehaviour
   public float
     YMovement;
 
-  private Camera playerOneCamera;
-  private Camera playerTwoCamera;
-  private FirstPersonMovement playerOneMovement;
-  private FirstPersonMovement playerTwoMovement;
-  private float playerOneXMovement;
-  private float playerOneYMovement;
-  private float playerTwoXMovement;
-  private float playerTwoYMovement;
-  private float playerOneXTime;
-  private float playerOneYTime;
-  private float playerTwoXTime;
-  private float playerTwoYTime;
-  private Vector3 defaultPlayerOneCameraPosition;
-  private Vector3 defaultPlayerTwoCameraPosition;
+  private Camera fpsCam;
+  private FirstPersonMovement fpsMove;
+  private float movementX;
+  private float movementY;
+  private float timeX;
+  private float timeY;
+  private Vector3 defaultCameraPosition;
   
   internal void Awake()
   {  
-    playerOneCamera = PlayerOne.GetComponentInChildren<Camera>();
-    playerTwoCamera = PlayerTwo.GetComponentInChildren<Camera>();
-    playerOneMovement = PlayerOne.GetComponent<FirstPersonMovement>();
-    playerTwoMovement = PlayerTwo.GetComponent<FirstPersonMovement>();
-    defaultPlayerOneCameraPosition = playerOneCamera.transform.localPosition;
-    defaultPlayerTwoCameraPosition = playerTwoCamera.transform.localPosition;
-    playerOneXMovement = XMovement;
-    playerOneYMovement = YMovement;
-    playerTwoXMovement = XMovement;
-    playerTwoYMovement = YMovement;
-    playerOneXTime = 0.0f;
-    playerOneYTime = 0.0f;
-    playerTwoXTime = 0.0f;
-    playerTwoYTime = 0.0f;
+    fpsCam = GetComponent<Camera>();
+    fpsMove = transform.parent.GetComponent<FirstPersonMovement>();
+    defaultCameraPosition = fpsCam.transform.localPosition;
+    movementX = XMovement;
+    movementY = YMovement;
+    timeX = 0.0f;
+    timeY = 0.0f;
   }
 
   /// <summary>
-  /// Update headbob position
+  /// Update head position with bob
   /// </summary>
   internal void Update()
   {
-    ApplyHeadbob();
-  }
-
-  /// <summary>
-  /// Updates head position foreach player.
-  /// </summary>
-  private void ApplyHeadbob()
-  {
     // Update Player one head position
-    if (playerOneMovement.Velocity.magnitude > 0.0f && playerOneMovement.IsGrounded && playerOneMovement.CurrentMotion == DefinedMotion.NONE)
+    Vector3 playerHorizontalVelocity = fpsMove.Velocity;
+    playerHorizontalVelocity.y = 0.0f;
+    if ((playerHorizontalVelocity.sqrMagnitude > 0.01f) &&
+        fpsMove.IsGrounded &&
+        (fpsMove.CurrentMotion == DefinedMotion.NONE))
     {
       // Set head position
-      playerOneCamera.transform.localPosition = new Vector3(playerOneCamera.transform.localPosition.x + (playerOneXMovement * Time.deltaTime),
-                                                            playerOneCamera.transform.localPosition.y + (playerOneYMovement * Time.deltaTime),
-                                                            playerOneCamera.transform.localPosition.z);
-      playerOneXTime += Time.deltaTime;
-      playerOneYTime += Time.deltaTime;
+      Vector3 deltaBob = new Vector3(movementX, movementY, 0) * Time.deltaTime;
+      fpsCam.transform.localPosition += deltaBob;
+      
+      timeX += Time.deltaTime;
+      timeY += Time.deltaTime;
 
       // Swap horizontal head movement direction
-      if (playerOneXTime > XSwapTime)
+      if (timeX > XSwapTime)
       {
-        playerOneXMovement *= -1.0f;
-        playerOneXTime -= XSwapTime;
+        movementX *= -1.0f;
+        timeX -= XSwapTime;
       }
 
       // Swap vertical head movement direction
-      if (playerOneYTime > YSwapTime)
+      if (timeY > YSwapTime)
       {
-        playerOneYMovement *= -1.0f;
-        playerOneYTime -= YSwapTime;
+        movementY *= -1.0f;
+        timeY -= YSwapTime;
       }
     }
     else
     {
       // Reset head position 
-      playerOneCamera.transform.localPosition = defaultPlayerOneCameraPosition;
-    }
-    
-    // Update Player two head position
-    if (playerTwoMovement.Velocity.magnitude > 0.0f && playerTwoMovement.IsGrounded && playerTwoMovement.CurrentMotion == DefinedMotion.NONE)
-    {
-      playerTwoCamera.transform.localPosition = new Vector3(playerTwoCamera.transform.localPosition.x + (playerTwoXMovement * Time.deltaTime),
-                                                            playerTwoCamera.transform.localPosition.y + (playerTwoYMovement * Time.deltaTime),
-                                                            playerTwoCamera.transform.localPosition.z);
-      playerTwoXTime += Time.deltaTime;
-      playerTwoYTime += Time.deltaTime;
-      if (playerTwoXTime > XSwapTime)
-      {
-        playerTwoXMovement *= -1.0f;
-        playerTwoXTime -= XSwapTime;
-      }
-      
-      if (playerTwoYTime > YSwapTime)
-      {
-        playerTwoYMovement *= -1.0f;
-        playerTwoYTime -= YSwapTime;
-      }
-    }
-    else
-    {
-      playerTwoCamera.transform.localPosition = defaultPlayerTwoCameraPosition;
+      fpsCam.transform.localPosition = defaultCameraPosition;
     }
   }
 }

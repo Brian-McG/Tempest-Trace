@@ -108,7 +108,7 @@ public class Elavator : MonoBehaviour
   /// <summary>
   /// Update elevator
   /// </summary>
-  internal void Update()
+  internal void FixedUpdate()
   {
     if (Status)
     {
@@ -127,12 +127,12 @@ public class Elavator : MonoBehaviour
       float deltaHeight;
       if (SlowStatus && currentSlowDuration < SlowDuration)
       {
-        deltaHeight = slowDescendSpeed * Time.deltaTime;
-        currentSlowDuration += Time.deltaTime;
+        deltaHeight = slowDescendSpeed * Time.fixedDeltaTime;
+        currentSlowDuration += Time.fixedDeltaTime;
       }
       else
       {
-        deltaHeight = DescendSpeed * Time.deltaTime;
+        deltaHeight = DescendSpeed * Time.fixedDeltaTime;
       }
       
       elevatorFloor.transform.position = elevatorFloor.transform.position + (Vector3.down * deltaHeight);
@@ -145,7 +145,7 @@ public class Elavator : MonoBehaviour
     
     if (currentDoorAscended < RaiseHeight)
     {
-      float deltaHeight = DoorCloseSpeed * Time.deltaTime;
+      float deltaHeight = DoorCloseSpeed * Time.fixedDeltaTime;
       elevatorDoor.transform.localPosition = elevatorDoor.transform.localPosition + (Vector3.up * deltaHeight);
       currentDoorAscended += deltaHeight;
       if (currentDoorAscended > RaiseHeight)

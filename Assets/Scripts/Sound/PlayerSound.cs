@@ -32,7 +32,9 @@ public class PlayerSound : MonoBehaviour
   /// </summary>
   private void PlayFootStepSound()
   {
-    if (!FootStepSound.isPlaying && firstPersonMovement.IsGrounded && firstPersonMovement.CurrentMotion == DefinedMotion.NONE && firstPersonMovement.Velocity.magnitude > 0.18f)
+    if (!FootStepSound.isPlaying && firstPersonMovement.IsGrounded &&
+        firstPersonMovement.CurrentMotion == DefinedMotion.NONE &&
+        firstPersonMovement.HorizontalVelocity.sqrMagnitude > 0.5f)
     {
       FootStepSound.Play();
     }
