@@ -1,4 +1,4 @@
-﻿// <copyright file="InteractHandler.cs" company="University of Cape Town">
+// <copyright file="InteractHandler.cs" company="University of Cape Town">
 //     Jacques Heunis
 //     HNSJAC003
 // </copyright>
@@ -60,7 +60,7 @@ public class InteractHandler : MonoBehaviour
         else if (hitInfo.collider.gameObject.layer == elevatorActivateLayer)
         {
           GameObject hitObj = hitInfo.transform.parent.gameObject;
-          Elavator elevatorController = hitObj.GetComponent<Elavator>();
+          Elevator elevatorController = hitObj.GetComponent<Elevator>();
           if (elevatorController)
           {
             elevatorController.Activate();
@@ -68,7 +68,7 @@ public class InteractHandler : MonoBehaviour
         }
         else if (hitInfo.collider.gameObject.layer == elevatorSlowActivateLayer)
         {
-          Elavator elevatorController = elevatorTerminal.GetComponent<Elavator>();
+          Elevator elevatorController = elevatorTerminal.GetComponent<Elevator>();
           if (elevatorController)
           {
             elevatorController.ActivateSlow();

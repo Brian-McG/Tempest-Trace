@@ -1,4 +1,4 @@
-﻿// <copyright file="PlayerLifeHandler.cs" company="University of Cape Town">
+// <copyright file="PlayerLifeHandler.cs" company="University of Cape Town">
 //     Brian Mc George
 //     MCGBRI004
 // </copyright>
@@ -28,7 +28,7 @@ public class PlayerLifeHandler : MonoBehaviour
   private FirstPersonMovement firstPersonMovement;
   private Checkpoint checkpoint;
   private bool isEnabled;
-  private float total;
+  private float totalFadeout;
   private bool killInitiated;
   private bool completedCourse;
 
@@ -58,7 +58,7 @@ public class PlayerLifeHandler : MonoBehaviour
     Fadeout.enabled = false;
     Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
     Fadeout.color = Color.clear;
-    total = 0.0f;
+    totalFadeout = 0.0f;
     completedCourse = false;
   }
 
@@ -102,11 +102,11 @@ public class PlayerLifeHandler : MonoBehaviour
   private void FadeOverlay()
   {
     Fadeout.enabled = true;
-    total += FadeOutSpeed * Time.deltaTime;
-    Fadeout.color = Color.Lerp(Fadeout.color, Color.black, total);
+    totalFadeout += FadeOutSpeed * Time.deltaTime;
+    Fadeout.color = Color.Lerp(Fadeout.color, Color.black, totalFadeout);
     if (Fadeout.color.a > 0.99f && !completedCourse)
     {
-      total = 0.0f;
+      totalFadeout = 0.0f;
       Kill();
     }
     else if (Fadeout.color.a > 0.99f && completedCourse)
@@ -126,11 +126,11 @@ public class PlayerLifeHandler : MonoBehaviour
   /// </summary>
   private void UnFadeOverlay()
   {
-    total += FadeInSpeed * Time.deltaTime;
-    Fadeout.color = Color.Lerp(Fadeout.color, Color.clear, total);
+    totalFadeout += FadeInSpeed * Time.deltaTime;
+    Fadeout.color = Color.Lerp(Fadeout.color, Color.clear, totalFadeout);
     if (Fadeout.color.a < 0.01f)
     {
-      total = 0.0f;
+      totalFadeout = 0.0f;
       ClearScreenOverlay();
     }
   }

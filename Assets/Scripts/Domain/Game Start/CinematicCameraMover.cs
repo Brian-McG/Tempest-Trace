@@ -1,4 +1,4 @@
-﻿// <copyright file="CameraLerp.cs" company="University of Cape Town">
+﻿// <copyright file="CinematicCameraMover.cs" company="University of Cape Town">
 //     Brian Mc George
 //     MCGBRI004
 // </copyright>
@@ -8,7 +8,7 @@ using UnityEngine;
 /// <summary>
 /// Lerp camera between a set of waypoints.
 /// </summary>
-public class CameraLerp : MonoBehaviour
+public class CinematicCameraMover : MonoBehaviour
 {
   public float Speed;
   public float TransformEpsilon = 1f;

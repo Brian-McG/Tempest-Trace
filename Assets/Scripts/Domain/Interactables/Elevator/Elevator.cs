@@ -5,7 +5,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Elavator : MonoBehaviour
+public class Elevator : MonoBehaviour
 {
   [Tooltip("If elevator is active")]
   public bool
