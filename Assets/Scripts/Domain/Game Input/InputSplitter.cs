@@ -4,6 +4,8 @@
 // </copyright>
 using UnityEngine;
 
+namespace Domain.GameInput
+{
 public class InputSplitter
 {
   private InputSplitter()
@@ -135,4 +137,5 @@ public class InputSplitter
 
     return false;
   }
+}
 }

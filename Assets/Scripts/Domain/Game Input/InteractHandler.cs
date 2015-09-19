@@ -9,6 +9,9 @@ using Domain.Interactables.Aircon;
 using Domain.Interactables.Door;
 using Domain.Interactables.Elevator;
 
+namespace Domain.GameInput
+{
+
 public class InteractHandler : MonoBehaviour
 {
   public float InteractDistance;
@@ -86,4 +89,5 @@ public class InteractHandler : MonoBehaviour
       smokeBombController.Activate();
     }
   }
+}
 }

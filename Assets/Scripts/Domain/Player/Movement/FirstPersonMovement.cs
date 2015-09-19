@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Domain.Player.Look;
 using Domain.Player.Health;
+using Domain.GameInput;
 
 
 namespace Domain.Player.Movement

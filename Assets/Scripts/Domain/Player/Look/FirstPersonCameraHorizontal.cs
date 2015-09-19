@@ -4,6 +4,7 @@
 // </copyright>
 using UnityEngine;
 using Domain.Player.Movement;
+using Domain.GameInput;
 
 namespace Domain.Player.Look
 {
