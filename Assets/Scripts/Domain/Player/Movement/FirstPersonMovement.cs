@@ -6,7 +6,12 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Domain.Player.Look;
+using Domain.Player.Health;
 
+
+namespace Domain.Player.Movement
+{
 // TODO: Add a "STEP" motion for when an obstacle is too long/the player is too slow to vault,
 //       since the climb animation will probably look strange on an obstacle that is waist height
 public enum DefinedMotion
@@ -548,4 +553,5 @@ public class FirstPersonMovement : MonoBehaviour
         break;
     }
   }
+}
 }

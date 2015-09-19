@@ -1132,11 +1132,11 @@ GameObject:
   - 114: {fileID: 11441678}
   - 54: {fileID: 5472772}
   - 114: {fileID: 11408692}
-  - 114: {fileID: 11483684}
   - 114: {fileID: 11445200}
   - 114: {fileID: 11442712}
   - 114: {fileID: 11473884}
   - 114: {fileID: 11410106}
+  - 114: {fileID: 11429076}
   m_Layer: 9
   m_Name: Player
   m_TagString: PlayerOne
@@ -2681,6 +2681,30 @@ MonoBehaviour:
   FadeInSpeed: .0500000007
   FadeTriggerVelocity: -18
   Fadeout: {fileID: 0}
+--- !u!114 &11410106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abba3b2babb73b94db7465eaf13b3a76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SmokeBomb: {fileID: 146614, guid: b73bceea6a063b046a95eb4f4673b9e8, type: 2}
+  NumberOfBombs: 2
+--- !u!114 &11429076
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3fab6871914f64aa50561214a8eb2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11433760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2696,19 +2720,6 @@ MonoBehaviour:
   YSwapTime: .300000012
   XMovement: 0
   YMovement: .800000012
---- !u!114 &11410106
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 141678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abba3b2babb73b94db7465eaf13b3a76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SmokeBomb: {fileID: 146614, guid: b73bceea6a063b046a95eb4f4673b9e8, type: 2}
-  NumberOfBombs: 2
 --- !u!114 &11441678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2899,17 +2910,6 @@ MonoBehaviour:
   height: -100
   globalFogColor: {r: .816176474, g: .816176474, b: .816176474, a: 1}
   fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
---- !u!114 &11483684
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 141678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11adf7b6f82e58b44a3b076652e7ca20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!124 &12441678
 Behaviour:
   m_ObjectHideFlags: 1

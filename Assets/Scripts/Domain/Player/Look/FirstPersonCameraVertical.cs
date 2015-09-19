@@ -3,39 +3,43 @@
 //     HNSJAC003
 // </copyright>
 using UnityEngine;
+using Domain.Player.Movement;
 
-public class FirstPersonCameraVertical : MonoBehaviour
+namespace Domain.Player.Look
 {
-  public float Sensitivity = 6.0f;
-
-  public float MinimumAngle = -60.0f;
-  public float MaximumAngle = 60.0f;
-
-  private float currentAngle;
-
-  private FirstPersonMovement fpsMove;
-
-  public void ResetState()
+  public class FirstPersonCameraVertical : MonoBehaviour
   {
-    currentAngle = 0.0f;
-  }
+    public float Sensitivity = 6.0f;
 
-  private void Awake()
-  {
-    currentAngle = transform.localEulerAngles.x;
+    public float MinimumAngle = -60.0f;
+    public float MaximumAngle = 60.0f;
 
-    fpsMove = transform.parent.GetComponent<FirstPersonMovement>();
-  }
+    private float currentAngle;
 
-  private void Update()
-  {
-    Vector3 currentRotation = transform.localEulerAngles;
+    private FirstPersonMovement fpsMove;
 
-    float verticalViewAxis = InputSplitter.GetVerticalViewAxis(fpsMove.PlayerID);
-    float deltaRotationX = verticalViewAxis * Sensitivity;
-    currentAngle -= deltaRotationX;
-    currentAngle = Mathf.Clamp(currentAngle, MinimumAngle, MaximumAngle);
+    public void ResetState()
+    {
+      currentAngle = 0.0f;
+    }
 
-    transform.localEulerAngles = new Vector3(currentAngle, currentRotation.y, currentRotation.z);
+    private void Awake()
+    {
+      currentAngle = transform.localEulerAngles.x;
+
+      fpsMove = transform.parent.GetComponent<FirstPersonMovement>();
+    }
+
+    private void Update()
+    {
+      Vector3 currentRotation = transform.localEulerAngles;
+
+      float verticalViewAxis = InputSplitter.GetVerticalViewAxis(fpsMove.PlayerID);
+      float deltaRotationX = verticalViewAxis * Sensitivity;
+      currentAngle -= deltaRotationX;
+      currentAngle = Mathf.Clamp(currentAngle, MinimumAngle, MaximumAngle);
+
+      transform.localEulerAngles = new Vector3(currentAngle, currentRotation.y, currentRotation.z);
+    }
   }
 }

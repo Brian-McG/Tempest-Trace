@@ -3,6 +3,11 @@
 //     HNSJAC003
 // </copyright>
 using UnityEngine;
+using Domain.Player.Movement;
+using Domain.Interactables.Smokebomb;
+using Domain.Interactables.Aircon;
+using Domain.Interactables.Door;
+using Domain.Interactables.Elevator;
 
 public class InteractHandler : MonoBehaviour
 {

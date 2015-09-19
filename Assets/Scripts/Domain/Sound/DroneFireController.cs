@@ -5,31 +5,34 @@
 using System.Collections;
 using UnityEngine;
 
+namespace Domain.Sound
+{
 /// <summary>
 /// Controls the fire sound of the drone.
 /// </summary>
-public class DroneFireController : MonoBehaviour
-{
-  private AudioSource droneFireSound;
-
-  internal void Awake()
+  public class DroneFireController : MonoBehaviour
   {
-    droneFireSound = GetComponent<AudioSource>();
-  }
+    private AudioSource droneFireSound;
 
-  internal void Update()
-  {
-    DestroyWhenNotPlaying();
-  }
-
-  /// <summary>
-  /// Destroys the drone fire sound object when the sound is completed playing.
-  /// </summary>
-  private void DestroyWhenNotPlaying()
-  {
-    if (!droneFireSound.isPlaying)
+    internal void Awake()
     {
-      Destroy(this.gameObject);
+      droneFireSound = GetComponent<AudioSource>();
+    }
+
+    internal void Update()
+    {
+      DestroyWhenNotPlaying();
+    }
+
+    /// <summary>
+    /// Destroys the drone fire sound object when the sound is completed playing.
+    /// </summary>
+    private void DestroyWhenNotPlaying()
+    {
+      if (!droneFireSound.isPlaying)
+      {
+        Destroy(this.gameObject);
+      }
     }
   }
 }

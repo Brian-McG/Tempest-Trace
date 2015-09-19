@@ -3,26 +3,30 @@
 //     HNSJAC003
 // </copyright>
 using UnityEngine;
+using Domain.Player.Movement;
 
-public class FirstPersonCameraHorizontal : MonoBehaviour
+namespace Domain.Player.Look
 {
-  public float Sensitivity = 6.0f;
-
-  private FirstPersonMovement fpsMove;
-
-  private void Awake()
+  public class FirstPersonCameraHorizontal : MonoBehaviour
   {
-    fpsMove = transform.GetComponent<FirstPersonMovement>();
-  }
+    public float Sensitivity = 6.0f;
 
-  private void Update()
-  {
-    Vector3 currentRotation = transform.localEulerAngles;
+    private FirstPersonMovement fpsMove;
 
-    float horizontalViewAxis = InputSplitter.GetHorizontalViewAxis(fpsMove.PlayerID);
-    float deltaRotationY = horizontalViewAxis * Sensitivity;
-    float rotationY = currentRotation.y + deltaRotationY;
+    private void Awake()
+    {
+      fpsMove = transform.GetComponent<FirstPersonMovement>();
+    }
 
-    transform.localEulerAngles = new Vector3(currentRotation.x, rotationY, currentRotation.z);
+    private void Update()
+    {
+      Vector3 currentRotation = transform.localEulerAngles;
+
+      float horizontalViewAxis = InputSplitter.GetHorizontalViewAxis(fpsMove.PlayerID);
+      float deltaRotationY = horizontalViewAxis * Sensitivity;
+      float rotationY = currentRotation.y + deltaRotationY;
+
+      transform.localEulerAngles = new Vector3(currentRotation.x, rotationY, currentRotation.z);
+    }
   }
 }

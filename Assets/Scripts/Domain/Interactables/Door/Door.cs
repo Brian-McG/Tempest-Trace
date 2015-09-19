@@ -4,59 +4,61 @@
 // </copyright>
 using System.Collections;
 using UnityEngine;
-
+namespace Domain.Interactables.Door
+{
 /// <summary>
 /// Opens door when activated.
 /// </summary>
-public class Door : MonoBehaviour
-{
-  [Tooltip("Rate at which door opens.")]
-  public float
-    OpenRate;
-  [Tooltip("Total degrees that door must open.")]
-  public float
-    DegreesToOpen;
-
-  private bool status;
-  private bool played;
-  private float totalOpened;
-
-  /// <summary>
-  /// Start opening door.
-  /// </summary>
-  public void Activate()
+  public class Door : MonoBehaviour
   {
-    if (!status)
+    [Tooltip("Rate at which door opens.")]
+    public float
+      OpenRate;
+    [Tooltip("Total degrees that door must open.")]
+    public float
+      DegreesToOpen;
+
+    private bool status;
+    private bool played;
+    private float totalOpened;
+
+    /// <summary>
+    /// Start opening door.
+    /// </summary>
+    public void Activate()
     {
-      status = true;
+      if (!status)
+      {
+        status = true;
+      }
     }
-  }
 
-  internal void Awake()
-  {  
-    status = false;
-    played = false;
-    totalOpened = 0.0f;
-  }
+    internal void Awake()
+    {  
+      status = false;
+      played = false;
+      totalOpened = 0.0f;
+    }
 
-  /// <summary>
-  /// Update door
-  /// </summary>
-  internal void Update()
-  {
-    if (status && !played && totalOpened < DegreesToOpen)
+    /// <summary>
+    /// Update door
+    /// </summary>
+    internal void Update()
     {
-      OpenDoor();
+      if (status && !played && totalOpened < DegreesToOpen)
+      {
+        OpenDoor();
+      }
     }
-  }
 
-  /// <summary>
-  /// Opens the door some increment
-  /// </summary>
-  private void OpenDoor()
-  {
-    float deltaAngle = OpenRate * Time.deltaTime;
-    totalOpened += deltaAngle;
-    transform.Rotate(new Vector3(0, deltaAngle, 0));
+    /// <summary>
+    /// Opens the door some increment
+    /// </summary>
+    private void OpenDoor()
+    {
+      float deltaAngle = OpenRate * Time.deltaTime;
+      totalOpened += deltaAngle;
+      transform.Rotate(new Vector3(0, deltaAngle, 0));
+    }
   }
 }
