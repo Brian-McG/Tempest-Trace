@@ -138,7 +138,7 @@ namespace Domain.ArtificialIntelligence.Drone
     /// <param name="other">Object collided with.</param>
     internal void OnTriggerExit(Collider other)
     {
-      if (other.gameObject.tag == "PlayerOne" || other.gameObject.tag == "PlayerTwo")
+      if ((other.gameObject.tag == "PlayerOne" && targetedPlayer == 1) || (other.gameObject.tag == "PlayerTwo" && targetedPlayer == 2))
       {
         targetedPlayer = 0;
       }

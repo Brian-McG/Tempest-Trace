@@ -71,7 +71,7 @@ namespace Domain.ArtificialIntelligence.Sniper
     /// <param name="other">Object collided with.</param>
     internal void OnTriggerExit(Collider other)
     {
-      if (other.tag == "PlayerOne" || other.tag == "PlayerTwo")
+      if ((other.tag == "PlayerOne" && sniper.TargetedPlayer == 1) || (other.tag == "PlayerTwo" && sniper.TargetedPlayer == 2))
       {
         sniper.TargetedPlayer = 0;
         currentDelay = 0.0f;
