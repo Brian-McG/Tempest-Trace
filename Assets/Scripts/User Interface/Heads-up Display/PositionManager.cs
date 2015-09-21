@@ -38,6 +38,14 @@ namespace UserInterface.HeadsUpDisplay
 
     internal void Update()
     {
+      UpdatePosition();
+    }
+
+    /// <summary>
+    /// Update position on UI
+    /// </summary>
+    private void UpdatePosition()
+    {
       if (checkpointP1.NumberPassed > checkpointP2.NumberPassed)
       {
         SetP1Ahead();
@@ -48,19 +56,9 @@ namespace UserInterface.HeadsUpDisplay
       }
       else
       {
+        // Calculate the linear distance to next checkpoint
+        // Player with lowest distance to next checkpoint is in the lead
         uint nextCheckpointIndex = checkpointP1.NumberPassed;
-        /*
-      uint currentCheckpointIndex = checkpointP1.NumberPassed - 1;
-      Vector3 a = checkpoints[currentCheckpointIndex].transform.position;
-      Vector3 b = checkpoints[nextCheckpointIndex].transform.position;
-      Vector3 p1 = PlayerOne.transform.position;
-      Vector3 p2 = PlayerTwo.transform.position;
-      Vector3 ap1 = p1 - a;
-      Vector3 ap2 = p2 - a;
-      Vector3 ab = b - a;
-      Vector3 onTheLineP1 = a + ((Vector3.Dot(ap1, ab) / Vector3.Dot(ab, ab)) * ab);
-      Vector3 onTheLineP2 = a + ((Vector3.Dot(ap2, ab) / Vector3.Dot(ab, ab)) * ab);
-      */
         Vector3 p1 = PlayerOne.transform.position;
         Vector3 p2 = PlayerTwo.transform.position;
         Vector3 b = checkpoints[nextCheckpointIndex].transform.position;
