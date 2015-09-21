@@ -89501,7 +89501,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FlashPlayerOne: {fileID: 1902219672}
   FlashPlayerTwo: {fileID: 2093435921}
-  ClearRate: 0
 --- !u!1 &1845824978
 GameObject:
   m_ObjectHideFlags: 0

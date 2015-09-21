@@ -19,9 +19,6 @@ namespace Domain.CameraEffects
     [Tooltip("Player two flash image.")]
     public RawImage
       FlashPlayerTwo;
-    [Tooltip("Rate at which screen should clear flash.")]
-    public float
-      ClearRate;
 
     private Color defaultColor;
     private float currentDurationPlayerOne;
@@ -84,7 +81,6 @@ namespace Domain.CameraEffects
     {
       if (player == 0 || player == 1)
       {
-        currentDurationPlayerOne += ClearRate * Time.deltaTime;
         FlashPlayerOne.color = Color.Lerp(FlashPlayerOne.color, Color.clear, currentDurationPlayerOne);
         if (FlashPlayerOne.color.a < 0.01f)
         {
@@ -94,7 +90,6 @@ namespace Domain.CameraEffects
       }
       else
       {
-        currentDurationPlayerTwo += ClearRate * Time.deltaTime;
         FlashPlayerTwo.color = Color.Lerp(FlashPlayerTwo.color, Color.clear, currentDurationPlayerTwo);
         if (FlashPlayerOne.color.a < 0.01f)
         {
