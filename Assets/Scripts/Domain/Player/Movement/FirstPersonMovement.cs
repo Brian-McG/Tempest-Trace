@@ -513,7 +513,7 @@ public class FirstPersonMovement : MonoBehaviour
   {
     movementZ = InputSplitter.GetVerticalAxis(PlayerID);
     movementX = InputSplitter.GetHorizontalAxis(PlayerID);
-    if (InputSplitter.GetSlidePressed(PlayerID))
+    if ((InputSplitter.GetSlidePressed(PlayerID)) && (movementZ > 0.1f))
     {
       shouldSlide = true;
     }
