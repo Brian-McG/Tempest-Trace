@@ -213,15 +213,15 @@ ModelImporter:
           curve:
           - time: 0
             value: 1.79999995
-            inSlope: -4.16250944
-            outSlope: -4.16250944
+            inSlope: Infinity
+            outSlope: Infinity
             tangentMode: 0
-          - time: .133029386
-            value: 1.11858547
-            inSlope: -1.32043898
-            outSlope: -1.32043898
+          - time: .00386272371
+            value: .899999976
+            inSlope: 0
+            outSlope: 0
             tangentMode: 0
-          - time: .495045662
+          - time: .999212325
             value: .899999976
             inSlope: 0
             outSlope: 0
