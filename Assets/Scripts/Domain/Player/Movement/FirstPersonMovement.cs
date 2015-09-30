@@ -45,6 +45,8 @@ public class FirstPersonMovement : MonoBehaviour
   public float DefaultRunSpeed;
   public float JumpForce;
   public float MaxSafeYVelocity;
+  [Tooltip("The time since last being grounded within which the player can still jump")]
+  public float MaxUngroundedJumpTime;
 
   [Header("Motion Parameters")]
   [Tooltip("The number of seconds for which the obstacle detection ray gets shot forwards")]
@@ -95,6 +97,7 @@ public class FirstPersonMovement : MonoBehaviour
   
   private bool isJumping;
   private bool wasGrounded;
+  private float lastGroundedTime;
 
   private float movementX;
   private float movementZ;
@@ -345,6 +348,8 @@ public class FirstPersonMovement : MonoBehaviour
     // Constrain change of movement vector while in the air
     if (charController.isGrounded)
     {
+      lastGroundedTime = Time.time;
+
       velocity.x = moveVector.x;
       velocity.z = moveVector.z;
       isJumping = false;
@@ -359,7 +364,7 @@ public class FirstPersonMovement : MonoBehaviour
     
     // TODO: Since velocity has been update here, we have the velocity based on the input alone
     //       and does not consider the actual velocity based on collision
-    if (charController.isGrounded && shouldJump)
+    if (((Time.time - lastGroundedTime) <= MaxUngroundedJumpTime) && shouldJump)
     {
       CheckForVaultClimbMotion();
       

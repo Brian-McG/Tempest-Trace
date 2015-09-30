@@ -2762,6 +2762,7 @@ MonoBehaviour:
   DefaultRunSpeed: 8
   JumpForce: 5
   MaxSafeYVelocity: 17
+  MaxUngroundedJumpTime: .300000012
   ObstacleCheckTime: .150000006
   MinimumObstacleCheckDistance: .800000012
   MinimumObstacleScanHeight: .349999994
