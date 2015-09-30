@@ -206,7 +206,59 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
+      curves:
+      - name: PlayerHeight
+        curve:
+          serializedVersion: 2
+          curve:
+          - time: 0
+            value: 1.79999995
+            inSlope: -4.16250944
+            outSlope: -4.16250944
+            tangentMode: 0
+          - time: .133029386
+            value: 1.11858547
+            inSlope: -1.32043898
+            outSlope: -1.32043898
+            tangentMode: 0
+          - time: .495045662
+            value: .899999976
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: 1
+            value: 1.79999995
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          preInfinity: 2
+          postInfinity: 2
+      - name: AvatarYOffset
+        curve:
+          serializedVersion: 2
+          curve:
+          - time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .175194755
+            value: -.720000029
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .541666687
+            value: -.504000008
+            inSlope: .758919358
+            outSlope: .758919358
+            tangentMode: 0
+          - time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          preInfinity: 2
+          postInfinity: 2
       events: []
       transformMask:
       - path: 

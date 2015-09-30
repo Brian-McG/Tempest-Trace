@@ -80,6 +80,8 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamSpeed;
   private int animParamSlide;
   private int animParamClimb;
+  private int animParamHeight;
+  private int animParamYOffset;
   
   private CharacterController charController;
   private PlayerLifeHandler lifeHandler;
@@ -152,6 +154,8 @@ public class FirstPersonMovement : MonoBehaviour
     animParamSpeed = Animator.StringToHash("MoveSpeed");
     animParamSlide = Animator.StringToHash("IsSliding");
     animParamClimb = Animator.StringToHash("IsClimbing");
+    animParamHeight = Animator.StringToHash("PlayerHeight");
+    animParamYOffset = Animator.StringToHash("AvatarYOffset");
 
     RunSpeed = DefaultRunSpeed;
     velocity = Vector3.zero;
@@ -305,7 +309,6 @@ public class FirstPersonMovement : MonoBehaviour
       SlideSound.Play();
       currentMotion = DefinedMotion.SLIDE;
       animator.SetBool(animParamSlide, true);
-      transform.localScale = new Vector3(1.0f, 0.5f, 1.0f);
     }
   }
 
@@ -528,6 +531,15 @@ public class FirstPersonMovement : MonoBehaviour
   //       just to prevent the possibility of missing some of the input?
   private void FixedUpdate()
   {
+    float colliderHeight = animator.GetFloat(animParamHeight);
+    charController.height = colliderHeight;
+    charController.center = new Vector3(0.0f, charController.height/2.0f, 0.0f);
+
+    float avatarYOffset = animator.GetFloat(animParamYOffset);
+    Vector3 avatarLoc = animator.transform.localPosition;
+    avatarLoc.y = avatarYOffset;
+    animator.transform.localPosition = avatarLoc;
+
     switch (currentMotion)
     {
       case DefinedMotion.NONE:

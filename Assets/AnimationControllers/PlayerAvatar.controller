@@ -32,6 +32,18 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: PlayerHeight
+    m_Type: 1
+    m_DefaultFloat: 1.79999995
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: AvatarYOffset
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 3
     m_Name: Base Layer
@@ -358,27 +370,27 @@ StateMachine:
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
     data:
-      first: {fileID: 110200706}
-      second:
-      - {fileID: 110190216}
-    data:
       first: {fileID: 110203238}
       second:
       - {fileID: 110163522}
       - {fileID: 110126778}
-    data:
-      first: {fileID: 110219640}
-      second:
-      - {fileID: 110158400}
-    data:
-      first: {fileID: 110245120}
-      second: []
     data:
       first: {fileID: 110284324}
       second:
       - {fileID: 110124910}
       - {fileID: 110130282}
       - {fileID: 110150822}
+    data:
+      first: {fileID: 110200706}
+      second:
+      - {fileID: 110190216}
+    data:
+      first: {fileID: 110245120}
+      second: []
+    data:
+      first: {fileID: 110219640}
+      second:
+      - {fileID: 110158400}
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -397,13 +409,13 @@ StateMachine:
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
     data:
-      first: {fileID: 110212060}
-      second:
-      - {fileID: 110121736}
-    data:
       first: {fileID: 110296908}
       second:
       - {fileID: 110157222}
+    data:
+      first: {fileID: 110212060}
+      second:
+      - {fileID: 110121736}
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
