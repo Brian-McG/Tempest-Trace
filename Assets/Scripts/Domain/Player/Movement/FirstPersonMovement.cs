@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using Domain.Player.Look;
 using Domain.Player.Health;
 using Domain.GameInput;
+using Domain.CameraEffects;
 
 
 namespace Domain.Player.Movement
@@ -83,6 +84,7 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamHeight;
   private int animParamYOffset;
   
+  private Transform cameraTrans;
   private CharacterController charController;
   private PlayerLifeHandler lifeHandler;
   private Vector3 velocity;
@@ -148,6 +150,7 @@ public class FirstPersonMovement : MonoBehaviour
   private void Awake()
   {
     charController = GetComponent<CharacterController>();
+    cameraTrans = transform.Find("Camera");
     lifeHandler = GetComponent<PlayerLifeHandler>();
     
     animator = GetComponentInChildren<Animator>();
@@ -464,6 +467,10 @@ public class FirstPersonMovement : MonoBehaviour
   
   private void UpdateSlideMotion()
   {
+    Vector3 cameraLoc = cameraTrans.localPosition;
+    cameraLoc.y = charController.height - 0.1f;
+    cameraTrans.localPosition = cameraLoc;
+
     float movementZ = 1.0f;
     float movementX = InputSplitter.GetHorizontalAxis(PlayerID);
     Vector3 moveVector = new Vector3(movementX, 0, movementZ);
@@ -496,6 +503,10 @@ public class FirstPersonMovement : MonoBehaviour
     RunSpeed -= SlideDeceleration * Time.fixedDeltaTime;
     if (RunSpeed < SlideStopSpeedThreshold)
     {
+      cameraTrans.GetComponent<Headbob>().enabled = true;
+      cameraLoc.y = 1.7f;
+      cameraTrans.localPosition = cameraLoc;
+
       currentMotion = DefinedMotion.NONE;
       animator.SetBool(animParamSlide, false);
       RunSpeed = DefaultRunSpeed;
@@ -505,6 +516,10 @@ public class FirstPersonMovement : MonoBehaviour
     // Check that we're still holding the slide key, otherwise go back to standard running
     if (!InputSplitter.GetSlide(PlayerID))
     {
+      cameraTrans.GetComponent<Headbob>().enabled = true;
+      cameraLoc.y = 1.7f;
+      cameraTrans.localPosition = cameraLoc;
+
       currentMotion = DefinedMotion.NONE;
       animator.SetBool(animParamSlide, false);
       RunSpeed = DefaultRunSpeed;
@@ -519,6 +534,7 @@ public class FirstPersonMovement : MonoBehaviour
     if ((InputSplitter.GetSlidePressed(PlayerID)) && (movementZ > 0.1f))
     {
       shouldSlide = true;
+      cameraTrans.GetComponent<Headbob>().enabled = false;
     }
 
     if (InputSplitter.GetJumpPressed(PlayerID))
