@@ -28,7 +28,7 @@ namespace Domain.ArtificialIntelligence.Sniper
     private Vector3 transformScale;
     private SniperWeapon sniperWeapon;
   
-    public Sniper(float rotationSpeed, GameObject[] activationColliders, GameObject sniper, float shootDelay, float speedPenalty, float damage, AudioSource sniperFire)
+    public Sniper(float rotationSpeed, GameObject[] activationColliders, GameObject sniper, float shootDelay, float speedPenalty, float damage, AudioSource sniperFire, Vector3[] colorSet)
     : base(rotationSpeed, sniper)
     {
       this.sniper = sniper;
@@ -57,6 +57,9 @@ namespace Domain.ArtificialIntelligence.Sniper
                                          1.0f / sniper.transform.lossyScale.z);
 
       sniperWeapon = new SniperWeapon(damage, shootDelay, playerOneHealth, playerTwoHealth, playerOneSlow, playerTwoSlow, sniperFire, hitFlash, speedPenalty);
+      Vector3 rgb = colorSet[ColorIndex(shootDelay, damage, speedPenalty)];
+      Color threatColor = new Color(rgb[0] / 255f, rgb[1] / 255f, rgb[2] / 255f, 1);
+      sniper.GetComponent<LineRenderer>().SetColors(threatColor, threatColor);
       if (colliders.Length > 0)
       {
         GenerateRandomTarget();
@@ -177,8 +180,7 @@ namespace Domain.ArtificialIntelligence.Sniper
       RaycastHit hit;
       if (Physics.Raycast(sniper.transform.position, sniper.transform.forward, out hit, 1000f, inverseIgnoredColliders))
       {
-        Vector3 currentDirection = hit.transform.position - sniper.transform.position;
-        lineRenderer.SetPosition(1, new Vector3(0, 0, currentDirection.magnitude * transformScale.z));
+        lineRenderer.SetPosition(1, new Vector3(0, 0, hit.distance * transformScale.z));
       }
       else
       {
@@ -211,6 +213,23 @@ namespace Domain.ArtificialIntelligence.Sniper
       else if (targetedPlayer == 2)
       {
         currentTarget = playerTwo.transform.position + heightOffset;
+      }
+    }
+
+    private uint ColorIndex(float shootDelay, float damage, float speedPenalty)
+    {
+      float total = (2.0f / shootDelay) * damage * (0.5f * speedPenalty);
+      if (total < 250)
+      {
+        return 0;
+      }
+      else if (total < 450)
+      {
+        return 1;
+      }
+      else
+      {
+        return 2;
       }
     }
   }

@@ -30,6 +30,9 @@ namespace Domain.ArtificialIntelligence.Sniper
     [Tooltip("The slow factor applied to the player when shot")]
     public float
       SpeedPenalty;
+    [Tooltip("Set of three colors that define the threat level of the sniper")]
+    public Vector3[]
+      ColorSet;
   
     private Sniper sniper;
 
@@ -47,7 +50,7 @@ namespace Domain.ArtificialIntelligence.Sniper
   
     internal void Awake()
     {  
-      sniper = new Sniper(RotationSpeed, ActivationColliders, this.gameObject, ShootDelay, SpeedPenalty, Damage, SniperFireSound);
+      sniper = new Sniper(RotationSpeed, ActivationColliders, this.gameObject, ShootDelay, SpeedPenalty, Damage, SniperFireSound, ColorSet);
     }
 
     /// <summary>
