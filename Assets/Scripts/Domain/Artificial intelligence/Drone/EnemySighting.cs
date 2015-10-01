@@ -98,7 +98,7 @@ namespace Domain.ArtificialIntelligence.Drone
     /// Set sighting position and player targeted.
     /// </summary>
     /// <param name="other">Object collided with</param>
-    internal void OnTriggerStay(Collider other)
+    internal void SightCollider(Collider other)
     {
       if (other.gameObject.tag == "PlayerOne" && targetedPlayer != 2)
       {
@@ -130,6 +130,16 @@ namespace Domain.ArtificialIntelligence.Drone
           }
         }
       }
+    }
+
+    internal void OnTriggerEnter(Collider other)
+    {
+        SightCollider(other);
+    }
+
+    internal void OnTriggerStay(Collider other)
+    {
+        SightCollider(other);
     }
 
     /// <summary>

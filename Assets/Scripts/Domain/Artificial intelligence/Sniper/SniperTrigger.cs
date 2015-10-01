@@ -35,7 +35,7 @@ namespace Domain.ArtificialIntelligence.Sniper
     /// Set targeted player
     /// </summary>
     /// <param name="other">Object collided with.</param>
-    internal void OnTriggerStay(Collider other)
+    internal void SightCollider(Collider other)
     {
       if (sniper != null)
       {
@@ -63,6 +63,16 @@ namespace Domain.ArtificialIntelligence.Sniper
           }
         }
       }
+    }
+
+    internal void OnTriggerEnter(Collider other)
+    {
+        SightCollider(other);
+    }
+
+    internal void OnTriggerStay(Collider other)
+    {
+        SightCollider(other);
     }
 
     /// <summary>
