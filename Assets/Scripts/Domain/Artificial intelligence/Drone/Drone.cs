@@ -47,7 +47,8 @@ namespace Domain.ArtificialIntelligence.Drone
                float shootRate,
                GameObject[] muzzleFlash,
                float droneDamage,
-               GameObject droneFireSound)
+               GameObject droneFireSound,
+               Vector3[] colorSet)
         : base(movementSpeed,
                rotationSpeed,
                drone)
@@ -75,6 +76,16 @@ namespace Domain.ArtificialIntelligence.Drone
       PlayerHealth playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
       hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
       this.droneWeapon = new DroneWeapon(droneDamage, 1.0f / shootRate, playerOneHealth, playerTwoHealth, droneFireSound, hitFlash, muzzleFlash, droneAnimator);
+      foreach (Transform t in drone.transform)
+      {
+        if (t.tag == "DroneLight")
+        {
+          Vector3 rgb = colorSet[ColorIndex(shootRate, droneDamage)];
+          Color threatColor = new Color(rgb[0] / 255f, rgb[1] / 255f, rgb[2] / 255f, 1);
+          t.gameObject.light.color = threatColor;
+          break;
+        }
+      }
     }
 
     /// <summary>
@@ -220,6 +231,23 @@ namespace Domain.ArtificialIntelligence.Drone
         {
           muzzle.light.enabled = false;
         }
+      }
+    }
+
+    private uint ColorIndex(float shootRate, float damage)
+    {
+      float total = shootRate * damage;
+      if (total < 250)
+      {
+        return 0;
+      }
+      else if (total < 450)
+      {
+        return 1;
+      }
+      else
+      {
+        return 2;
       }
     }
 

@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &164836
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 464836}
+  - 108: {fileID: 10864836}
+  m_Layer: 11
+  m_Name: Light
+  m_TagString: DroneLight
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &165604
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,18 +333,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &464836
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 164836}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
+  m_LocalPosition: {x: .00100000005, y: .463099986, z: .636799991}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 465604}
+  m_RootOrder: 2
 --- !u!4 &465604
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165604}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .199998066, y: 19.7199993, z: -9.18000126}
+  m_LocalRotation: {x: 0, y: -.707106829, z: 0, w: .707106829}
+  m_LocalPosition: {x: 42.3000031, y: 15, z: 54.6000099}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 465636}
   - {fileID: 465632}
+  - {fileID: 464836}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &465606
@@ -660,6 +689,41 @@ Animator:
   m_ApplyRootMotion: 1
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!108 &10864836
+Light:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 164836}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Type: 0
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Intensity: 8
+  m_Range: 3
+  m_SpotAngle: 27
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_Strength: 1
+    m_Bias: .0500000007
+    m_Softness: 4
+    m_SoftnessFade: 1
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_ActuallyLightmapped: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 1
+  m_ShadowSamples: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_IndirectIntensity: 1
+  m_AreaSize: {x: 1, y: 1}
 --- !u!108 &10865640
 Light:
   m_ObjectHideFlags: 1
@@ -741,7 +805,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9a61127952b2764086ef0990bdb914c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FieldOfViewAngle: 110
 --- !u!114 &11465642
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -758,7 +821,6 @@ MonoBehaviour:
   Waypoints:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
   StoppingDistance: .800000012
   ChaseWaitTime: 5
   ShotsPerSecond: 4
@@ -767,6 +829,10 @@ MonoBehaviour:
   - {fileID: 165642}
   Damage: 30
   DroneFireSound: {fileID: 191746, guid: 04169452b6339584f8c9d71a1fc70604, type: 2}
+  ColorSet:
+  - {x: 146, y: 255, z: 0}
+  - {x: 200, y: 0, z: 255}
+  - {x: 255, y: 0, z: 0}
 --- !u!135 &13565640
 SphereCollider:
   m_ObjectHideFlags: 1

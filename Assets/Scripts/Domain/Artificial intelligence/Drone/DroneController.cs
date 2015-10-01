@@ -39,6 +39,9 @@ namespace Domain.ArtificialIntelligence.Drone
     [Tooltip("Sound that drone makes when it fires at player.")]
     public GameObject
       DroneFireSound;
+    [Tooltip("Set of three colors that define the threat level of the drone")]
+    public Vector3[]
+      ColorSet;
 
     private Drone drone;
     private EnemySighting enemySighting;
@@ -49,7 +52,7 @@ namespace Domain.ArtificialIntelligence.Drone
     {  
       enemySighting = GetComponent<EnemySighting>();
       lastPlayerSighting = enemySighting.LastSighting;
-      drone = new Drone(MoveSpeed, RotationSpeed, this.gameObject, Waypoints, enemySighting, StoppingDistance, ChaseWaitTime, lastPlayerSighting, ShotsPerSecond, MuzzleFlash, Damage, DroneFireSound);
+      drone = new Drone(MoveSpeed, RotationSpeed, this.gameObject, Waypoints, enemySighting, StoppingDistance, ChaseWaitTime, lastPlayerSighting, ShotsPerSecond, MuzzleFlash, Damage, DroneFireSound, ColorSet);
     }
 
     /// <summary>
