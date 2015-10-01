@@ -29,11 +29,14 @@ namespace UserInterface.HeadsUpDisplay
       {
         checkpoints[i] = CheckpointParent.transform.GetChild(i).gameObject;
       }
-
       checkpointP1 = PlayerOne.GetComponent<CheckpointController>();
-      checkpointP2 = PlayerTwo.GetComponent<CheckpointController>();
       playerOnePosition = PlayerOnePosition.GetComponent<Text>();
-      playerTwoPosition = PlayerTwoPosition.GetComponent<Text>();
+
+      if (PlayerTwo != null)
+      {
+        checkpointP2 = PlayerTwo.GetComponent<CheckpointController>();
+        playerTwoPosition = PlayerTwoPosition.GetComponent<Text>();
+      }
     }
 
     internal void Update()
@@ -46,7 +49,7 @@ namespace UserInterface.HeadsUpDisplay
     /// </summary>
     private void UpdatePosition()
     {
-      if (checkpointP1.NumberPassed > checkpointP2.NumberPassed)
+      if (PlayerTwo == null || checkpointP1.NumberPassed > checkpointP2.NumberPassed)
       {
         SetP1Ahead();
       }
@@ -77,8 +80,15 @@ namespace UserInterface.HeadsUpDisplay
 
     private void SetP1Ahead()
     {
-      playerOnePosition.text = "Position\n1 of 2";
-      playerTwoPosition.text = "Position\n2 of 2";
+      if (PlayerTwo == null)
+      {
+        playerOnePosition.text = "Position\n1 of 1";
+      }
+      else
+      {
+        playerOnePosition.text = "Position\n1 of 2";
+        playerTwoPosition.text = "Position\n2 of 2";
+      }
     }
 
     private void SetP2Ahead()

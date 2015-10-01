@@ -11522,7 +11522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerOne: {fileID: 1200851968}
-  PlayerTwo: {fileID: 1145835354}
+  PlayerTwo: {fileID: 0}
   PlayerOneHud:
   - {fileID: 1988125579}
   - {fileID: 2002447492}
@@ -11545,7 +11545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerOne: {fileID: 1200851968}
-  PlayerTwo: {fileID: 1145835354}
+  PlayerTwo: {fileID: 0}
   CheckpointParent: {fileID: 2058820497}
   PlayerOnePosition: {fileID: 189400812}
   PlayerTwoPosition: {fileID: 2145829554}

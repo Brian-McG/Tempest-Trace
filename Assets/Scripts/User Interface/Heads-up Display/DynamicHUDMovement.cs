@@ -57,17 +57,25 @@ namespace UserInterface.HeadsUpDisplay
     internal void Awake()
     {  
       playerOneMovement = PlayerOne.GetComponent<FirstPersonMovement>();
-      playerTwoMovement = PlayerTwo.GetComponent<FirstPersonMovement>();
       playerOneHud = new RectTransform[PlayerOneHud.Length];
       playerOneHudStartPositions = new Vector2[PlayerOneHud.Length];
-      playerTwoHud = new RectTransform[PlayerTwoHud.Length];
-      playerTwoHudStartPositions = new Vector2[PlayerTwoHud.Length];
+
+      if (PlayerTwo != null)
+      {
+        playerTwoMovement = PlayerTwo.GetComponent<FirstPersonMovement>();
+        playerTwoHud = new RectTransform[PlayerTwoHud.Length];
+        playerTwoHudStartPositions = new Vector2[PlayerTwoHud.Length];
+      }
+
       for (uint i = 0; i < PlayerOneHud.Length; ++i)
       {
         playerOneHud[i] = PlayerOneHud[i].GetComponent<RectTransform>();
         playerOneHudStartPositions[i] = playerOneHud[i].anchoredPosition;
-        playerTwoHud[i] = PlayerTwoHud[i].GetComponent<RectTransform>();
-        playerTwoHudStartPositions[i] = playerTwoHud[i].anchoredPosition;
+        if (PlayerTwo != null)
+        {
+          playerTwoHud[i] = PlayerTwoHud[i].GetComponent<RectTransform>();
+          playerTwoHudStartPositions[i] = playerTwoHud[i].anchoredPosition;
+        }
       }
 
       playerOneXTime = 0.0f;
@@ -123,7 +131,7 @@ namespace UserInterface.HeadsUpDisplay
       }
 
       // Update Player two HUD
-      if (playerTwoMovement.Velocity.magnitude > 0.0f && playerTwoMovement.IsGrounded && playerTwoMovement.CurrentMotion == DefinedMotion.NONE)
+      if (PlayerTwo != null && playerTwoMovement.Velocity.magnitude > 0.0f && playerTwoMovement.IsGrounded && playerTwoMovement.CurrentMotion == DefinedMotion.NONE)
       {
         for (uint i = 0; i < playerTwoHud.Length; ++i)
         {

@@ -35,9 +35,15 @@ namespace Domain.ArtificialIntelligence.Sniper
       this.playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
       this.playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
       PlayerHealth playerOneHealth = playerOne.GetComponent<PlayerHealth>();
-      PlayerHealth playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
+
       PlayerSlow playerOneSlow = playerOne.GetComponent<PlayerSlow>();
-      PlayerSlow playerTwoSlow = playerTwo.GetComponent<PlayerSlow>();
+      PlayerHealth playerTwoHealth = null;
+      PlayerSlow playerTwoSlow = null;
+      if (playerTwo != null)
+      {
+        playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
+        playerTwoSlow = playerTwo.GetComponent<PlayerSlow>();
+      }
       HitFlash hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
       colliders = new BoxCollider[activationColliders.Length];
       for (int i = 0; i < activationColliders.Length; ++i)
