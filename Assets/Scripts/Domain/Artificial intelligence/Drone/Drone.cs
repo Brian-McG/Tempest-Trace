@@ -69,11 +69,19 @@ namespace Domain.ArtificialIntelligence.Drone
       GameObject playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
       GameObject playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
       playerOneMovement = playerOne.GetComponent<FirstPersonMovement>();
-      playerTwoMovement = playerTwo.GetComponent<FirstPersonMovement>();
+      if (playerTwo != null)
+      {
+        playerTwoMovement = playerTwo.GetComponent<FirstPersonMovement>();
+      }
       droneAnimator = drone.GetComponent<Animator>();
       this.muzzleFlash = muzzleFlash;
       PlayerHealth playerOneHealth = playerOne.GetComponent<PlayerHealth>();
-      PlayerHealth playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
+
+      PlayerHealth playerTwoHealth = null;
+      if (playerTwo != null)
+      {
+        playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
+      }
       hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
       this.droneWeapon = new DroneWeapon(droneDamage, 1.0f / shootRate, playerOneHealth, playerTwoHealth, droneFireSound, hitFlash, muzzleFlash, droneAnimator);
       foreach (Transform t in drone.transform)
