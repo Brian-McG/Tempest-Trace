@@ -2694,6 +2694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SmokeBomb: {fileID: 146614, guid: b73bceea6a063b046a95eb4f4673b9e8, type: 2}
   NumberOfBombs: 2
+  SmokeBombShield: {fileID: 125342, guid: b9a0b2acca0def74c8ed802d729e52e3, type: 2}
 --- !u!114 &11429076
 MonoBehaviour:
   m_ObjectHideFlags: 1

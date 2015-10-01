@@ -17,6 +17,9 @@ namespace Domain.Interactables.Smokebomb
     [Tooltip("Maximum number of bombs player can deploy.")]
     public int
       NumberOfBombs;
+    [Tooltip("Smokebomb shield")]
+    public GameObject
+      SmokeBombShield;
 
     private GameObject hand;
     private int currentBombCount;
@@ -57,6 +60,8 @@ namespace Domain.Interactables.Smokebomb
     {
       yield return new WaitForSeconds(0.7f);
       Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
+      GameObject shield = Instantiate(SmokeBombShield, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+      shield.transform.parent = this.gameObject.transform;
     }
 
     /// <summary>
