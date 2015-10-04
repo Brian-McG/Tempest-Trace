@@ -211,6 +211,13 @@ public class FirstPersonMovement : MonoBehaviour
     Debug.DrawLine(climbCheckPosition, climbCheckPosition + (forwardDir * motionCheckDistance), Color.magenta, 1.0f, false);
     bool canClimb = Physics.Raycast(climbCheckPosition, forwardDir, out climbCheckInfo, motionCheckDistance, checkLayerMask);
 
+    // NOTE: If you can vault and climb 2 different objects then
+    //       you clearly cant climb the vault object, so don't climb
+    if(canVault && canClimb && (vaultCheckInfo.transform.gameObject != climbCheckInfo.transform.gameObject))
+    {
+      canClimb = false;
+    }
+
     if (canVault && !canClimb && (horizontalSpeed > MinimumSpeedToVault))
     {
       // TODO: At the moment our vault picks us up, shifts us conveniently over the obstacle, and puts us down nicely on the other side
