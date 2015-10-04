@@ -83,6 +83,7 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamSpeed;
   private int animParamSlide;
   private int animParamClimb;
+  private int animParamVault;
   private int animParamHeight;
   private int animParamYOffset;
   
@@ -160,6 +161,7 @@ public class FirstPersonMovement : MonoBehaviour
     animParamSpeed = Animator.StringToHash("MoveSpeed");
     animParamSlide = Animator.StringToHash("IsSliding");
     animParamClimb = Animator.StringToHash("IsClimbing");
+    animParamVault = Animator.StringToHash("IsVaulting");
     animParamHeight = Animator.StringToHash("PlayerHeight");
     animParamYOffset = Animator.StringToHash("AvatarYOffset");
 
@@ -267,6 +269,8 @@ public class FirstPersonMovement : MonoBehaviour
           
           motionTargets.Add(vaultEndMidpoint);
           motionTargets.Add(vaultEndPoint);
+
+          animator.SetBool(animParamVault, true);
         }
         else
         {
@@ -574,6 +578,7 @@ public class FirstPersonMovement : MonoBehaviour
         {
           currentMotion = DefinedMotion.NONE;
           animator.SetBool(animParamClimb, false);
+          animator.SetBool(animParamVault, false);
         }
 
         break;
