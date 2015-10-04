@@ -232,6 +232,7 @@ public class FirstPersonMovement : MonoBehaviour
         Debug.Log("Vault");
         VaultSound.Play();
         currentMotion = DefinedMotion.VAULT;
+        animator.SetBool(animParamVault, true);
         motionProgress = 0;
         motionTargets.Clear();
         motionTargets.Add(vaultMidpoint);
@@ -269,8 +270,6 @@ public class FirstPersonMovement : MonoBehaviour
           
           motionTargets.Add(vaultEndMidpoint);
           motionTargets.Add(vaultEndPoint);
-
-          animator.SetBool(animParamVault, true);
         }
         else
         {
