@@ -243,14 +243,14 @@ ModelImporter:
             outSlope: 0
             tangentMode: 0
           - time: .279166639
-            value: -.649999976
+            value: -1.29999995
             inSlope: 0
             outSlope: 0
             tangentMode: 0
           - time: .49459514
-            value: -.649999976
-            inSlope: .0053768456
-            outSlope: .0053768456
+            value: -1.29999995
+            inSlope: 0
+            outSlope: 0
             tangentMode: 0
           - time: .89743793
             value: 0

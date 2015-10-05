@@ -87,7 +87,7 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamHeight;
   private int animParamYOffset;
   
-  private Transform cameraTrans;
+  private Headbob headBob;
   private CharacterController charController;
   private PlayerLifeHandler lifeHandler;
   private Vector3 velocity;
@@ -154,7 +154,7 @@ public class FirstPersonMovement : MonoBehaviour
   private void Awake()
   {
     charController = GetComponent<CharacterController>();
-    cameraTrans = transform.Find("Camera");
+    headBob = transform.Find("Camera").GetComponent<Headbob>();
     lifeHandler = GetComponent<PlayerLifeHandler>();
     
     animator = GetComponentInChildren<Animator>();
@@ -240,6 +240,8 @@ public class FirstPersonMovement : MonoBehaviour
         VaultSound.Play();
         currentMotion = DefinedMotion.VAULT;
         animator.SetBool(animParamVault, true);
+        transform.localScale = 0.5f*Vector3.one;
+        animator.transform.localScale = 2.0f*1.3f*Vector3.one;
         motionProgress = 0;
         motionTargets.Clear();
         motionTargets.Add(vaultMidpoint);
@@ -325,6 +327,8 @@ public class FirstPersonMovement : MonoBehaviour
       SlideSound.Play();
       currentMotion = DefinedMotion.SLIDE;
       animator.SetBool(animParamSlide, true);
+      transform.localScale = 0.5f*Vector3.one;
+      animator.transform.localScale = 2.0f*1.3f*Vector3.one;
     }
   }
 
@@ -482,10 +486,6 @@ public class FirstPersonMovement : MonoBehaviour
   
   private void UpdateSlideMotion()
   {
-    Vector3 cameraLoc = cameraTrans.localPosition;
-    cameraLoc.y = charController.height - 0.1f;
-    cameraTrans.localPosition = cameraLoc;
-
     float movementZ = 1.0f;
     float movementX = InputSplitter.GetHorizontalAxis(PlayerID);
     Vector3 moveVector = new Vector3(movementX, 0, movementZ);
@@ -518,27 +518,25 @@ public class FirstPersonMovement : MonoBehaviour
     RunSpeed -= SlideDeceleration * Time.fixedDeltaTime;
     if (RunSpeed < SlideStopSpeedThreshold)
     {
-      cameraTrans.GetComponent<Headbob>().enabled = true;
-      cameraLoc.y = 1.7f;
-      cameraTrans.localPosition = cameraLoc;
+      headBob.enabled = true;
 
       currentMotion = DefinedMotion.NONE;
       animator.SetBool(animParamSlide, false);
       RunSpeed = DefaultRunSpeed;
       transform.localScale = Vector3.one;
+      animator.transform.localScale = 1.3f*Vector3.one;
     }
 
     // Check that we're still holding the slide key, otherwise go back to standard running
     if (!InputSplitter.GetSlide(PlayerID))
     {
-      cameraTrans.GetComponent<Headbob>().enabled = true;
-      cameraLoc.y = 1.7f;
-      cameraTrans.localPosition = cameraLoc;
+      headBob.enabled = true;
 
       currentMotion = DefinedMotion.NONE;
       animator.SetBool(animParamSlide, false);
       RunSpeed = DefaultRunSpeed;
       transform.localScale = Vector3.one;
+      animator.transform.localScale = 1.3f*Vector3.one;
     }
   }
 
@@ -549,7 +547,7 @@ public class FirstPersonMovement : MonoBehaviour
     if ((InputSplitter.GetSlidePressed(PlayerID)) && (movementZ > 0.1f))
     {
       shouldSlide = true;
-      cameraTrans.GetComponent<Headbob>().enabled = false;
+      headBob.enabled = false;
     }
 
     if (InputSplitter.GetJumpPressed(PlayerID))
@@ -558,14 +556,8 @@ public class FirstPersonMovement : MonoBehaviour
     }
   }
 
-  // TODO: Since we do all of this in FixedUpdate, we might want to get input in Update,
-  //       just to prevent the possibility of missing some of the input?
   private void FixedUpdate()
   {
-    float colliderHeight = animator.GetFloat(animParamHeight);
-    charController.height = colliderHeight;
-    charController.center = new Vector3(0.0f, charController.height/2.0f, 0.0f);
-
     float avatarYOffset = animator.GetFloat(animParamYOffset);
     Vector3 avatarLoc = animator.transform.localPosition;
     avatarLoc.y = avatarYOffset;
@@ -585,6 +577,8 @@ public class FirstPersonMovement : MonoBehaviour
           currentMotion = DefinedMotion.NONE;
           animator.SetBool(animParamClimb, false);
           animator.SetBool(animParamVault, false);
+          transform.localScale = Vector3.one;
+          animator.transform.localScale = 1.3f*Vector3.one;
         }
 
         break;
