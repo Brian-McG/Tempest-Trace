@@ -240,8 +240,6 @@ public class FirstPersonMovement : MonoBehaviour
         VaultSound.Play();
         currentMotion = DefinedMotion.VAULT;
         animator.SetBool(animParamVault, true);
-        transform.localScale = 0.5f*Vector3.one;
-        animator.transform.localScale = 2.0f*1.3f*Vector3.one;
         motionProgress = 0;
         motionTargets.Clear();
         motionTargets.Add(vaultMidpoint);
@@ -577,8 +575,6 @@ public class FirstPersonMovement : MonoBehaviour
           currentMotion = DefinedMotion.NONE;
           animator.SetBool(animParamClimb, false);
           animator.SetBool(animParamVault, false);
-          transform.localScale = Vector3.one;
-          animator.transform.localScale = 1.3f*Vector3.one;
         }
 
         break;
