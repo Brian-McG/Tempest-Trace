@@ -5,6 +5,7 @@
 using System.Collections;
 using UnityEngine;
 using Domain.Player.Health;
+using UserInterface.HeadsUpDisplay;
 namespace Domain.GameStart
 {
 /// <summary>
@@ -87,6 +88,7 @@ namespace Domain.GameStart
       PlayerLifeHandler playerTwoLifeHander = playerTwo.GetComponent<PlayerLifeHandler>();
       playerOneLifeHander.BlackToClear();
       playerTwoLifeHander.BlackToClear();
+      GameObject.FindGameObjectWithTag("UIController").GetComponent<GameTime>().ResetTime();
       playerOneLifeHander.AllowMovement = true;
       playerTwoLifeHander.AllowMovement = true;
       foreach (GameObject cameraObj in playerCameras)
