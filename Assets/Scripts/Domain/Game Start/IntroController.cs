@@ -12,19 +12,25 @@ namespace Domain.GameStart
 /// </summary>
   public class IntroController : MonoBehaviour
   {
+    public bool Enabled;
     public float[] Speed;
     public float TransformEpsilon = 1f;
     public float RotationEpsilon = 1f;
     public float ScaleEpsilon = 1f;
     public GameObject[] Locations;
-    public AudioSource introDialog;
-    public AudioSource startGameSound;
+    public AudioSource IntroDialog;
+    public AudioSource StartGameSound;
     private int currentLocation;
     private float lerpTime = 10f;
     private float currentLerpTime;
     private Transform startTransform;
     private PlayerLifeHandler fadeController;
     private bool runClose;
+    private GameObject playerOne;
+    private GameObject playerTwo;
+    private GameObject[] playerCameras;
+    private GameObject playerOneUI;
+    private GameObject playerTwoUI;
 
     public void LerpTransform(Transform t1, Transform t2, float t)
     {
@@ -34,25 +40,83 @@ namespace Domain.GameStart
     }
 
     internal void Start()
-    { 
-      currentLerpTime = 0;
-      currentLocation = 0;
-      startTransform = Locations[0].transform;
-      fadeController = this.gameObject.GetComponent<PlayerLifeHandler>();
-      fadeController.BlackToClear();
-      runClose = false;
+    {
+      playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
+      playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
+      playerCameras = GameObject.FindGameObjectsWithTag("MainCamera");
+      playerOneUI = GameObject.FindGameObjectWithTag("PlayerOneUI");
+      playerTwoUI = GameObject.FindGameObjectWithTag("PlayerTwoUI");
+      DisablePlayerMode();
+      if (Enabled)
+      {
+        currentLerpTime = 0;
+        currentLocation = 0;
+        startTransform = Locations[0].transform;
+        fadeController = this.gameObject.GetComponent<PlayerLifeHandler>();
+        fadeController.BlackToClear();
+        runClose = false;
+      }
+      else
+      {
+        EnablePlayerMode();
+      }
+    }
+
+    private void DisablePlayerMode()
+    {
+      playerOne.GetComponent<PlayerLifeHandler>().AllowMovement = false;
+      playerTwo.GetComponent<PlayerLifeHandler>().AllowMovement = false;
+      playerOneUI.SetActive(false);
+      playerTwoUI.SetActive(false);
+      foreach (GameObject cameraObj in playerCameras)
+      {
+        cameraObj.camera.enabled = false;
+      }
+    }
+
+    private void EnablePlayerMode()
+    {
+      IntroDialog.Stop();
+      this.gameObject.GetComponent<AudioListener>().enabled = false;
+      this.gameObject.camera.enabled = false;
+      playerOne.GetComponentInChildren<AudioListener>().enabled = true;
+      StartGameSound.Play();
+      playerOneUI.SetActive(true);
+      playerTwoUI.SetActive(true);
+      PlayerLifeHandler playerOneLifeHander = playerOne.GetComponent<PlayerLifeHandler>();
+      PlayerLifeHandler playerTwoLifeHander = playerTwo.GetComponent<PlayerLifeHandler>();
+      playerOneLifeHander.BlackToClear();
+      playerTwoLifeHander.BlackToClear();
+      playerOneLifeHander.AllowMovement = true;
+      playerTwoLifeHander.AllowMovement = true;
+      foreach (GameObject cameraObj in playerCameras)
+      {
+        cameraObj.camera.enabled = true;
+      }
+
+      enabled = false;
     }
 
     internal void Update()
     {
-      if (currentLocation + 1 != Locations.Length)
+      if (Enabled)
       {
-        ApplyCameraLerp();
-      }
-      if (!runClose && currentLocation + 1 == Locations.Length)
-      {
-        fadeController.KillPlayer();
-        runClose = true;
+        if (currentLocation + 1 != Locations.Length)
+        {
+          ApplyCameraLerp();
+        }
+        if (!runClose && currentLocation + 1 == Locations.Length)
+        {
+          fadeController.KillPlayer();
+          runClose = true;
+        }
+        if (runClose)
+        {
+          if (fadeController.FadeoutAlpha > 0.95)
+          {
+            EnablePlayerMode();
+          }
+        }
       }
     }
 

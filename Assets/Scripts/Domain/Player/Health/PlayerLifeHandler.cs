@@ -62,7 +62,23 @@ namespace Domain.Player.Health
     public void CompletedCourse()
     {
       completedCourse = true;
-      firstPersonMovement.enabled = false;
+      AllowMovement = false;
+    }
+
+    public bool AllowMovement
+    {
+      set
+      {
+        firstPersonMovement.enabled = value;
+      }
+    }
+
+    public float FadeoutAlpha
+    {
+      get
+      {
+        return Fadeout.color.a;
+      }
     }
 
     internal void Awake()

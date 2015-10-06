@@ -10616,7 +10616,7 @@ GameObject:
   - 225: {fileID: 217826266}
   m_Layer: 5
   m_Name: PlayerOneUI
-  m_TagString: Untagged
+  m_TagString: PlayerOneUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11747,7 +11747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerOne: {fileID: 1200851968}
-  PlayerTwo: {fileID: 0}
+  PlayerTwo: {fileID: 1145835354}
   PlayerOneHud:
   - {fileID: 1988125579}
   - {fileID: 2002447492}
@@ -11770,7 +11770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerOne: {fileID: 1200851968}
-  PlayerTwo: {fileID: 0}
+  PlayerTwo: {fileID: 1145835354}
   CheckpointParent: {fileID: 2058820497}
   PlayerOnePosition: {fileID: 189400812}
   PlayerTwoPosition: {fileID: 2145829554}
@@ -35142,7 +35142,7 @@ GameObject:
   - 225: {fileID: 709416993}
   m_Layer: 5
   m_Name: PlayerTwoUI
-  m_TagString: Untagged
+  m_TagString: PlayerTwoUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51512,6 +51512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75aa0e79462863547878c2220c9ccaad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   Speed:
   - .0649999976
   - .200000003
@@ -51549,8 +51550,8 @@ MonoBehaviour:
   - {fileID: 1823086865}
   - {fileID: 1992755240}
   - {fileID: 5425498}
-  introDialog: {fileID: 283181041}
-  startGameSound: {fileID: 0}
+  IntroDialog: {fileID: 283181041}
+  StartGameSound: {fileID: 1973076787}
 --- !u!114 &1040144405
 MonoBehaviour:
   m_ObjectHideFlags: 0
