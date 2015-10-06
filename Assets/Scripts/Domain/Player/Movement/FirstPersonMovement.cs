@@ -84,6 +84,7 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamSlide;
   private int animParamClimb;
   private int animParamVault;
+  private int animParamJump;
   private int animParamHeight;
   private int animParamYOffset;
   
@@ -164,6 +165,7 @@ public class FirstPersonMovement : MonoBehaviour
     animParamSlide = Animator.StringToHash("IsSliding");
     animParamClimb = Animator.StringToHash("IsClimbing");
     animParamVault = Animator.StringToHash("IsVaulting");
+    animParamJump = Animator.StringToHash("IsJumping");
     animParamHeight = Animator.StringToHash("PlayerHeight");
     animParamYOffset = Animator.StringToHash("AvatarYOffset");
 
@@ -390,6 +392,7 @@ public class FirstPersonMovement : MonoBehaviour
         JumpSound.Play();
         isJumping = true;
         velocity.y = JumpForce;
+        animator.SetBool(animParamJump, true);
       }
     }
     else
@@ -593,6 +596,11 @@ public class FirstPersonMovement : MonoBehaviour
       default:
         Debug.Log("Attempt to update on unrecognized motion");
         break;
+    }
+
+    if(charController.isGrounded)
+    {
+      animator.SetBool(animParamJump, false);
     }
   }
 }
