@@ -95,7 +95,9 @@ public class FirstPersonMovement : MonoBehaviour
   private DefinedMotion currentMotion;
   private List<Vector3> motionTargets;
   private int motionProgress;
-  
+
+  private bool hasOverhead;
+  private bool previousHasOverhead;
   private bool isJumping;
   private bool wasGrounded;
   private float lastGroundedTime;
@@ -168,6 +170,8 @@ public class FirstPersonMovement : MonoBehaviour
     RunSpeed = DefaultRunSpeed;
     velocity = Vector3.zero;
     wasGrounded = false;
+    hasOverhead = false;
+    previousHasOverhead = false;
     currentMotion = DefinedMotion.NONE;
     motionTargets = new List<Vector3>();
   }
@@ -323,6 +327,7 @@ public class FirstPersonMovement : MonoBehaviour
                                          horizontalVelocityThreshold)
     {
       SlideSound.Play();
+      hasOverhead = true;
       currentMotion = DefinedMotion.SLIDE;
       animator.SetBool(animParamSlide, true);
       transform.localScale = new Vector3(1.0f, 0.5f, 1.0f);
@@ -514,27 +519,22 @@ public class FirstPersonMovement : MonoBehaviour
     
     // Apply sliding slowdown
     RunSpeed -= SlideDeceleration * Time.fixedDeltaTime;
-    if (RunSpeed < SlideStopSpeedThreshold)
+
+    // We should stop sliding if we are either:
+    //  1) No longer moving fast enough to warrant a slide
+    //  2) No longer holding down the slide key
+    bool shouldStopSlide = false;
+    shouldStopSlide = shouldStopSlide || (RunSpeed < SlideStopSpeedThreshold);
+    shouldStopSlide = shouldStopSlide || (!InputSplitter.GetSlide(PlayerID));
+    if (shouldStopSlide)
     {
       headBob.enabled = true;
 
       currentMotion = DefinedMotion.NONE;
       animator.SetBool(animParamSlide, false);
       RunSpeed = DefaultRunSpeed;
-      transform.localScale = Vector3.one;
-      animator.transform.localScale = 1.3f*Vector3.one;
-    }
-
-    // Check that we're still holding the slide key, otherwise go back to standard running
-    if (!InputSplitter.GetSlide(PlayerID))
-    {
-      headBob.enabled = true;
-
-      currentMotion = DefinedMotion.NONE;
-      animator.SetBool(animParamSlide, false);
-      RunSpeed = DefaultRunSpeed;
-      transform.localScale = Vector3.one;
-      animator.transform.localScale = 1.3f*Vector3.one;
+      //transform.localScale = Vector3.one;
+      //animator.transform.localScale = 1.3f*Vector3.one;
     }
   }
 
@@ -564,6 +564,13 @@ public class FirstPersonMovement : MonoBehaviour
     switch (currentMotion)
     {
       case DefinedMotion.NONE:
+        previousHasOverhead = hasOverhead;
+        hasOverhead = ((charController.collisionFlags & CollisionFlags.Above) != 0);
+        if(!hasOverhead && previousHasOverhead)
+        {
+          transform.localScale = Vector3.one;
+          animator.transform.localScale = 1.3f*Vector3.one;
+        }
         UpdateOnPlayerInput();
         break;
 
