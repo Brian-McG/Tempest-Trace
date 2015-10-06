@@ -84,6 +84,7 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamSlide;
   private int animParamClimb;
   private int animParamVault;
+  private int animParamJump;
   private int animParamHeight;
   private int animParamYOffset;
   
@@ -164,6 +165,7 @@ public class FirstPersonMovement : MonoBehaviour
     animParamSlide = Animator.StringToHash("IsSliding");
     animParamClimb = Animator.StringToHash("IsClimbing");
     animParamVault = Animator.StringToHash("IsVaulting");
+    animParamJump = Animator.StringToHash("IsJumping");
     animParamHeight = Animator.StringToHash("PlayerHeight");
     animParamYOffset = Animator.StringToHash("AvatarYOffset");
 
@@ -243,6 +245,7 @@ public class FirstPersonMovement : MonoBehaviour
         Debug.Log("Vault");
         VaultSound.Play();
         currentMotion = DefinedMotion.VAULT;
+        animator.SetBool(animParamJump, false);
         animator.SetBool(animParamVault, true);
         motionProgress = 0;
         motionTargets.Clear();
@@ -310,6 +313,7 @@ public class FirstPersonMovement : MonoBehaviour
           Debug.Log("Climb " + climbCheckInfo.collider.gameObject.name + " - " + climbCheckInfo.collider.transform.GetInstanceID());
           ClimbSound.Play();
           currentMotion = DefinedMotion.CLIMB;
+          animator.SetBool(animParamJump, false);
           animator.SetBool(animParamClimb, true);
           motionTargets.Clear();
           motionTargets.Add(climbMidpoint);
@@ -381,7 +385,7 @@ public class FirstPersonMovement : MonoBehaviour
     
     // TODO: Since velocity has been update here, we have the velocity based on the input alone
     //       and does not consider the actual velocity based on collision
-    if (((Time.time - lastGroundedTime) <= MaxUngroundedJumpTime) && shouldJump)
+    if (((Time.time - lastGroundedTime) <= MaxUngroundedJumpTime) && shouldJump && !isJumping)
     {
       CheckForVaultClimbMotion();
       
@@ -390,6 +394,7 @@ public class FirstPersonMovement : MonoBehaviour
         JumpSound.Play();
         isJumping = true;
         velocity.y = JumpForce;
+        animator.SetBool(animParamJump, true);
       }
     }
     else
@@ -593,6 +598,11 @@ public class FirstPersonMovement : MonoBehaviour
       default:
         Debug.Log("Attempt to update on unrecognized motion");
         break;
+    }
+
+    if(charController.isGrounded)
+    {
+      animator.SetBool(animParamJump, false);
     }
   }
 }
