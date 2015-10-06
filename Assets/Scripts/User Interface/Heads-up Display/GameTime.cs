@@ -25,6 +25,12 @@ namespace UserInterface.HeadsUpDisplay
       playerTwoTime = PlayerTwoTime.GetComponent<Text>();
     }
 
+    public void ResetTime()
+    {
+      seconds = 0.0f;
+      minutes = 0;
+    }
+
     internal void Update()
     {
       UpdateTime();

@@ -103,14 +103,15 @@ namespace Domain.ArtificialIntelligence.Drone
       if (other.gameObject.tag == "PlayerOne" && targetedPlayer != 2)
       {
         targetedPlayer = 0;
-        Vector3 direction = (other.transform.position + heightOffset) - transform.position;
+        Vector3 currentHeightOffset = HeightOffset(playerOne);
+        Vector3 direction = (other.transform.position + currentHeightOffset) - transform.position;
         RaycastHit hit;
         if (Physics.Raycast(transform.position, direction.normalized, out hit, sphereCollider.radius * transform.localScale.x, inverseIgnoreLayer))
         {
           if (hit.collider.gameObject.tag == "PlayerOne")
           {
             targetedPlayer = 1;
-            lastPlayerSighting.Position = playerOne.transform.position + heightOffset;
+            lastPlayerSighting.Position = playerOne.transform.position + currentHeightOffset;
 
             // Debug.Log("Update Player Position");
           }
@@ -119,14 +120,15 @@ namespace Domain.ArtificialIntelligence.Drone
       else if (other.gameObject.tag == "PlayerTwo" && targetedPlayer != 1)
       {
         targetedPlayer = 0;
-        Vector3 direction = (other.transform.position + heightOffset) - transform.position;
+        Vector3 currentHeightOffset = HeightOffset(playerTwo);
+        Vector3 direction = (other.transform.position + currentHeightOffset) - transform.position;
         RaycastHit hit;
         if (Physics.Raycast(transform.position, direction.normalized, out hit, sphereCollider.radius * transform.localScale.x, inverseIgnoreLayer))
         {
           if (hit.collider.gameObject.tag == "PlayerTwo")
           {
             targetedPlayer = 2;
-            lastPlayerSighting.Position = playerTwo.transform.position + heightOffset;
+            lastPlayerSighting.Position = playerTwo.transform.position + currentHeightOffset;
           }
         }
       }
@@ -134,12 +136,12 @@ namespace Domain.ArtificialIntelligence.Drone
 
     internal void OnTriggerEnter(Collider other)
     {
-        SightCollider(other);
+      SightCollider(other);
     }
 
     internal void OnTriggerStay(Collider other)
     {
-        SightCollider(other);
+      SightCollider(other);
     }
 
     /// <summary>
@@ -152,6 +154,11 @@ namespace Domain.ArtificialIntelligence.Drone
       {
         targetedPlayer = 0;
       }
+    }
+
+    private Vector3 HeightOffset(GameObject player)
+    {
+      return new Vector3(0, heightOffset.y * player.transform.localScale.y, 0);
     }
   }
 }
