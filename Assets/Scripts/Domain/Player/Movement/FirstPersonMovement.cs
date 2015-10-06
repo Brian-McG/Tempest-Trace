@@ -245,6 +245,7 @@ public class FirstPersonMovement : MonoBehaviour
         Debug.Log("Vault");
         VaultSound.Play();
         currentMotion = DefinedMotion.VAULT;
+        animator.SetBool(animParamJump, false);
         animator.SetBool(animParamVault, true);
         motionProgress = 0;
         motionTargets.Clear();
@@ -312,6 +313,7 @@ public class FirstPersonMovement : MonoBehaviour
           Debug.Log("Climb " + climbCheckInfo.collider.gameObject.name + " - " + climbCheckInfo.collider.transform.GetInstanceID());
           ClimbSound.Play();
           currentMotion = DefinedMotion.CLIMB;
+          animator.SetBool(animParamJump, false);
           animator.SetBool(animParamClimb, true);
           motionTargets.Clear();
           motionTargets.Add(climbMidpoint);
