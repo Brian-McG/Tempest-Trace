@@ -18,6 +18,10 @@ TagManager:
   - UIController
   - FinishLine
   - DroneLight
+  - GameMusic
+  - FlyOver
+  - PlayerOneUI
+  - PlayerTwoUI
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
