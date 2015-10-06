@@ -4,22 +4,27 @@
 // </copyright>
 using System.Collections;
 using UnityEngine;
+using Domain.Player.Health;
 namespace Domain.GameStart
 {
 /// <summary>
 /// Lerp camera between a set of waypoints.
 /// </summary>
-  public class CinematicCameraMover : MonoBehaviour
+  public class IntroController : MonoBehaviour
   {
-    public float Speed;
+    public float[] Speed;
     public float TransformEpsilon = 1f;
     public float RotationEpsilon = 1f;
     public float ScaleEpsilon = 1f;
     public GameObject[] Locations;
+    public AudioSource introDialog;
+    public AudioSource startGameSound;
     private int currentLocation;
     private float lerpTime = 10f;
     private float currentLerpTime;
     private Transform startTransform;
+    private PlayerLifeHandler fadeController;
+    private bool runClose;
 
     public void LerpTransform(Transform t1, Transform t2, float t)
     {
@@ -30,30 +35,50 @@ namespace Domain.GameStart
 
     internal void Start()
     { 
+      currentLerpTime = 0;
       currentLocation = 0;
       startTransform = Locations[0].transform;
+      fadeController = this.gameObject.GetComponent<PlayerLifeHandler>();
+      fadeController.BlackToClear();
+      runClose = false;
     }
 
     internal void Update()
     {
-      ApplyCameraLerp();
+      if (currentLocation + 1 != Locations.Length)
+      {
+        ApplyCameraLerp();
+      }
+      if (!runClose && currentLocation + 1 == Locations.Length)
+      {
+        fadeController.KillPlayer();
+        runClose = true;
+      }
     }
 
     private void ApplyCameraLerp()
     {
-      if (currentLocation + 2 < Locations.Length)
+      if (currentLocation + 1 < Locations.Length)
       {
-        currentLerpTime += Time.deltaTime;
-        if (currentLerpTime > lerpTime)
+        if (currentLocation < Speed.Length)
+        {
+          currentLerpTime += Speed[currentLocation] * Time.deltaTime;
+        }
+        else
+        {
+          currentLerpTime += Speed[Speed.Length - 1] * Time.deltaTime;
+        }
+        if (currentLerpTime > 1)
         {
           currentLerpTime = 0;
           ++currentLocation;
           startTransform = Locations[currentLocation].transform;
         }
       }
-    
-      float perc = currentLerpTime / lerpTime;
-      LerpTransform(startTransform, Locations[currentLocation + 1].transform, perc);
+      if (currentLocation + 1 != Locations.Length)
+      {
+        LerpTransform(startTransform, Locations[currentLocation + 1].transform, currentLerpTime);
+      }
     }
   }
 }

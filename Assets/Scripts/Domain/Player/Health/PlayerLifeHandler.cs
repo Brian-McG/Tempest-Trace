@@ -39,6 +39,15 @@ namespace Domain.Player.Health
     private bool completedCourse;
 
     /// <summary>
+    /// Sets screen instantly black then clears at set rate.
+    /// </summary>
+    public void BlackToClear()
+    {
+      totalFadeout = 1;
+      killInitiated = true;
+    }
+
+    /// <summary>
     /// Kills this player.
     /// </summary>
     public void KillPlayer()
@@ -58,11 +67,18 @@ namespace Domain.Player.Health
 
     internal void Awake()
     {  
-      firstPersonMovement = this.gameObject.GetComponent<FirstPersonMovement>();
-      playerHealth = GetComponent<PlayerHealth>();
-      checkpoint = GetComponent<CheckpointController>();
+      if (this.gameObject.tag == "PlayerOne" || this.gameObject.tag == "PlayerTwo")
+      {
+        firstPersonMovement = this.gameObject.GetComponent<FirstPersonMovement>();
+        playerHealth = GetComponent<PlayerHealth>();
+        checkpoint = GetComponent<CheckpointController>();
+        Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
+      }
+      else
+      {
+        Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
+      }
       Fadeout.enabled = false;
-      Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
       Fadeout.color = Color.clear;
       totalFadeout = 0.0f;
       completedCourse = false;
@@ -73,7 +89,7 @@ namespace Domain.Player.Health
     /// </summary>
     internal void Update()
     {
-      if (!isEnabled && firstPersonMovement.Velocity.y < FadeTriggerVelocity)
+      if (!isEnabled && (this.gameObject.tag == "PlayerOne" || this.gameObject.tag == "PlayerTwo") && firstPersonMovement.Velocity.y < FadeTriggerVelocity)
       {
         FadeOverlay();
       }
@@ -95,10 +111,13 @@ namespace Domain.Player.Health
       killInitiated = false;
       isEnabled = true;
       Fadeout.color = Color.black;
-      firstPersonMovement.ResetState();
-      transform.position = checkpoint.Position;
-      transform.localEulerAngles = checkpoint.Orientation;
-      playerHealth.ResetHP();
+      if (this.gameObject.tag == "PlayerOne" || this.gameObject.tag == "PlayerTwo")
+      {
+        firstPersonMovement.ResetState();
+        transform.position = checkpoint.Position;
+        transform.localEulerAngles = checkpoint.Orientation;
+        playerHealth.ResetHP();
+      }
     }
 
     /// <summary>
