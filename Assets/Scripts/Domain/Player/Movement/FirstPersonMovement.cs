@@ -385,7 +385,7 @@ public class FirstPersonMovement : MonoBehaviour
     
     // TODO: Since velocity has been update here, we have the velocity based on the input alone
     //       and does not consider the actual velocity based on collision
-    if (((Time.time - lastGroundedTime) <= MaxUngroundedJumpTime) && shouldJump)
+    if (((Time.time - lastGroundedTime) <= MaxUngroundedJumpTime) && shouldJump && !isJumping)
     {
       CheckForVaultClimbMotion();
       
