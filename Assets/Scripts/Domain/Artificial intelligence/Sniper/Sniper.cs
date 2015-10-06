@@ -19,11 +19,16 @@ namespace Domain.ArtificialIntelligence.Sniper
     private BoxCollider[] colliders;
     private LineRenderer lineRenderer;
     private Vector3 currentTarget;
+    private Vector3 patrolTarget;
     private Vector3 previousDirection;
     private int inverseIgnoredColliders;
     private byte targetedPlayer;
     private GameObject playerOne;
     private GameObject playerTwo;
+    private PlayerHealth playerOneHealth;
+    private PlayerHealth playerTwoHealth;
+    private PlayerLifeHandler playerOneLifeHandler;
+    private PlayerLifeHandler playerTwoLifeHandler;
     private Vector3 heightOffset;
     private Vector3 transformScale;
     private SniperWeapon sniperWeapon;
@@ -34,15 +39,17 @@ namespace Domain.ArtificialIntelligence.Sniper
       this.sniper = sniper;
       this.playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
       this.playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
-      PlayerHealth playerOneHealth = playerOne.GetComponent<PlayerHealth>();
-
+      playerOneHealth = playerOne.GetComponent<PlayerHealth>();
+      playerOneLifeHandler = playerOne.GetComponent<PlayerLifeHandler>();
       PlayerSlow playerOneSlow = playerOne.GetComponent<PlayerSlow>();
-      PlayerHealth playerTwoHealth = null;
+      playerTwoHealth = null;
+      playerTwoLifeHandler = null;
       PlayerSlow playerTwoSlow = null;
       if (playerTwo != null)
       {
         playerTwoHealth = playerTwo.GetComponent<PlayerHealth>();
         playerTwoSlow = playerTwo.GetComponent<PlayerSlow>();
+        playerTwoLifeHandler = playerTwo.GetComponent<PlayerLifeHandler>();
       }
       HitFlash hitFlash = GameObject.FindGameObjectWithTag("GameManager").GetComponent<HitFlash>();
       colliders = new BoxCollider[activationColliders.Length];
@@ -120,7 +127,10 @@ namespace Domain.ArtificialIntelligence.Sniper
     {
       if (colliders.Length > 0)
       {
-        UpdatePlayerTarget();
+        if ((targetedPlayer == 1 && !playerOneLifeHandler.Dead) || (targetedPlayer == 2 && !playerTwoLifeHandler.Dead))
+        {
+          UpdatePlayerTarget();
+        }
         Vector3 direction = currentTarget - sniper.transform.position;
         if (targetedPlayer != 0 && (direction.normalized - sniper.transform.forward.normalized).magnitude < 0.005f)
         {
@@ -142,13 +152,17 @@ namespace Domain.ArtificialIntelligence.Sniper
     /// </summary>
     public void Patrol()
     {
+      if (playerOneLifeHandler.Dead || playerTwoLifeHandler.Dead)
+      {
+        GenerateRandomTarget();
+      }
       // Calculate a new position for laser to move towards if laser has reached its target.
       if (sniper.transform.localEulerAngles == previousDirection)
       {
         GenerateRandomTarget();
       }
 
-      Vector3 direction = currentTarget - sniper.transform.position;
+      Vector3 direction = patrolTarget - sniper.transform.position;
       UpdateLaser(direction);
       previousDirection = sniper.transform.localEulerAngles;
       FaceDirection(direction, 0.01f);
@@ -159,11 +173,19 @@ namespace Domain.ArtificialIntelligence.Sniper
     /// </summary>
     public void Chase()
     {
-      UpdatePlayerTarget();
-      Vector3 direction = currentTarget - sniper.transform.position;
-      UpdateLaser(direction);
-      previousDirection = currentTarget - sniper.transform.position;
-      FaceDirection(direction);
+      if ((targetedPlayer == 1 && !playerOneLifeHandler.Dead) || (targetedPlayer == 2 && !playerTwoLifeHandler.Dead))
+      {
+        UpdatePlayerTarget();
+        Vector3 direction = currentTarget - sniper.transform.position;
+        UpdateLaser(direction);
+        previousDirection = currentTarget - sniper.transform.position;
+        FaceDirection(direction);
+      }
+      else
+      {
+        targetedPlayer = 0;
+        GenerateRandomTarget();
+      }
     }
 
     /// <summary>
@@ -171,10 +193,22 @@ namespace Domain.ArtificialIntelligence.Sniper
     /// </summary>
     public void Shoot()
     {
-      UpdatePlayerTarget();
-      sniper.transform.LookAt(currentTarget);
-      UpdateLaser(currentTarget - sniper.transform.position);
-      sniperWeapon.Fire(sniper.transform.position, sniper.transform.forward, 1000.0f, inverseIgnoredColliders);
+      if ((targetedPlayer == 1 && !playerOneLifeHandler.Dead) || (targetedPlayer == 2 && !playerTwoLifeHandler.Dead))
+      {
+        UpdatePlayerTarget();
+        sniper.transform.LookAt(currentTarget);
+        UpdateLaser(currentTarget - sniper.transform.position);
+        if (sniperWeapon.Fire(sniper.transform.position, sniper.transform.forward, 1000.0f, inverseIgnoredColliders))
+        {
+          targetedPlayer = 0;
+          GenerateRandomTarget();
+        }
+      }
+      else
+      {
+        targetedPlayer = 0;
+        GenerateRandomTarget();
+      }
     }
 
     /// <summary>
@@ -204,7 +238,7 @@ namespace Domain.ArtificialIntelligence.Sniper
       float randomX = Random.Range(colliders[randomIndex].bounds.min.x, colliders[randomIndex].bounds.max.x);
       float minY = colliders[0].bounds.min.y;
       float randomZ = Random.Range(colliders[randomIndex].bounds.min.z, colliders[randomIndex].bounds.max.z);
-      currentTarget = new Vector3(randomX, minY, randomZ);
+      patrolTarget = new Vector3(randomX, minY, randomZ);
     }
 
     /// <summary>

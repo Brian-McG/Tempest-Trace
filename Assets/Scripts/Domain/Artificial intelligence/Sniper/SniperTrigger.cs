@@ -4,6 +4,7 @@
 // </copyright>
 using System.Collections;
 using UnityEngine;
+using Domain.Player.Health;
 
 namespace Domain.ArtificialIntelligence.Sniper
 {
@@ -43,7 +44,7 @@ namespace Domain.ArtificialIntelligence.Sniper
         {
           sniper.TargetedPlayer = 0;
           currentDelay += Time.deltaTime;
-          if (sniper.TargetedPlayer == 0 && other.tag == "PlayerOne" && currentDelay > ReactionDelay)
+          if (sniper.TargetedPlayer == 0 && other.tag == "PlayerOne" && currentDelay > ReactionDelay && !other.GetComponent<PlayerLifeHandler>().Dead)
           {
             RaycastHit hit;
             Vector3 direction = (other.transform.position + heightOffset) - sniper.SniperGameObj.transform.position;
@@ -52,7 +53,7 @@ namespace Domain.ArtificialIntelligence.Sniper
               sniper.TargetedPlayer = 1;
             }
           }
-          else if (sniper.TargetedPlayer == 0 && other.tag == "PlayerTwo" && currentDelay > ReactionDelay)
+          else if (sniper.TargetedPlayer == 0 && other.tag == "PlayerTwo" && currentDelay > ReactionDelay && !other.GetComponent<PlayerLifeHandler>().Dead)
           {
             RaycastHit hit;
             Vector3 direction = (other.transform.position + heightOffset) - sniper.SniperGameObj.transform.position;
@@ -65,14 +66,9 @@ namespace Domain.ArtificialIntelligence.Sniper
       }
     }
 
-    internal void OnTriggerEnter(Collider other)
-    {
-        SightCollider(other);
-    }
-
     internal void OnTriggerStay(Collider other)
     {
-        SightCollider(other);
+      SightCollider(other);
     }
 
     /// <summary>

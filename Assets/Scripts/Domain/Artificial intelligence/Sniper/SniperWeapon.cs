@@ -49,9 +49,11 @@ namespace Domain.ArtificialIntelligence.Sniper
           {
             returnValue = true;
           }
-          playerOneSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
-          HitFlash.FlashCamera(1);
-
+          else
+          {
+            playerOneSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
+            HitFlash.FlashCamera(1);
+          }
         }
         else if (hit.collider.tag == "PlayerTwo")
         {
@@ -60,10 +62,12 @@ namespace Domain.ArtificialIntelligence.Sniper
           {
             returnValue = true;
           }
-          playerTwoSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
-          HitFlash.FlashCamera(2);
-        }
-      
+          else
+          {
+            playerTwoSlow.ApplyGeneralSlow(0.0f, 8.0f, 0.1f, speedPenalty);
+            HitFlash.FlashCamera(2);
+          }
+        }     
         CurrentShootInverval -= ShootRate;
       }
       return returnValue;

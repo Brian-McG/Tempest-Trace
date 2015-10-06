@@ -38,6 +38,14 @@ namespace Domain.Player.Health
     private bool killInitiated;
     private bool completedCourse;
 
+    public bool Dead
+    {
+      get
+      {
+        return killInitiated;
+      }
+    }
+
     /// <summary>
     /// Sets screen instantly black then clears at set rate.
     /// </summary>
