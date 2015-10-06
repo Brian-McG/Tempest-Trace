@@ -325,8 +325,8 @@ public class FirstPersonMovement : MonoBehaviour
       SlideSound.Play();
       currentMotion = DefinedMotion.SLIDE;
       animator.SetBool(animParamSlide, true);
-      transform.localScale = 0.5f*Vector3.one;
-      animator.transform.localScale = 2.0f*1.3f*Vector3.one;
+      transform.localScale = new Vector3(1.0f, 0.5f, 1.0f);
+      animator.transform.localScale = new Vector3(1.3f, 2.0f*1.3f, 1.3f);
     }
   }
 
