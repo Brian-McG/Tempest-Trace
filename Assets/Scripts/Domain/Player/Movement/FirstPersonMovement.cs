@@ -79,7 +79,8 @@ public class FirstPersonMovement : MonoBehaviour
   public AudioSource VaultSound;
   public AudioSource SlideSound;
 
-  private Animator animator;
+  private Animator localViewAnimator;
+  private Animator enemyViewAnimator;
   private int animParamSpeed;
   private int animParamSlide;
   private int animParamClimb;
@@ -142,9 +143,9 @@ public class FirstPersonMovement : MonoBehaviour
   public void ResetState()
   {
     currentMotion = DefinedMotion.NONE;
-    animator.SetFloat(animParamSpeed, 0.0f);
-    animator.SetBool(animParamClimb, false);
-    animator.SetBool(animParamSlide, false);
+    SetAnimFloat(animParamSpeed, 0.0f);
+    SetAnimBool(animParamClimb, false);
+    SetAnimBool(animParamSlide, false);
     velocity  = Vector3.zero;
     RunSpeed = DefaultRunSpeed;
     
@@ -160,7 +161,8 @@ public class FirstPersonMovement : MonoBehaviour
     headBob = transform.Find("Camera").GetComponent<Headbob>();
     lifeHandler = GetComponent<PlayerLifeHandler>();
     
-    animator = GetComponentInChildren<Animator>();
+    localViewAnimator = transform.Find("LocalViewAvatarContainer").GetChild(0).GetComponent<Animator>();
+    enemyViewAnimator = transform.Find("Avatar").GetComponent<Animator>();
     animParamSpeed = Animator.StringToHash("MoveSpeed");
     animParamSlide = Animator.StringToHash("IsSliding");
     animParamClimb = Animator.StringToHash("IsClimbing");
@@ -242,11 +244,11 @@ public class FirstPersonMovement : MonoBehaviour
         Vector3 vaultMidpoint = vaultCheckPoint - (forwardDir * charController.radius);
         vaultMidpoint.y = vaultApex.y;
         
-        Debug.Log("Vault");
+        velocity.y = 0.0f; // Reset vertical velocity to zero so we don't do an extra hop afterwards
         VaultSound.Play();
         currentMotion = DefinedMotion.VAULT;
-        animator.SetBool(animParamJump, false);
-        animator.SetBool(animParamVault, true);
+        SetAnimBool(animParamJump, false);
+        SetAnimBool(animParamVault, true);
         motionProgress = 0;
         motionTargets.Clear();
         motionTargets.Add(vaultMidpoint);
@@ -310,11 +312,11 @@ public class FirstPersonMovement : MonoBehaviour
           Vector3 climbMidpoint = transform.position;
           climbMidpoint.y = climbTarget.y;
           
-          Debug.Log("Climb " + climbCheckInfo.collider.gameObject.name + " - " + climbCheckInfo.collider.transform.GetInstanceID());
+          velocity.y = 0.0f;
           ClimbSound.Play();
           currentMotion = DefinedMotion.CLIMB;
-          animator.SetBool(animParamJump, false);
-          animator.SetBool(animParamClimb, true);
+          SetAnimBool(animParamJump, false);
+          SetAnimBool(animParamClimb, true);
           motionTargets.Clear();
           motionTargets.Add(climbMidpoint);
           motionTargets.Add(climbTarget);
@@ -333,9 +335,9 @@ public class FirstPersonMovement : MonoBehaviour
       SlideSound.Play();
       hasOverhead = true;
       currentMotion = DefinedMotion.SLIDE;
-      animator.SetBool(animParamSlide, true);
+      SetAnimBool(animParamSlide, true);
       transform.localScale = new Vector3(1.0f, 0.5f, 1.0f);
-      animator.transform.localScale = new Vector3(1.3f, 2.0f*1.3f, 1.3f);
+      SetAvatarScale(new Vector3(1.3f, 2.0f*1.3f, 1.3f));
     }
   }
 
@@ -394,7 +396,7 @@ public class FirstPersonMovement : MonoBehaviour
         JumpSound.Play();
         isJumping = true;
         velocity.y = JumpForce;
-        animator.SetBool(animParamJump, true);
+        SetAnimBool(animParamJump, true);
       }
     }
     else
@@ -428,7 +430,7 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     Vector2 actualHorizontalVelocity = new Vector3(actualMoveVelocity.x, actualMoveVelocity.z);
-    animator.SetFloat(animParamSpeed, actualHorizontalVelocity.magnitude);
+    SetAnimFloat(animParamSpeed, actualHorizontalVelocity.magnitude);
     
     if (charController.isGrounded)
     {
@@ -536,10 +538,8 @@ public class FirstPersonMovement : MonoBehaviour
       headBob.enabled = true;
 
       currentMotion = DefinedMotion.NONE;
-      animator.SetBool(animParamSlide, false);
+      SetAnimBool(animParamSlide, false);
       RunSpeed = DefaultRunSpeed;
-      //transform.localScale = Vector3.one;
-      //animator.transform.localScale = 1.3f*Vector3.one;
     }
   }
 
@@ -561,10 +561,13 @@ public class FirstPersonMovement : MonoBehaviour
 
   private void FixedUpdate()
   {
-    float avatarYOffset = animator.GetFloat(animParamYOffset);
-    Vector3 avatarLoc = animator.transform.localPosition;
-    avatarLoc.y = avatarYOffset;
-    animator.transform.localPosition = avatarLoc;
+    float avatarYOffset = GetAnimFloat(animParamYOffset);
+    Vector3 localAvatarLoc = localViewAnimator.transform.localPosition;
+    localAvatarLoc.y = avatarYOffset;
+    localViewAnimator.transform.localPosition = localAvatarLoc;
+    Vector3 enemyAvatarLoc = enemyViewAnimator.transform.localPosition;
+    enemyAvatarLoc.y = avatarYOffset;
+    enemyViewAnimator.transform.localPosition = enemyAvatarLoc;
 
     switch (currentMotion)
     {
@@ -573,8 +576,12 @@ public class FirstPersonMovement : MonoBehaviour
         hasOverhead = ((charController.collisionFlags & CollisionFlags.Above) != 0);
         if(!hasOverhead && previousHasOverhead)
         {
-          transform.localScale = Vector3.one;
-          animator.transform.localScale = 1.3f*Vector3.one;
+          hasOverhead = Physics.Raycast(transform.position, Vector3.up, 1.8f, 1 << 0);
+          if(!hasOverhead)
+          {
+            transform.localScale = Vector3.one;
+            SetAvatarScale(1.3f*Vector3.one);
+          }
         }
         UpdateOnPlayerInput();
         break;
@@ -585,8 +592,8 @@ public class FirstPersonMovement : MonoBehaviour
         if (motionComplete)
         {
           currentMotion = DefinedMotion.NONE;
-          animator.SetBool(animParamClimb, false);
-          animator.SetBool(animParamVault, false);
+          SetAnimBool(animParamClimb, false);
+          SetAnimBool(animParamVault, false);
         }
 
         break;
@@ -602,8 +609,31 @@ public class FirstPersonMovement : MonoBehaviour
 
     if(charController.isGrounded)
     {
-      animator.SetBool(animParamJump, false);
+      SetAnimBool(animParamJump, false);
     }
+  }
+
+  private float GetAnimFloat(int paramHash)
+  {
+    return localViewAnimator.GetFloat(paramHash);
+  }
+
+  private void SetAnimFloat(int paramHash, float newVal)
+  {
+    localViewAnimator.SetFloat(paramHash, newVal);
+    enemyViewAnimator.SetFloat(paramHash, newVal);
+  }
+
+  private void SetAnimBool(int paramHash, bool newVal)
+  {
+    localViewAnimator.SetBool(paramHash, newVal);
+    enemyViewAnimator.SetBool(paramHash, newVal);
+  }
+
+  private void SetAvatarScale(Vector3 newScale)
+  {
+    localViewAnimator.transform.localScale = newScale;
+    enemyViewAnimator.transform.localScale = newScale;
   }
 }
 }
