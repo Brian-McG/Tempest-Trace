@@ -244,7 +244,7 @@ public class FirstPersonMovement : MonoBehaviour
         Vector3 vaultMidpoint = vaultCheckPoint - (forwardDir * charController.radius);
         vaultMidpoint.y = vaultApex.y;
         
-        Debug.Log("Vault");
+        velocity.y = 0.0f; // Reset vertical velocity to zero so we don't do an extra hop afterwards
         VaultSound.Play();
         currentMotion = DefinedMotion.VAULT;
         SetAnimBool(animParamJump, false);
@@ -312,7 +312,7 @@ public class FirstPersonMovement : MonoBehaviour
           Vector3 climbMidpoint = transform.position;
           climbMidpoint.y = climbTarget.y;
           
-          Debug.Log("Climb " + climbCheckInfo.collider.gameObject.name + " - " + climbCheckInfo.collider.transform.GetInstanceID());
+          velocity.y = 0.0f;
           ClimbSound.Play();
           currentMotion = DefinedMotion.CLIMB;
           SetAnimBool(animParamJump, false);
