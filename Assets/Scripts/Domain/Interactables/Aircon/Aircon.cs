@@ -23,6 +23,9 @@ namespace Domain.Interactables.Aircon
     [Tooltip("Reference to audio source that plays when the terminal is activated.")]
     public AudioSource
       ActivatorSound;
+    [Tooltip("Reference to audio source that aircon plays when it is activated.")]
+    public AudioSource
+      AirconOnSound;
 
     private bool status;
     private Animator airconAnimator;
@@ -52,6 +55,7 @@ namespace Domain.Interactables.Aircon
         screen.material = UnlockedMaterial;
         airconAnimator.SetBool("AirConOn", Status);
         airconParticle.Play();
+        AirconOnSound.Play();
       }
     }
     internal void Awake()
