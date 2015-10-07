@@ -576,8 +576,12 @@ public class FirstPersonMovement : MonoBehaviour
         hasOverhead = ((charController.collisionFlags & CollisionFlags.Above) != 0);
         if(!hasOverhead && previousHasOverhead)
         {
-          transform.localScale = Vector3.one;
-          SetAvatarScale(1.3f*Vector3.one);
+          hasOverhead = Physics.Raycast(transform.position, Vector3.up, 1.8f, 1 << 0);
+          if(!hasOverhead)
+          {
+            transform.localScale = Vector3.one;
+            SetAvatarScale(1.3f*Vector3.one);
+          }
         }
         UpdateOnPlayerInput();
         break;
