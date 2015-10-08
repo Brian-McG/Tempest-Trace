@@ -20924,7 +20924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 003b1dc5bde307943b4cba7cfb14a630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReactionDelay: 1
+  ReactionDelay: .5
   SniperControl: {fileID: 1125526217}
 --- !u!65 &323195995
 BoxCollider:
@@ -65204,7 +65204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 003b1dc5bde307943b4cba7cfb14a630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReactionDelay: 1
+  ReactionDelay: .5
   SniperControl: {fileID: 1125526217}
 --- !u!65 &1052901257
 BoxCollider:
