@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Shadow Material 1
+  m_Name: Arrow Material
   m_Shader: {fileID: 4800000, guid: ac96f5c0b697340a887ac2bd77a0bddc, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
@@ -24,7 +24,7 @@ Material:
         first:
           name: _ShadowTex
         second:
-          m_Texture: {fileID: 2800000, guid: f318141457c41e340a84a2a91f138e44, type: 3}
+          m_Texture: {fileID: 2800000, guid: a25208a2ee5f0ab469cd7c7265ca2703, type: 3}
           m_Scale: {x: 0, y: 0}
           m_Offset: {x: 0, y: 0}
       data:

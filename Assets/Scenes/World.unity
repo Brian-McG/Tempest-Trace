@@ -631,7 +631,6 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
-    tileSizeHint: 0
   m_NavMesh: {fileID: 19400000, guid: e44197b47b496be45bc286bb05d17b55, type: 2}
 --- !u!1001 &933831
 Prefab:
@@ -2130,7 +2129,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 23709123}
   m_LocalRotation: {x: .155213565, y: -.173182204, z: .0276617985, w: .972189009}
-  m_LocalPosition: {x: 29.1000004, y: 17, z: 104.309998}
+  m_LocalPosition: {x: 29.1000004, y: 17, z: 119.370003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1131813743}
@@ -13707,8 +13706,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -20685,7 +20684,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: 0b254c23e2a5d6441991524d1090b31a, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: .800000012
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -42838,8 +42837,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -47028,7 +47027,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: 7ccc2503978821c42be6ad738aa16d7c, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: .800000012
+  m_Volume: .5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -47087,7 +47086,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: 9dde46a51d293374698115f932b27a2e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: .159999996
+  m_Volume: .140000001
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -55970,7 +55969,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: fdc1b7466480d8347a68ce0fe97be91a, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: .800000012
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -61327,7 +61326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75aa0e79462863547878c2220c9ccaad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 0
+  Enabled: 1
   Speed:
   - .0649999976
   - .200000003
@@ -61397,7 +61396,7 @@ MonoBehaviour:
   startDistance: 200
   globalDensity: 1
   heightScale: 100
-  height: -100
+  height: -80
   globalFogColor: {r: .742647052, g: .742647052, b: .742647052, a: 1}
   fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
 --- !u!1 &1040678447
@@ -61609,7 +61608,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: c10bed54beecdd348a8cd496a2ab76da, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: .800000012
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -68578,9 +68577,9 @@ MonoBehaviour:
   ActivationColliders:
   - {fileID: 1052901253}
   - {fileID: 323195991}
-  ShootDelay: 2
+  ShootDelay: 1.20000005
   SniperFireSound: {fileID: 1203745632}
-  Damage: 34
+  Damage: 15
   SpeedPenalty: 2
   ColorSet:
   - {x: 0, y: 255, z: 0}
@@ -76789,7 +76788,7 @@ Transform:
   m_GameObject: {fileID: 1282389790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 60, z: 0}
-  m_LocalScale: {x: 75, y: 80, z: 75.0000153}
+  m_LocalScale: {x: 75.0999985, y: 80, z: 75.1699982}
   m_Children: []
   m_Father: {fileID: 637183091}
   m_RootOrder: 19
@@ -97669,7 +97668,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1660142206}
   m_LocalRotation: {x: .101403572, y: 0, z: 0, w: .99484539}
-  m_LocalPosition: {x: -45.4399986, y: 15.9099998, z: 90.8499985}
+  m_LocalPosition: {x: -44.9300003, y: 16.7700005, z: 74.4400024}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1131813743}
@@ -122408,7 +122407,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: 7ccc2503978821c42be6ad738aa16d7c, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: .800000012
+  m_Volume: .5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -122492,7 +122491,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: 9dde46a51d293374698115f932b27a2e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: .159999996
+  m_Volume: .140000001
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -125056,8 +125055,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  ignoreReversedGraphics: 1
+  blockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -126034,6 +126033,14 @@ Prefab:
     - target: {fileID: 154196, guid: a0ce15097a590f9479412be28e36624e, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11454198, guid: a0ce15097a590f9479412be28e36624e, type: 2}
+      propertyPath: ShootDelay
+      value: 1.20000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 11454198, guid: a0ce15097a590f9479412be28e36624e, type: 2}
+      propertyPath: Damage
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a0ce15097a590f9479412be28e36624e, type: 2}
