@@ -631,6 +631,7 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
+    tileSizeHint: 0
   m_NavMesh: {fileID: 19400000, guid: e44197b47b496be45bc286bb05d17b55, type: 2}
 --- !u!1001 &933831
 Prefab:
@@ -8791,7 +8792,7 @@ Transform:
   m_PrefabParentObject: {fileID: 402348, guid: d3d73e19340f0b74ebf599ba417c0b5d, type: 2}
   m_PrefabInternal: {fileID: 1230035502}
   m_GameObject: {fileID: 137459156}
-  m_LocalRotation: {x: -.681531012, y: .189450338, z: .0332243368, w: -.706059754}
+  m_LocalRotation: {x: -.681530952, y: .189450309, z: .0332243331, w: -.706059694}
   m_LocalPosition: {x: 30.0571156, y: 6.07142878, z: 16.571434}
   m_LocalScale: {x: 1.42857146, y: 1.42857134, z: 1.42857122}
   m_Children: []
@@ -14585,8 +14586,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreReversedGraphics: 1
-  blockingObjects: 0
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -34231,7 +34232,7 @@ Transform:
   m_PrefabParentObject: {fileID: 402348, guid: d3d73e19340f0b74ebf599ba417c0b5d, type: 2}
   m_PrefabInternal: {fileID: 192997392}
   m_GameObject: {fileID: 541494567}
-  m_LocalRotation: {x: -.419610411, y: .569145918, z: -.569145918, w: -.419610411}
+  m_LocalRotation: {x: -.419610441, y: .569145977, z: -.569145977, w: -.419610441}
   m_LocalPosition: {x: 40.3000336, y: 4.0714283, z: 12.3857212}
   m_LocalScale: {x: 1.42857146, y: 1.42857146, z: 1.4285717}
   m_Children: []
@@ -40039,7 +40040,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
 --- !u!1 &617496449
 GameObject:
   m_ObjectHideFlags: 0
@@ -40387,7 +40388,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!1 &625367654
 GameObject:
   m_ObjectHideFlags: 0
@@ -41869,7 +41870,7 @@ Transform:
   m_GameObject: {fileID: 654389515}
   m_LocalRotation: {x: 0, y: 0, z: .707106829, w: .707106829}
   m_LocalPosition: {x: -19.8999996, y: 25, z: 12.5}
-  m_LocalScale: {x: 5, y: .200000003, z: 5}
+  m_LocalScale: {x: 5, y: .300000012, z: 5}
   m_Children: []
   m_Father: {fileID: 1358019850}
   m_RootOrder: 28
@@ -44963,8 +44964,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreReversedGraphics: 1
-  blockingObjects: 0
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -57188,7 +57189,7 @@ Transform:
   m_GameObject: {fileID: 927522130}
   m_LocalRotation: {x: 0, y: 0, z: .707106829, w: .707106829}
   m_LocalPosition: {x: -20, y: 20, z: 0}
-  m_LocalScale: {x: 5, y: .00999999978, z: 40}
+  m_LocalScale: {x: 5, y: .200000003, z: 40}
   m_Children: []
   m_Father: {fileID: 1358019850}
   m_RootOrder: 15
@@ -61993,7 +61994,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 28
+  m_RootOrder: 27
 --- !u!1 &1009611481
 GameObject:
   m_ObjectHideFlags: 0
@@ -87927,7 +87928,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 29
+  m_RootOrder: 28
 --- !u!1 &1423267232
 GameObject:
   m_ObjectHideFlags: 0
@@ -99686,7 +99687,7 @@ Transform:
   - {fileID: 1880333983}
   - {fileID: 1483123885}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!114 &1612519840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108555,7 +108556,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 29
 --- !u!1 &1758904959
 GameObject:
   m_ObjectHideFlags: 0
@@ -130780,8 +130781,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreReversedGraphics: 1
-  blockingObjects: 0
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
