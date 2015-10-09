@@ -45,7 +45,7 @@ Projector:
   m_Material: {fileID: 2100000, guid: 75cbf88fae8ca6847b1297f277958366, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1536
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
