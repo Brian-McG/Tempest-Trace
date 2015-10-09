@@ -26,6 +26,10 @@ namespace Domain.Player.Movement
     [Tooltip("Degree to which the player is slowed by the aircon.")]
     public float
       AirconSlowFactor = 3.0f;
+    [Tooltip("Sound that plays when player is slowed by vent for the first time.")]
+    public AudioSource
+      AirconPainSound;
+
 
     private Aircon aircon;
     private FirstPersonMovement firstPersonMovement;
@@ -33,6 +37,7 @@ namespace Domain.Player.Movement
     private float slowSpeed;
     private float currentLerpTime;
     private bool isEnabled;
+    private bool painPlayed;
 
     // Variables that are used to apply a general slow to a player (e.g. hit by sniper)
     private bool calledSlow;
@@ -70,6 +75,7 @@ namespace Domain.Player.Movement
       isEnabled = false;
       calledSlow = false;
       calledSlowEnabled = false;
+      painPlayed = false;
       aircon = Aircon.GetComponent<Aircon>();
     }
 
@@ -89,6 +95,11 @@ namespace Domain.Player.Movement
       {
         currentLerpTime = Mathf.Clamp(AirconLerpDownTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - slowSpeed), 0, AirconLerpDownTime);
         isEnabled = true;
+        if (!painPlayed)
+        {
+          AirconPainSound.Play();
+          painPlayed = true;
+        }
       }
     }
 
