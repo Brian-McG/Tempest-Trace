@@ -48,6 +48,14 @@ namespace Domain.Player.Movement
     private float generalLerpUpTime;
     private float generalSlowSpeed;
 
+    public void ResetSlow()
+    {
+      calledSlow = false;
+      isEnabled = false;
+      calledSlowEnabled = false;
+      currentLerpTime = 0;
+    }
+
     /// <summary>
     /// Slows player down for some duration and to some degree.
     /// </summary>
