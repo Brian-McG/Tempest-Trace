@@ -121,6 +121,7 @@ namespace Domain.Player.Movement
     /// </summary>
     private void VentSlow()
     {
+
       if (isEnabled && !calledSlow && AirconLerpDownTime - currentLerpTime > 0.01f)
       {
         currentLerpTime += Time.deltaTime;
@@ -140,30 +141,33 @@ namespace Domain.Player.Movement
     /// </summary>
     private void CalledSlow()
     {
-      if (calledSlow && calledSlowEnabled)
+      if (firstPersonMovement.CurrentMotion != DefinedMotion.SLIDE)
       {
-        currentLerpTime += Time.deltaTime;
-        float percentage = currentLerpTime / generalLerpDownTime;
-        firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
-        if (generalLerpDownTime - currentLerpTime < 0.01f)
+        if (calledSlow && calledSlowEnabled)
         {
-          currentDuration += Time.deltaTime;
-          if (currentDuration > generalDuration)
+          currentLerpTime += Time.deltaTime;
+          float percentage = currentLerpTime / generalLerpDownTime;
+          firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
+          if (generalLerpDownTime - currentLerpTime < 0.01f)
           {
-            currentLerpTime = generalLerpUpTime;
-            calledSlowEnabled = false;
+            currentDuration += Time.deltaTime;
+            if (currentDuration > generalDuration)
+            {
+              currentLerpTime = generalLerpUpTime;
+              calledSlowEnabled = false;
+            }
           }
         }
-      }
-      else if (calledSlow && !calledSlowEnabled && generalLerpUpTime - currentLerpTime < (generalLerpUpTime - 0.01f))
-      {
-        currentLerpTime -= Time.deltaTime;
-        float percentage = currentLerpTime / generalLerpUpTime;
-        firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
-        if (generalLerpUpTime - currentLerpTime > (generalLerpUpTime - 0.01f))
+        else if (calledSlow && !calledSlowEnabled && generalLerpUpTime - currentLerpTime < (generalLerpUpTime - 0.01f))
         {
-          calledSlow = false;
-          firstPersonMovement.RunSpeed = defaultRunSpeed;
+          currentLerpTime -= Time.deltaTime;
+          float percentage = currentLerpTime / generalLerpUpTime;
+          firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
+          if (generalLerpUpTime - currentLerpTime > (generalLerpUpTime - 0.01f))
+          {
+            calledSlow = false;
+            firstPersonMovement.RunSpeed = defaultRunSpeed;
+          }
         }
       }
     }
