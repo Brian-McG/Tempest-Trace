@@ -17,6 +17,12 @@ namespace Domain.Interactables.Smokebomb
     [Tooltip("The time at which the collider stops growing.")]
     public float
       GrowthStopTime;
+    [Tooltip("The sound played when bomb hits the ground")]
+    public AudioSource
+      SmokeBombExplosionSound;
+    [Tooltip("The sound played as smoke is released.")]
+    public AudioSource
+      SmokeBombExpansionSound;
 
     private SphereCollider smokeCollider;
     private float timer;
@@ -66,6 +72,14 @@ namespace Domain.Interactables.Smokebomb
       {
         smokeCollider.radius += ColliderGrowthRate * Time.deltaTime;
         timer += Time.deltaTime;
+        if (!SmokeBombExplosionSound.isPlaying && !SmokeBombExpansionSound.isPlaying)
+        {
+          SmokeBombExpansionSound.Play();
+        }
+      }
+      if (timer > GrowthStopTime && activated)
+      {
+        SmokeBombExpansionSound.Stop();
       }
     }
   }

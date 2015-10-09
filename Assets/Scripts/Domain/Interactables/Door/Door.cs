@@ -20,7 +20,9 @@ namespace Domain.Interactables.Door
 
     private bool status;
     private bool played;
+    private bool soundPlayed;
     private float totalOpened;
+    private AudioSource doorOpenSound;
 
     /// <summary>
     /// Start opening door.
@@ -37,7 +39,9 @@ namespace Domain.Interactables.Door
     {  
       status = false;
       played = false;
+      soundPlayed = false;
       totalOpened = 0.0f;
+      doorOpenSound = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -56,6 +60,11 @@ namespace Domain.Interactables.Door
     /// </summary>
     private void OpenDoor()
     {
+      if (!soundPlayed && !doorOpenSound.isPlaying)
+      {
+        soundPlayed = true;
+        doorOpenSound.Play();
+      }
       float deltaAngle = OpenRate * Time.deltaTime;
       totalOpened += deltaAngle;
       transform.Rotate(new Vector3(0, deltaAngle, 0));
