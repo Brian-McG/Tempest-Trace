@@ -23,6 +23,7 @@ namespace Domain.Interactables.Smokebomb
     [Tooltip("The sound played as smoke is released.")]
     public AudioSource
       SmokeBombExpansionSound;
+    public float YActivationValue = float.MinValue;
 
     private SphereCollider smokeCollider;
     private float timer;
@@ -37,6 +38,9 @@ namespace Domain.Interactables.Smokebomb
       activated = false;
     }
 
+    /*
+    // Disabled for now, a more reliable implementation is getting applied.
+
     /// <summary>
     /// Smokebomb activates when it hits the ground
     /// </summary>
@@ -49,9 +53,19 @@ namespace Domain.Interactables.Smokebomb
         activated = true;
       }
     }
-
+    */
     internal void Update()
     {
+      if (!activated && transform.position.y <= YActivationValue)
+      {
+        transform.position = new Vector3(transform.position.x, YActivationValue, transform.position.z);
+        smoke.Play();
+        activated = true;
+      }
+      else if (!activated)
+      {
+        transform.Translate(new Vector3(0, -9.8f * Time.deltaTime, 0));
+      }
       ExpandSmokebomb();
     }
 

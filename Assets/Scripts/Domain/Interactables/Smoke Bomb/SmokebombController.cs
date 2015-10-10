@@ -25,6 +25,7 @@ namespace Domain.Interactables.Smokebomb
     private int currentBombCount;
     private Animator[] animators;
     private int animParamThrowing;
+    private float floorYPos;
 
     public int CurrentBombCount
     {
@@ -61,13 +62,21 @@ namespace Domain.Interactables.Smokebomb
     {
       if (currentBombCount < NumberOfBombs)
       {
-        GameObject shield = Instantiate(SmokeBombShield, this.gameObject.transform.position, Quaternion.identity) as GameObject;
-        shield.transform.parent = this.gameObject.transform;
-        ++currentBombCount;
-        StartCoroutine(ThrowSmokebomb());
-        for (int i = 0; i < animators.Length; ++i)
+        RaycastHit hit;
+        int inverseLayer = ~(1 << 8 | 1 << 9 | 1 << 10 | 1 << 11 | 1 << 12 | 1 << 13 | 1 << 14 | 1 << 15 | 1 << 16 | 1 << 18 | 1 << 19);
+        if (Physics.Raycast(hand.transform.position, Vector3.down, out hit, 100f, inverseLayer))
         {
-          animators[i].SetBool(animParamThrowing, true);
+          Debug.Log(hit.collider.name);
+          Debug.Log(hit.point);
+          floorYPos = hit.point.y;
+          GameObject shield = Instantiate(SmokeBombShield, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+          shield.transform.parent = this.gameObject.transform;
+          ++currentBombCount;
+          StartCoroutine(ThrowSmokebomb());
+          for (int i = 0; i < animators.Length; ++i)
+          {
+            animators[i].SetBool(animParamThrowing, true);
+          }
         }
       }
     }
@@ -75,7 +84,8 @@ namespace Domain.Interactables.Smokebomb
     private IEnumerator ThrowSmokebomb()
     {
       yield return new WaitForSeconds(0.7f);
-      Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
+      GameObject bomb = Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity) as GameObject;
+      bomb.GetComponent<SmokeBomb>().YActivationValue = floorYPos;
     }
 
     /// <summary>
