@@ -22,6 +22,11 @@ public enum DefinedMotion
   /// Not currently enacting a predefined motion (IE just running around)
   /// </summary>
   NONE,
+
+  /// <summary>
+  /// Hanging from a ledge, waiting to climb up or drop down
+  /// </summary>
+  HANG,
   
   /// <summary>
   /// Climbing a tall obstacle
@@ -67,6 +72,8 @@ public class FirstPersonMovement : MonoBehaviour
   [Header("Climb Parameters")]
   [Tooltip("The maximum height of an object that can be climbed")]
   public float MaximumClimbHeight;
+  [Tooltip("The heigh from the player's feet above which they will hang instead of climbing if they hit a ledge mid-air")]
+  public float HangClimbThresholdHeight;
   public float ClimbSpeed;
 
   [Header("Slide Parameters")]
@@ -100,6 +107,7 @@ public class FirstPersonMovement : MonoBehaviour
 
   private bool hasOverhead;
   private bool previousHasOverhead;
+  private bool midAirChecksEnabled;
   private bool isJumping;
   private bool wasGrounded;
   private float lastGroundedTime;
@@ -173,6 +181,7 @@ public class FirstPersonMovement : MonoBehaviour
 
     RunSpeed = DefaultRunSpeed;
     velocity = Vector3.zero;
+    midAirChecksEnabled = true;
     wasGrounded = false;
     hasOverhead = false;
     previousHasOverhead = false;
@@ -302,28 +311,59 @@ public class FirstPersonMovement : MonoBehaviour
       float climbCeilingHeight = MaximumClimbHeight - climbCheckHeight; // Subtract the height form our initial ray
       Vector3 climbCeiling = climbCheckPoint + new Vector3(0.0f, climbCeilingHeight, 0.0f);
       
+      RaycastHit climbCeilingInfo;
       if (Physics.Raycast(climbCeiling, Vector3.down,
-                          out climbCheckInfo, MaximumClimbHeight))
+                          out climbCeilingInfo, MaximumClimbHeight))
       {
-        Transform climbCeilingTransform = climbCheckInfo.transform;
+        Transform climbCeilingTransform = climbCeilingInfo.transform;
         if (climbCheckTransform == climbCeilingTransform)
         {
-          Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
-          Vector3 climbMidpoint = climbTarget;
-          climbMidpoint -= forwardDir * epsilon*10;
-          
-          Debug.DrawLine(currentPosition, climbMidpoint, Color.red, 10.0f, false);
-          Debug.DrawLine(climbMidpoint, climbTarget, Color.red, 10.0f, false);
-          
-          velocity.y = 0.0f;
-          ClimbSound.Play();
-          currentMotion = DefinedMotion.CLIMB;
-          SetAnimBool(animParamJump, false);
-          SetAnimBool(animParamClimb, true);
-          motionTargets.Clear();
-          motionTargets.Add(climbMidpoint);
-          motionTargets.Add(climbTarget);
-          motionProgress = 0;
+          bool shouldHang = !charController.isGrounded;
+          if(!charController.isGrounded)
+          {
+            RaycastHit hangCheckInfo;
+            Vector3 hangCheckOrigin = transform.position + new Vector3(0.0f, HangClimbThresholdHeight, 0.0f);
+            Debug.DrawLine(hangCheckOrigin, hangCheckOrigin + forwardDir*motionCheckDistance, Color.blue, 10.0f, false);
+            if(!Physics.Raycast(hangCheckOrigin, forwardDir, out hangCheckInfo, motionCheckDistance))
+            {
+              shouldHang = false;
+            }
+          }
+
+          if(shouldHang)
+          {
+            Vector3 hangTarget = climbCheckInfo.point - forwardDir*charController.radius;
+            hangTarget.y = climbCeilingInfo.point.y - charController.height + epsilon;
+
+            velocity.y = 0.0f;
+            currentMotion = DefinedMotion.HANG;
+            SetAnimBool(animParamJump, false);
+            SetAnimBool(animParamClimb, true);
+            motionTargets.Clear();
+            motionTargets.Add(hangTarget);
+            motionProgress = 0;
+            
+            midAirChecksEnabled = false;
+          }
+          else
+          {
+            Vector3 climbTarget = climbCeilingInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
+            Vector3 climbMidpoint = climbTarget;
+            climbMidpoint -= forwardDir * epsilon*10;
+            
+            Debug.DrawLine(currentPosition, climbMidpoint, Color.red, 10.0f, false);
+            Debug.DrawLine(climbMidpoint, climbTarget, Color.red, 10.0f, false);
+            
+            velocity.y = 0.0f;
+            ClimbSound.Play();
+            currentMotion = DefinedMotion.CLIMB;
+            SetAnimBool(animParamJump, false);
+            SetAnimBool(animParamClimb, true);
+            motionTargets.Clear();
+            motionTargets.Add(climbMidpoint);
+            motionTargets.Add(climbTarget);
+            motionProgress = 0;
+          }
         }
       }
     }
@@ -332,13 +372,15 @@ public class FirstPersonMovement : MonoBehaviour
   private void CheckForSlideMotion()
   {
     float horizontalVelocityThreshold = 1.0f;
-    if (HorizontalVelocity.sqrMagnitude > horizontalVelocityThreshold *
-                                         horizontalVelocityThreshold)
+    if ((movementZ > 0.1f) &&
+        (HorizontalVelocity.sqrMagnitude > horizontalVelocityThreshold *
+                                           horizontalVelocityThreshold))
     {
       SlideSound.Play();
       hasOverhead = true;
       currentMotion = DefinedMotion.SLIDE;
       SetAnimBool(animParamSlide, true);
+      headBob.enabled = false;
       transform.localScale = new Vector3(1.0f, 0.5f, 1.0f);
       SetAvatarScale(new Vector3(1.3f, 2.0f*1.3f, 1.3f));
     }
@@ -379,10 +421,11 @@ public class FirstPersonMovement : MonoBehaviour
       velocity.x = moveVector.x;
       velocity.z = moveVector.z;
       isJumping = false;
+      midAirChecksEnabled = true;
     }
     else
     {
-      if (isJumping)
+      if (isJumping && midAirChecksEnabled)
       {
         CheckForVaultClimbMotion();
       }
@@ -488,6 +531,7 @@ public class FirstPersonMovement : MonoBehaviour
     charController.Move(targetDirection * motionMoveDistance);
     Vector3 postMovePosition = transform.position;
 
+    // NOTE: We need to check if we were prevented from moving so we can return control to the player
     Vector3 moveOffset = postMovePosition - preMovePosition;
     if (moveOffset.sqrMagnitude < (motionMoveDistance * motionMoveDistance) - 0.001f)
     {
@@ -495,6 +539,57 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     return false;
+  }
+
+  /// <summary>
+  /// Updates the character based on the current state of hanging
+  /// </summary>
+  private void UpdateHangMotion()
+  {
+    if(motionProgress < motionTargets.Count)
+    {
+      float motionMoveDistance = 1.5f * ClimbSpeed * Time.fixedDeltaTime;
+      Vector3 targetOffset = motionTargets[motionProgress] - transform.position;
+      if(targetOffset.sqrMagnitude < motionMoveDistance * motionMoveDistance)
+      {
+        charController.Move(targetOffset);
+        ++motionProgress;
+
+        if(motionProgress == motionTargets.Count)
+        {
+          SetAnimSpeed(0.0f);
+        }
+      }
+      else
+      {
+        Vector3 targetDirection = targetOffset.normalized;
+        charController.Move(targetDirection * motionMoveDistance);
+      }
+    }
+    else
+    {
+      bool shouldExit = false;
+      if(shouldJump)
+      {
+        shouldExit = true;
+        CheckForVaultClimbMotion();
+        if(currentMotion == DefinedMotion.HANG)
+        {
+          Debug.Log("We tried to climb but couldn't! AAAAAAAAAAAHHH (This shouldnt happen =/)");
+        }
+      }
+      if(shouldSlide)
+      {
+        currentMotion = DefinedMotion.NONE;
+        shouldExit = true;
+      }
+
+      if(shouldExit)
+      {
+        SetAnimSpeed(1.0f);
+        SetAnimBool(animParamClimb, false);
+      }
+    }
   }
   
   private void UpdateSlideMotion()
@@ -550,10 +645,9 @@ public class FirstPersonMovement : MonoBehaviour
   {
     movementZ = InputSplitter.GetVerticalAxis(PlayerID);
     movementX = InputSplitter.GetHorizontalAxis(PlayerID);
-    if ((InputSplitter.GetSlidePressed(PlayerID)) && (movementZ > 0.1f))
+    if (InputSplitter.GetSlidePressed(PlayerID))
     {
       shouldSlide = true;
-      headBob.enabled = false;
     }
 
     if (InputSplitter.GetJumpPressed(PlayerID))
@@ -575,6 +669,7 @@ public class FirstPersonMovement : MonoBehaviour
     switch (currentMotion)
     {
       case DefinedMotion.NONE:
+      {
         previousHasOverhead = hasOverhead;
         hasOverhead = ((charController.collisionFlags & CollisionFlags.Above) != 0);
         if(!hasOverhead && previousHasOverhead)
@@ -587,10 +682,16 @@ public class FirstPersonMovement : MonoBehaviour
           }
         }
         UpdateOnPlayerInput();
-        break;
+      } break;
+
+      case DefinedMotion.HANG:
+      {
+        UpdateHangMotion();
+      } break;
 
       case DefinedMotion.VAULT:
       case DefinedMotion.CLIMB:
+      {
         bool motionComplete = UpdateVaultClimbMotion();
         if (motionComplete)
         {
@@ -598,12 +699,12 @@ public class FirstPersonMovement : MonoBehaviour
           SetAnimBool(animParamClimb, false);
           SetAnimBool(animParamVault, false);
         }
-
-        break;
+      } break;
 
       case DefinedMotion.SLIDE:
+      {
         UpdateSlideMotion();
-        break;
+      } break;
 
       default:
         Debug.Log("Attempt to update on unrecognized motion");
@@ -635,6 +736,12 @@ public class FirstPersonMovement : MonoBehaviour
   {
     localViewAnimator.SetBool(paramHash, newVal);
     enemyViewAnimator.SetBool(paramHash, newVal);
+  }
+
+  private void SetAnimSpeed(float newSpeed)
+  {
+    localViewAnimator.speed = newSpeed;
+    enemyViewAnimator.speed = newSpeed;
   }
 
   private void SetAvatarScale(Vector3 newScale)
