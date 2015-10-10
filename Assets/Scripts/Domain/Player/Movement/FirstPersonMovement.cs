@@ -309,8 +309,11 @@ public class FirstPersonMovement : MonoBehaviour
         if (climbCheckTransform == climbCeilingTransform)
         {
           Vector3 climbTarget = climbCheckInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
-          Vector3 climbMidpoint = transform.position;
-          climbMidpoint.y = climbTarget.y;
+          Vector3 climbMidpoint = climbTarget;
+          climbMidpoint -= forwardDir * epsilon*10;
+          
+          Debug.DrawLine(currentPosition, climbMidpoint, Color.red, 10.0f, false);
+          Debug.DrawLine(climbMidpoint, climbTarget, Color.red, 10.0f, false);
           
           velocity.y = 0.0f;
           ClimbSound.Play();
