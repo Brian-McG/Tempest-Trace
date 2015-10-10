@@ -610,7 +610,11 @@ public class FirstPersonMovement : MonoBehaviour
         break;
     }
 
-    if(charController.isGrounded)
+    if(currentMotion == DefinedMotion.NONE)
+    {
+      SetAnimBool(animParamJump, !charController.isGrounded);
+    }
+    else
     {
       SetAnimBool(animParamJump, false);
     }
