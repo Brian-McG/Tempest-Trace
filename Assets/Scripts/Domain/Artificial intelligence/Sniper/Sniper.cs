@@ -248,11 +248,11 @@ namespace Domain.ArtificialIntelligence.Sniper
     {
       if (targetedPlayer == 1)
       {
-        currentTarget = playerOne.transform.position + heightOffset;
+        currentTarget = playerOne.transform.position + HeightOffset(playerOne);
       }
       else if (targetedPlayer == 2)
       {
-        currentTarget = playerTwo.transform.position + heightOffset;
+        currentTarget = playerTwo.transform.position + HeightOffset(playerTwo);
       }
     }
 
@@ -271,6 +271,11 @@ namespace Domain.ArtificialIntelligence.Sniper
       {
         return 2;
       }
+    }
+
+    private Vector3 HeightOffset(GameObject player)
+    {
+      return new Vector3(0, heightOffset.y * player.transform.localScale.y, 0);
     }
   }
 }
