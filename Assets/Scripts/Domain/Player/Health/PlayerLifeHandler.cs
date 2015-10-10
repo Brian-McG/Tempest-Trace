@@ -32,6 +32,7 @@ namespace Domain.Player.Health
 
     private PlayerHealth playerHealth;
     private FirstPersonMovement firstPersonMovement;
+    private PlayerSlow playerSlow;
     private Domain.Player.Checkpoint.CheckpointController checkpoint;
     private bool isEnabled;
     private float totalFadeout;
@@ -96,6 +97,7 @@ namespace Domain.Player.Health
         firstPersonMovement = this.gameObject.GetComponent<FirstPersonMovement>();
         playerHealth = GetComponent<PlayerHealth>();
         checkpoint = GetComponent<CheckpointController>();
+        playerSlow = GetComponent<PlayerSlow>();
         Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
       }
       else
@@ -137,9 +139,10 @@ namespace Domain.Player.Health
       Fadeout.color = Color.black;
       if (this.gameObject.tag == "PlayerOne" || this.gameObject.tag == "PlayerTwo")
       {
-        firstPersonMovement.ResetState();
         transform.position = checkpoint.Position;
         transform.localEulerAngles = checkpoint.Orientation;
+        playerSlow.ResetSlow();
+        firstPersonMovement.ResetState();
         playerHealth.ResetHP();
       }
     }

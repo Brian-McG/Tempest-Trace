@@ -26,6 +26,10 @@ namespace Domain.Player.Movement
     [Tooltip("Degree to which the player is slowed by the aircon.")]
     public float
       AirconSlowFactor = 3.0f;
+    [Tooltip("Sound that plays when player is slowed by vent for the first time.")]
+    public AudioSource
+      AirconPainSound;
+
 
     private Aircon aircon;
     private FirstPersonMovement firstPersonMovement;
@@ -33,6 +37,7 @@ namespace Domain.Player.Movement
     private float slowSpeed;
     private float currentLerpTime;
     private bool isEnabled;
+    private bool painPlayed;
 
     // Variables that are used to apply a general slow to a player (e.g. hit by sniper)
     private bool calledSlow;
@@ -42,6 +47,14 @@ namespace Domain.Player.Movement
     private float generalLerpDownTime;
     private float generalLerpUpTime;
     private float generalSlowSpeed;
+
+    public void ResetSlow()
+    {
+      calledSlow = false;
+      isEnabled = false;
+      calledSlowEnabled = false;
+      currentLerpTime = 0;
+    }
 
     /// <summary>
     /// Slows player down for some duration and to some degree.
@@ -70,6 +83,7 @@ namespace Domain.Player.Movement
       isEnabled = false;
       calledSlow = false;
       calledSlowEnabled = false;
+      painPlayed = false;
       aircon = Aircon.GetComponent<Aircon>();
     }
 
@@ -89,6 +103,11 @@ namespace Domain.Player.Movement
       {
         currentLerpTime = Mathf.Clamp(AirconLerpDownTime * (defaultRunSpeed - firstPersonMovement.RunSpeed) / (defaultRunSpeed - slowSpeed), 0, AirconLerpDownTime);
         isEnabled = true;
+        if (!painPlayed)
+        {
+          AirconPainSound.Play();
+          painPlayed = true;
+        }
       }
     }
 
@@ -110,6 +129,7 @@ namespace Domain.Player.Movement
     /// </summary>
     private void VentSlow()
     {
+
       if (isEnabled && !calledSlow && AirconLerpDownTime - currentLerpTime > 0.01f)
       {
         currentLerpTime += Time.deltaTime;
@@ -129,30 +149,33 @@ namespace Domain.Player.Movement
     /// </summary>
     private void CalledSlow()
     {
-      if (calledSlow && calledSlowEnabled)
+      if (firstPersonMovement.CurrentMotion != DefinedMotion.SLIDE)
       {
-        currentLerpTime += Time.deltaTime;
-        float percentage = currentLerpTime / generalLerpDownTime;
-        firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
-        if (generalLerpDownTime - currentLerpTime < 0.01f)
+        if (calledSlow && calledSlowEnabled)
         {
-          currentDuration += Time.deltaTime;
-          if (currentDuration > generalDuration)
+          currentLerpTime += Time.deltaTime;
+          float percentage = currentLerpTime / generalLerpDownTime;
+          firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
+          if (generalLerpDownTime - currentLerpTime < 0.01f)
           {
-            currentLerpTime = generalLerpUpTime;
-            calledSlowEnabled = false;
+            currentDuration += Time.deltaTime;
+            if (currentDuration > generalDuration)
+            {
+              currentLerpTime = generalLerpUpTime;
+              calledSlowEnabled = false;
+            }
           }
         }
-      }
-      else if (calledSlow && !calledSlowEnabled && generalLerpUpTime - currentLerpTime < (generalLerpUpTime - 0.01f))
-      {
-        currentLerpTime -= Time.deltaTime;
-        float percentage = currentLerpTime / generalLerpUpTime;
-        firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
-        if (generalLerpUpTime - currentLerpTime > (generalLerpUpTime - 0.01f))
+        else if (calledSlow && !calledSlowEnabled && generalLerpUpTime - currentLerpTime < (generalLerpUpTime - 0.01f))
         {
-          calledSlow = false;
-          firstPersonMovement.RunSpeed = defaultRunSpeed;
+          currentLerpTime -= Time.deltaTime;
+          float percentage = currentLerpTime / generalLerpUpTime;
+          firstPersonMovement.RunSpeed = Mathf.Lerp(defaultRunSpeed, generalSlowSpeed, percentage);
+          if (generalLerpUpTime - currentLerpTime > (generalLerpUpTime - 0.01f))
+          {
+            calledSlow = false;
+            firstPersonMovement.RunSpeed = defaultRunSpeed;
+          }
         }
       }
     }

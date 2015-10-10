@@ -26,6 +26,14 @@ namespace Domain.Interactables.Smokebomb
     private Animator animator;
     private int animParamThrowing;
 
+    public int CurrentBombCount
+    {
+      get
+      {
+        return currentBombCount;
+      }
+    }
+
     internal void Awake()
     {
       if (!DepthFirstSearch("RightHand_bind", transform))
