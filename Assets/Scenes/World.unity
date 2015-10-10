@@ -101925,7 +101925,7 @@ MonoBehaviour:
   MaximumVaultDistance: 3
   MinimumSpeedToVault: 5
   MaximumClimbHeight: 3.04999995
-  HangClimbThresholdHeight: 2
+  HangClimbThresholdHeight: 1.5
   ClimbSpeed: 5
   SlideDeceleration: 7.5
   SlideStopSpeedThreshold: 1
@@ -116296,7 +116296,7 @@ MonoBehaviour:
   MaximumVaultDistance: 3
   MinimumSpeedToVault: 5
   MaximumClimbHeight: 3.04999995
-  HangClimbThresholdHeight: 2
+  HangClimbThresholdHeight: 1.5
   ClimbSpeed: 5
   SlideDeceleration: 7.5
   SlideStopSpeedThreshold: 1

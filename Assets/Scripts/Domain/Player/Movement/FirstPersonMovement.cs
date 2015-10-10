@@ -98,6 +98,7 @@ public class FirstPersonMovement : MonoBehaviour
   
   private Headbob headBob;
   private CharacterController charController;
+  private Transform cameraChild;
   private PlayerLifeHandler lifeHandler;
   private Vector3 velocity;
   
@@ -157,7 +158,6 @@ public class FirstPersonMovement : MonoBehaviour
     velocity  = Vector3.zero;
     RunSpeed = DefaultRunSpeed;
     
-    Transform cameraChild = transform.Find("Camera");
     FirstPersonCameraVertical cameraVerticalControl = cameraChild.GetComponent<FirstPersonCameraVertical>();
     cameraChild.localRotation = Quaternion.identity;
     cameraVerticalControl.ResetState();
@@ -168,6 +168,7 @@ public class FirstPersonMovement : MonoBehaviour
     charController = GetComponent<CharacterController>();
     headBob = transform.Find("Camera").GetComponent<Headbob>();
     lifeHandler = GetComponent<PlayerLifeHandler>();
+    cameraChild = transform.Find("Camera");
     
     localViewAnimator = transform.Find("LocalViewAvatarContainer").GetChild(0).GetComponent<Animator>();
     enemyViewAnimator = transform.Find("Avatar").GetComponent<Animator>();
@@ -330,13 +331,26 @@ public class FirstPersonMovement : MonoBehaviour
             }
           }
 
-          if(shouldHang)
+          if(shouldHang && (velocity.y < 0.0f))
           {
             Vector3 hangTarget = climbCheckInfo.point - forwardDir*charController.radius;
             hangTarget.y = climbCeilingInfo.point.y - charController.height + epsilon;
 
             velocity.y = 0.0f;
             currentMotion = DefinedMotion.HANG;
+
+            // NOTE: Here we force the player to look at the position where the raycast hit
+            //       and freeze horizontal rotation, this is to prevent the player not looking
+            //       at the ledge they're hanging on and therefore not being able to climb up
+            // TODO: Check that this actually solves the problem? It kinda seems like it doesnt do
+            //       anything because our raycast goes out in the transform.forward direction anyways
+            Vector3 cameraTargetLoc = hangTarget + cameraChild.localPosition;
+            Vector3 cameraLookTarget = climbCheckInfo.point;
+            cameraLookTarget.y = cameraTargetLoc.y;
+            Quaternion cameraHangOrientation = Quaternion.LookRotation(cameraLookTarget - cameraTargetLoc, Vector3.up);
+            transform.rotation = cameraHangOrientation;
+            GetComponent<FirstPersonCameraHorizontal>().enabled = false;
+
             SetAnimBool(animParamJump, false);
             SetAnimBool(animParamClimb, true);
             motionTargets.Clear();
@@ -345,7 +359,7 @@ public class FirstPersonMovement : MonoBehaviour
             
             midAirChecksEnabled = false;
           }
-          else
+          else if(velocity.y > 0.0f)
           {
             Vector3 climbTarget = climbCeilingInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
             Vector3 climbMidpoint = climbTarget;
@@ -588,6 +602,7 @@ public class FirstPersonMovement : MonoBehaviour
       {
         SetAnimSpeed(1.0f);
         SetAnimBool(animParamClimb, false);
+        GetComponent<FirstPersonCameraHorizontal>().enabled = true;
       }
     }
   }
