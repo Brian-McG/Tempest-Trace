@@ -22,9 +22,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102348}
-  m_LocalRotation: {x: 0, y: 0, z: .707106829, w: .707106829}
-  m_LocalPosition: {x: 37.5200005, y: 21, z: 3.55999994}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: .676402688, y: -.195233569, z: .682331383, w: -.196944788}
+  m_LocalPosition: {x: 105.428566, y: -21.8571434, z: 13.2857285}
+  m_LocalScale: {x: 1.42857122, y: 1.42857099, z: 1.42857111}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -45,7 +45,7 @@ Projector:
   m_Material: {fileID: 2100000, guid: 75cbf88fae8ca6847b1297f277958366, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 1050112
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
