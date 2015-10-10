@@ -24,12 +24,16 @@ namespace Domain.ArtificialIntelligence.Sniper
     private Sniper sniper;
     private float currentDelay;
     private Vector3 heightOffset;
+    private GameObject playerOne;
+    private GameObject playerTwo;
 
     internal void Start()
     {  
       sniper = SniperControl.SniperObj;
       currentDelay = 0.0f;
-      heightOffset = new Vector3(0, GameObject.FindGameObjectWithTag("PlayerOne").GetComponent<CharacterController>().center.y, 0);
+      playerOne = GameObject.FindGameObjectWithTag("PlayerOne");
+      heightOffset = new Vector3(0, playerOne.GetComponent<CharacterController>().center.y, 0);
+      playerTwo = GameObject.FindGameObjectWithTag("PlayerTwo");
     }
 
     /// <summary>
@@ -47,7 +51,7 @@ namespace Domain.ArtificialIntelligence.Sniper
           if (sniper.TargetedPlayer == 0 && other.tag == "PlayerOne" && currentDelay > ReactionDelay && !other.GetComponent<PlayerLifeHandler>().Dead)
           {
             RaycastHit hit;
-            Vector3 direction = (other.transform.position + heightOffset) - sniper.SniperGameObj.transform.position;
+            Vector3 direction = (other.transform.position + HeightOffset(playerOne)) - sniper.SniperGameObj.transform.position;
             if (Physics.Raycast(sniper.SniperGameObj.transform.position, direction, out hit, 1000f, sniper.InverseIgnoredColliders) && hit.collider.tag == "PlayerOne")
             {
               sniper.TargetedPlayer = 1;
@@ -56,7 +60,7 @@ namespace Domain.ArtificialIntelligence.Sniper
           else if (sniper.TargetedPlayer == 0 && other.tag == "PlayerTwo" && currentDelay > ReactionDelay && !other.GetComponent<PlayerLifeHandler>().Dead)
           {
             RaycastHit hit;
-            Vector3 direction = (other.transform.position + heightOffset) - sniper.SniperGameObj.transform.position;
+            Vector3 direction = (other.transform.position + HeightOffset(playerTwo)) - sniper.SniperGameObj.transform.position;
             if (Physics.Raycast(sniper.SniperGameObj.transform.position, direction, out hit, 1000f, sniper.InverseIgnoredColliders) && hit.collider.tag == "PlayerTwo")
             {
               sniper.TargetedPlayer = 2;
@@ -82,6 +86,11 @@ namespace Domain.ArtificialIntelligence.Sniper
         sniper.TargetedPlayer = 0;
         currentDelay = 0.0f;
       }
+    }
+
+    private Vector3 HeightOffset(GameObject player)
+    {
+      return new Vector3(0, heightOffset.y * player.transform.localScale.y, 0);
     }
   }
 }

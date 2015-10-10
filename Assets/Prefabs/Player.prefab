@@ -5160,10 +5160,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fogMode: 0
-  startDistance: 200
+  startDistance: 50
   globalDensity: 1
   heightScale: 100
-  height: -100
+  height: -90
   globalFogColor: {r: .816176474, g: .816176474, b: .816176474, a: 1}
   fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
 --- !u!124 &12441678

@@ -127,7 +127,7 @@ namespace Domain.ArtificialIntelligence.Sniper
     {
       if (colliders.Length > 0)
       {
-        if ((targetedPlayer == 1 && !playerOneLifeHandler.Dead) || (targetedPlayer == 2 && !playerTwoLifeHandler.Dead))
+        if ((targetedPlayer == 1 && !playerOneLifeHandler.Dead) || (targetedPlayer == 2 && playerTwo != null&& !playerTwoLifeHandler.Dead))
         {
           UpdatePlayerTarget();
         }
@@ -152,7 +152,7 @@ namespace Domain.ArtificialIntelligence.Sniper
     /// </summary>
     public void Patrol()
     {
-      if (playerOneLifeHandler.Dead || playerTwoLifeHandler.Dead)
+			if (playerOneLifeHandler.Dead || playerTwo != null && playerTwoLifeHandler.Dead)
       {
         GenerateRandomTarget();
       }
@@ -173,7 +173,7 @@ namespace Domain.ArtificialIntelligence.Sniper
     /// </summary>
     public void Chase()
     {
-      if ((targetedPlayer == 1 && !playerOneLifeHandler.Dead) || (targetedPlayer == 2 && !playerTwoLifeHandler.Dead))
+			if ((targetedPlayer == 1 && !playerOneLifeHandler.Dead) || (targetedPlayer == 2 && playerTwo != null&& !playerTwoLifeHandler.Dead))
       {
         UpdatePlayerTarget();
         Vector3 direction = currentTarget - sniper.transform.position;
@@ -193,7 +193,7 @@ namespace Domain.ArtificialIntelligence.Sniper
     /// </summary>
     public void Shoot()
     {
-      if ((targetedPlayer == 1 && !playerOneLifeHandler.Dead) || (targetedPlayer == 2 && !playerTwoLifeHandler.Dead))
+			if ((targetedPlayer == 1 && !playerOneLifeHandler.Dead) || (targetedPlayer == 2 && playerTwo != null&& !playerTwoLifeHandler.Dead))
       {
         UpdatePlayerTarget();
         sniper.transform.LookAt(currentTarget);
@@ -248,11 +248,11 @@ namespace Domain.ArtificialIntelligence.Sniper
     {
       if (targetedPlayer == 1)
       {
-        currentTarget = playerOne.transform.position + heightOffset;
+        currentTarget = playerOne.transform.position + HeightOffset(playerOne);
       }
-      else if (targetedPlayer == 2)
+			else if (playerTwo != null && targetedPlayer == 2)
       {
-        currentTarget = playerTwo.transform.position + heightOffset;
+        currentTarget = playerTwo.transform.position + HeightOffset(playerTwo);
       }
     }
 
@@ -271,6 +271,11 @@ namespace Domain.ArtificialIntelligence.Sniper
       {
         return 2;
       }
+    }
+
+    private Vector3 HeightOffset(GameObject player)
+    {
+      return new Vector3(0, heightOffset.y * player.transform.localScale.y, 0);
     }
   }
 }
