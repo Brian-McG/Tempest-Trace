@@ -336,7 +336,7 @@ public class FirstPersonMovement : MonoBehaviour
             }
           }
 
-          if(shouldHang && (velocity.y < 0.0f) && (velocity.y > 7.0f))
+          if(shouldHang && (velocity.y < 0.0f) && (velocity.y > -15.0f))
           {
             Vector3 hangTarget = climbCheckInfo.point - forwardDir*charController.radius;
             hangTarget.y = climbCeilingInfo.point.y - charController.height + epsilon;
@@ -364,7 +364,7 @@ public class FirstPersonMovement : MonoBehaviour
             
             midAirChecksEnabled = false;
           }
-          else if(velocity.y > 0.0f)
+          else if(velocity.y > -epsilon)
           {
             Vector3 climbTarget = climbCeilingInfo.point + new Vector3(0.0f, 0.05f, 0.0f);
             Vector3 climbMidpoint = climbTarget;
@@ -464,7 +464,7 @@ public class FirstPersonMovement : MonoBehaviour
         SetAnimBool(animParamJump, true);
       }
     }
-    else
+    else if(currentMotion == DefinedMotion.NONE) // Check that we aren't hanging/vaulting/whatever
     {
       velocity.y -= 9.81f * Time.fixedDeltaTime;
     }
