@@ -58,8 +58,11 @@ namespace Domain.Interactables.Smokebomb
     {
       if (currentBombCount < NumberOfBombs)
       {
-        StartCoroutine(ThrowSmokebomb());
+        GameObject shield = Instantiate(SmokeBombShield, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+        shield.transform.parent = this.gameObject.transform;
         ++currentBombCount;
+        StartCoroutine(ThrowSmokebomb());
+
         animator.SetBool(animParamThrowing, true);
       }
     }
@@ -68,8 +71,6 @@ namespace Domain.Interactables.Smokebomb
     {
       yield return new WaitForSeconds(0.7f);
       Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
-      GameObject shield = Instantiate(SmokeBombShield, this.gameObject.transform.position, Quaternion.identity) as GameObject;
-      shield.transform.parent = this.gameObject.transform;
     }
 
     /// <summary>
