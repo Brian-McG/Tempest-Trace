@@ -243,6 +243,11 @@ public class FirstPersonMovement : MonoBehaviour
       //       The player should be able to be running, and without noticing a difference in speed/smoothness, vault over a low object
       Vector3 vaultCheckPoint = vaultCheckInfo.point;
       Vector3 vaultCeilingBasePoint = vaultCheckPoint + (forwardDir * epsilon);
+      float vaultHeight = MaximumVaultHeight;
+      if(velocity.y < 0.0f)
+      {
+        vaultHeight *= 0.5f; // NOTE: If you're falling you shouldn't be able to jump up very much
+      }
       float vaultCeilingHeight = MaximumVaultHeight - MinimumObstacleScanHeight; // We subtract the height from our initial ray
       Vector3 vaultCeiling = vaultCeilingBasePoint + new Vector3(0.0f, vaultCeilingHeight, 0.0f);
       
