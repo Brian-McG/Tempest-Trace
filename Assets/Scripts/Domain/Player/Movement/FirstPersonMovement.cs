@@ -336,7 +336,7 @@ public class FirstPersonMovement : MonoBehaviour
             }
           }
 
-          if(shouldHang && (velocity.y < 0.0f))
+          if(shouldHang && (velocity.y < 0.0f) && (velocity.y > 7.0f))
           {
             Vector3 hangTarget = climbCheckInfo.point - forwardDir*charController.radius;
             hangTarget.y = climbCeilingInfo.point.y - charController.height + epsilon;
