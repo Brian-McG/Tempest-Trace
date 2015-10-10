@@ -118657,8 +118657,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: The aircon terminal activates the aircon which releases steam which can
-    slow the player.
+  m_Text: The aircon terminal activates the aircon which releases steam that can slow
+    the player.
 --- !u!222 &1873476119
 CanvasRenderer:
   m_ObjectHideFlags: 0
