@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &108686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 408686}
+  - 82: {fileID: 8208686}
+  m_Layer: 9
+  m_Name: SlideSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &130298
 GameObject:
   m_ObjectHideFlags: 1
@@ -2313,7 +2329,7 @@ GameObject:
   - 4: {fileID: 473884}
   - 82: {fileID: 8273884}
   m_Layer: 9
-  m_Name: SlideSound
+  m_Name: SlowPainSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2383,6 +2399,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &408686
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108686}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 441678}
+  m_RootOrder: 7
 --- !u!4 &430298
 Transform:
   m_ObjectHideFlags: 1
@@ -3361,6 +3389,7 @@ Transform:
   - {fileID: 473890}
   - {fileID: 473888}
   - {fileID: 473886}
+  - {fileID: 408686}
   - {fileID: 473884}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -4344,8 +4373,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166932}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -.25, z: -.400000006}
+  m_LocalScale: {x: 1, y: 1.20000005, z: 1}
   m_Children:
   - {fileID: 430298}
   m_Father: {fileID: 441678}
@@ -4361,7 +4390,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 441678}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!4 &473886
 Transform:
   m_ObjectHideFlags: 1
@@ -4464,12 +4493,12 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 141680}
   m_Enabled: 0
---- !u!82 &8273884
+--- !u!82 &8208686
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 173884}
+  m_GameObject: {fileID: 108686}
   m_Enabled: 1
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: 90ccefd26fa8b48468589c498e854e75, type: 3}
@@ -4479,6 +4508,64 @@ AudioSource:
   Loop: 0
   Mute: 0
   Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+--- !u!82 &8273884
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173884}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 8300000, guid: c548cb8f8842f83439ba658b0e295273, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 255
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -4901,6 +4988,7 @@ MonoBehaviour:
   AirconLerpDownTime: 1
   AirconLerpUpTime: 5
   AirconSlowFactor: 3
+  AirconPainSound: {fileID: 8273884}
 --- !u!114 &11441680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4942,7 +5030,7 @@ MonoBehaviour:
   JumpSound: {fileID: 8273890}
   ClimbSound: {fileID: 8273888}
   VaultSound: {fileID: 8273886}
-  SlideSound: {fileID: 8273884}
+  SlideSound: {fileID: 8208686}
 --- !u!114 &11441684
 MonoBehaviour:
   m_ObjectHideFlags: 1
