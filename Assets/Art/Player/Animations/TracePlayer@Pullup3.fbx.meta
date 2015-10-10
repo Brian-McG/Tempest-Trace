@@ -158,7 +158,7 @@ ModelImporter:
     4300008: hair:polySurface1
     4300010: EyeR
     4300012: EyeL
-    7400000: Take 001
+    7400000: Pullup3
     9500000: //RootNode
     13700000: body1
     13700002: EyeL
@@ -182,7 +182,207 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Pullup3
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves:
+      - name: AvatarYOffset
+        curve:
+          serializedVersion: 2
+          curve:
+          - time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .24999997
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .75094682
+            value: -.699999988
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          preInfinity: 2
+          postInfinity: 2
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body1
+        weight: 0
+      - path: body1/head
+        weight: 0
+      - path: body1/head/EyeL
+        weight: 0
+      - path: body1/head/EyeR
+        weight: 0
+      - path: body1/head/hair:polySurface1
+        weight: 0
+      - path: body1/pants
+        weight: 0
+      - path: body1/shirt
+        weight: 0
+      - path: root_be
+        weight: 1
+      - path: root_be/Hips_bind
+        weight: 1
+      - path: root_be/Hips_bind/LeftUpLeg_bind
+        weight: 1
+      - path: root_be/Hips_bind/LeftUpLeg_bind/LeftLeg_bind
+        weight: 1
+      - path: root_be/Hips_bind/LeftUpLeg_bind/LeftLeg_bind/LeftFoot_bind
+        weight: 1
+      - path: root_be/Hips_bind/LeftUpLeg_bind/LeftLeg_bind/LeftFoot_bind/LeftToeBase_bind
+        weight: 1
+      - path: root_be/Hips_bind/LeftUpLeg_bind/LeftLeg_bind/LeftFoot_bind/LeftToeBase_bind/LeftToe_be
+        weight: 0
+      - path: root_be/Hips_bind/RightUpLeg_bind
+        weight: 1
+      - path: root_be/Hips_bind/RightUpLeg_bind/RightLeg_bind
+        weight: 1
+      - path: root_be/Hips_bind/RightUpLeg_bind/RightLeg_bind/RightFoot_bind
+        weight: 1
+      - path: root_be/Hips_bind/RightUpLeg_bind/RightLeg_bind/RightFoot_bind/RightToeBase_bind
+        weight: 1
+      - path: root_be/Hips_bind/RightUpLeg_bind/RightLeg_bind/RightFoot_bind/RightToeBase_bind/RightToe_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandIndex1_bind
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandIndex1_bind/LeftHandIndex2_bind
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandIndex1_bind/LeftHandIndex2_bind/LeftHandIndex3_bind
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandIndex1_bind/LeftHandIndex2_bind/LeftHandIndex3_bind/LeftHandIndex4_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandMiddle1_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandMiddle1_bind/LeftHandMiddle2_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandMiddle1_bind/LeftHandMiddle2_bind/LeftHandMiddle3_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandMiddle1_bind/LeftHandMiddle2_bind/LeftHandMiddle3_bind/LeftHandMiddle4_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandPinky1_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandPinky1_bind/LeftHandPinky2_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandPinky1_bind/LeftHandPinky2_bind/LeftHandPinky3_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandPinky1_bind/LeftHandPinky2_bind/LeftHandPinky3_bind/LeftHandPinky4_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandRing1_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandRing1_bind/LeftHandRing2_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandRing1_bind/LeftHandRing2_bind/LeftHandRing3_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandRing1_bind/LeftHandRing2_bind/LeftHandRing3_bind/LeftHandRing4_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandThumb1_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandThumb1_bind/LeftHandThumb2_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandThumb1_bind/LeftHandThumb2_bind/LeftHandThumb3_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/LeftShoulder_bind/LeftArm_bind/LeftForeArm_bind/LeftHand_bind/LeftHandThumb1_bind/LeftHandThumb2_bind/LeftHandThumb3_bind/LeftHandThumb4_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/Neck_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/Neck_bind/Head_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/Neck_bind/Head_bind/HeadTop_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandIndex1_bind
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandIndex1_bind/RightHandIndex2_bind
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandIndex1_bind/RightHandIndex2_bind/RightHandIndex3_bind
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandIndex1_bind/RightHandIndex2_bind/RightHandIndex3_bind/RightHandIndex4_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandMiddle1_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandMiddle1_bind/RightHandMiddle2_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandMiddle1_bind/RightHandMiddle2_bind/RightHandMiddle3_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandMiddle1_bind/RightHandMiddle2_bind/RightHandMiddle3_bind/RightHandMiddle4_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandPinky1_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandPinky1_bind/RightHandPinky2_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandPinky1_bind/RightHandPinky2_bind/RightHandPinky3_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandPinky1_bind/RightHandPinky2_bind/RightHandPinky3_bind/RightHandPinky4_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandRing1_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandRing1_bind/RightHandRing2_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandRing1_bind/RightHandRing2_bind/RightHandRing3_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandRing1_bind/RightHandRing2_bind/RightHandRing3_bind/RightHandRing4_be
+        weight: 0
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandThumb1_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandThumb1_bind/RightHandThumb2_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandThumb1_bind/RightHandThumb2_bind/RightHandThumb3_bind
+        weight: 1
+      - path: root_be/Hips_bind/Spine_bind/Spine1_bind/Spine2_bind/RightShoulder_bind/RightArm_bind/RightForeArm_bind/RightHand_bind/RightHandThumb1_bind/RightHandThumb2_bind/RightHandThumb3_bind/RightHandThumb4_be
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
