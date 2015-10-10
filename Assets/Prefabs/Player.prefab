@@ -5044,7 +5044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sensitivity: 6
   MinimumAngle: -60
-  MaximumAngle: 60
+  MaximumAngle: 57
 --- !u!114 &11442712
 MonoBehaviour:
   m_ObjectHideFlags: 1
