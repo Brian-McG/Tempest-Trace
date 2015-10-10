@@ -23,7 +23,7 @@ namespace Domain.Interactables.Smokebomb
 
     private GameObject hand;
     private int currentBombCount;
-    private Animator animator;
+    private Animator[] animators;
     private int animParamThrowing;
 
     public int CurrentBombCount
@@ -42,13 +42,16 @@ namespace Domain.Interactables.Smokebomb
       }
 
       currentBombCount = 0;
-      animator = GetComponentInChildren<Animator>();
+      animators = GetComponentsInChildren<Animator>();
       animParamThrowing = Animator.StringToHash("IsThrowing");
     }
 
     internal void Update()
     {
-      animator.SetBool(animParamThrowing, false);
+      for (int i = 0; i < animators.Length; ++i)
+      {
+        animators[i].SetBool(animParamThrowing, false);
+      }
     }
 
     /// <summary>
@@ -58,9 +61,14 @@ namespace Domain.Interactables.Smokebomb
     {
       if (currentBombCount < NumberOfBombs)
       {
-        StartCoroutine(ThrowSmokebomb());
+        GameObject shield = Instantiate(SmokeBombShield, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+        shield.transform.parent = this.gameObject.transform;
         ++currentBombCount;
-        animator.SetBool(animParamThrowing, true);
+        StartCoroutine(ThrowSmokebomb());
+        for (int i = 0; i < animators.Length; ++i)
+        {
+          animators[i].SetBool(animParamThrowing, true);
+        }
       }
     }
 
@@ -68,8 +76,6 @@ namespace Domain.Interactables.Smokebomb
     {
       yield return new WaitForSeconds(0.7f);
       Instantiate(SmokeBomb, hand.transform.position, Quaternion.identity);
-      GameObject shield = Instantiate(SmokeBombShield, this.gameObject.transform.position, Quaternion.identity) as GameObject;
-      shield.transform.parent = this.gameObject.transform;
     }
 
     /// <summary>

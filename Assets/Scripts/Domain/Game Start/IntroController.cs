@@ -4,6 +4,7 @@
 // </copyright>
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Domain.Player.Health;
 using UserInterface.HeadsUpDisplay;
 namespace Domain.GameStart
@@ -21,6 +22,9 @@ namespace Domain.GameStart
     public GameObject[] Locations;
     public AudioSource IntroDialog;
     public AudioSource StartGameSound;
+    public GameObject[] PopUpMessages;
+    public int[] PopUpMessageStart;
+    public int[] PopUpMessageEnd;
     private int currentLocation;
     private float lerpTime = 10f;
     private float currentLerpTime;
@@ -32,6 +36,7 @@ namespace Domain.GameStart
     private GameObject[] playerCameras;
     private GameObject playerOneUI;
     private GameObject playerTwoUI;
+    private CanvasGroup[] popUpMessageCanvas;
 
     public void LerpTransform(Transform t1, Transform t2, float t)
     {
@@ -60,6 +65,11 @@ namespace Domain.GameStart
       else
       {
         EnablePlayerMode();
+      }
+      popUpMessageCanvas = new CanvasGroup[PopUpMessages.Length];
+      for (int i = 0; i < PopUpMessages.Length; ++i)
+      {
+        popUpMessageCanvas[i] = PopUpMessages[i].GetComponent<CanvasGroup>();
       }
     }
 
@@ -117,6 +127,26 @@ namespace Domain.GameStart
           if (fadeController.FadeoutAlpha > 0.95)
           {
             EnablePlayerMode();
+          }
+        }
+        for (int i = 0; i < PopUpMessageStart.Length; ++i)
+        {
+          if (currentLocation == PopUpMessageStart[i])
+          {
+            if (popUpMessageCanvas[i].alpha < 1.0f)
+            {
+              popUpMessageCanvas[i].alpha += Time.deltaTime * 1;
+            }
+          }
+        }
+        for (int i = 0; i < PopUpMessageEnd.Length; ++i)
+        {
+          if (currentLocation == PopUpMessageEnd[i])
+          {
+            if (popUpMessageCanvas[i].alpha > 0.0f)
+            {
+              popUpMessageCanvas[i].alpha -= Time.deltaTime * 1;
+            }
           }
         }
       }
