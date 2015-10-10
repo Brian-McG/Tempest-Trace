@@ -62,7 +62,7 @@ namespace Domain.ArtificialIntelligence.Sniper
       lineRenderer = sniper.GetComponent<LineRenderer>();
       currentTarget = Vector3.zero;
       previousDirection = new Vector3(1000f, 1000f, 1000f);
-      inverseIgnoredColliders = ~(1 << LayerMask.NameToLayer("SniperCollider") | 1 << LayerMask.NameToLayer("Checkpoint"));
+      inverseIgnoredColliders = ~(1 << LayerMask.NameToLayer("SniperCollider") | 1 << LayerMask.NameToLayer("Checkpoint") | 1 << LayerMask.NameToLayer("Drone"));
       targetedPlayer = 0;
       heightOffset = new Vector3(0, playerOne.GetComponent<CharacterController>().center.y, 0);
       transformScale = new Vector3(1.0f / sniper.transform.lossyScale.x,
