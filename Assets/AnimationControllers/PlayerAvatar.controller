@@ -299,7 +299,7 @@ Transition:
   m_Name: 
   m_SrcState: {fileID: 110219640}
   m_DstState: {fileID: 110203238}
-  m_TransitionDuration: .100000001
+  m_TransitionDuration: .501986325
   m_TransitionOffset: 0
   m_Conditions:
   - m_ConditionMode: 2
@@ -416,10 +416,10 @@ State:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Climb
-  m_Speed: 2
+  m_Speed: 3
   m_CycleOffset: 0
   m_Motions:
-  - {fileID: 7400000, guid: 532721c037e8796499387bd95ec380ac, type: 3}
+  - {fileID: 7400000, guid: dd08d7a09abdadb468450da54a84791c, type: 3}
   m_ParentStateMachine: {fileID: 110780958}
   m_Position: {x: 540, y: 36, z: 0}
   m_IKOnFeet: 0
@@ -515,13 +515,13 @@ StateMachine:
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
     data:
-      first: {fileID: 110224474}
-      second:
-      - {fileID: 110157442}
-    data:
       first: {fileID: 110270030}
       second:
       - {fileID: 110100462}
+    data:
+      first: {fileID: 110224474}
+      second:
+      - {fileID: 110157442}
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
