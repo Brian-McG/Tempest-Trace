@@ -248,7 +248,7 @@ public class FirstPersonMovement : MonoBehaviour
       {
         vaultHeight *= 0.5f; // NOTE: If you're falling you shouldn't be able to jump up very much
       }
-      float vaultCeilingHeight = MaximumVaultHeight - MinimumObstacleScanHeight; // We subtract the height from our initial ray
+      float vaultCeilingHeight = vaultHeight - MinimumObstacleScanHeight; // We subtract the height from our initial ray
       Vector3 vaultCeiling = vaultCeilingBasePoint + new Vector3(0.0f, vaultCeilingHeight, 0.0f);
       
       RaycastHit vaultApexInfo;
