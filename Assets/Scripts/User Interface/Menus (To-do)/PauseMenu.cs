@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Domain.Player.Look;
+using Domain.GameInput;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class PauseMenu : MonoBehaviour
 
   void Update ()
   {
-    if (Input.GetKeyDown (KeyCode.Escape))
+    if (InputSplitter.GetPausePressed(0) || InputSplitter.GetPausePressed(1))
     {
       if(isPaused)
       {

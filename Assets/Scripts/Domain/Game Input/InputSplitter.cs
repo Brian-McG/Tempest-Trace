@@ -137,5 +137,19 @@ public class InputSplitter
 
     return false;
   }
+
+  public static bool GetPausePressed(int player)
+  {
+    if (player == 0)
+    {
+        return Input.GetButtonDown("Pause");
+    }
+    else if (player == 1)
+    {
+        return Input.GetButtonDown("PauseJoy");
+    }
+
+    return false;
+  }
 }
 }
