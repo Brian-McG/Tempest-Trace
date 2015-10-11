@@ -98,7 +98,15 @@ namespace Domain.Player.Health
         playerHealth = GetComponent<PlayerHealth>();
         checkpoint = GetComponent<CheckpointController>();
         playerSlow = GetComponent<PlayerSlow>();
-        Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
+        GameObject Player2 = GameObject.FindGameObjectWithTag("PlayerTwo");
+        if (Player2 != null)
+        {
+          Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
+        }
+        else
+        {
+          Fadeout.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
+        }
       }
       else
       {

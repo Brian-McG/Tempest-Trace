@@ -26,10 +26,17 @@ namespace Domain.CameraEffects
 
     internal void Awake()
     {
-      FlashPlayerOne.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
-      FlashPlayerTwo.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
+      if (FlashPlayerTwo != null)
+      {
+        FlashPlayerOne.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
+        FlashPlayerTwo.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 2.0f, Screen.height);
+        FlashPlayerTwo.enabled = false;
+      }
+      else
+      {
+        FlashPlayerOne.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
+      }
       FlashPlayerOne.enabled = false;
-      FlashPlayerTwo.enabled = false;
       currentDurationPlayerOne = 0.0f;
       currentDurationPlayerTwo = 0.0f;
       defaultColor = FlashPlayerOne.color;
@@ -66,7 +73,7 @@ namespace Domain.CameraEffects
         UnFadeOverlay(1);
       }
     
-      if (FlashPlayerTwo.enabled)
+      if (FlashPlayerTwo != null && FlashPlayerTwo.enabled)
       {
         currentDurationPlayerTwo += Time.deltaTime;
         UnFadeOverlay(2);
