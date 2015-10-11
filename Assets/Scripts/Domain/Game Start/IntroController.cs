@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Domain.Player.Health;
 using UserInterface.HeadsUpDisplay;
+using Domain.GameInput;
 namespace Domain.GameStart
 {
 /// <summary>
@@ -149,6 +150,11 @@ namespace Domain.GameStart
             }
           }
         }
+      }
+      if (Enabled && !runClose && (InputSplitter.GetJumpPressed(0) || InputSplitter.GetJumpPressed(1)))
+      {
+        fadeController.KillPlayer();
+        runClose = true;
       }
     }
 
