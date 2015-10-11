@@ -231,6 +231,53 @@ ModelImporter:
             tangentMode: 0
           preInfinity: 2
           postInfinity: 2
+      - name: CameraYOffset
+        curve:
+          serializedVersion: 2
+          curve:
+          - time: 0
+            value: 1.70000005
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .524506629
+            value: 1.20000005
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .849999964
+            value: 1.20000005
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: 1
+            value: 1.70000005
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          preInfinity: 2
+          postInfinity: 2
+      - name: CameraZOffset
+        curve:
+          serializedVersion: 2
+          curve:
+          - time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .616666675
+            value: .200000003
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          preInfinity: 2
+          postInfinity: 2
       events: []
       transformMask:
       - path: 
