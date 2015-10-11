@@ -4,16 +4,22 @@
 // </copyright>
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+
 using UserInterface.HeadsUpDisplay;
 using Domain.Player.Health;
 
 namespace Domain.GameEnd
 {
-/// <summary>
+///  summary>
 /// Controls what occurs when a player reaches the finish line.
 /// </summary>
   public class WinCondition : MonoBehaviour
   {
+    public GameObject leaderboardCanvas;
+    public GameObject playerOneUI;
+    public GameObject playerTwoUI;
+
     private byte index;
     private byte winner;
     private GameTime gameTime;
@@ -32,8 +38,13 @@ namespace Domain.GameEnd
       }
     }
 
+    public void ReturnToMainMenu()
+    {
+      Application.LoadLevel(0);
+    }
+
     internal void Awake()
-    {  
+    {
       index = 0;
       gameTime = GameObject.FindGameObjectWithTag("UIController").GetComponent<GameTime>();
       completionOrder = new byte[2];
@@ -84,7 +95,35 @@ namespace Domain.GameEnd
     {
       Debug.Log("Transition to end-game screen");
 
-      // TODO: End game screen
+      playerOneUI.active = false;
+      playerTwoUI.active = false;
+      leaderboardCanvas.active = true;
+
+      Transform scorePanelTrans = leaderboardCanvas.transform.Find("ScorePanel");
+      Text winnerLabel = scorePanelTrans.Find("WinnerLabel").GetComponent<Text>();
+      Text winnerTime = scorePanelTrans.Find("WinnerTime").GetComponent<Text>();
+      Text loserLabel = scorePanelTrans.Find("LoserLabel").GetComponent<Text>();
+      Text loserTime = scorePanelTrans.Find("LoserTime").GetComponent<Text>();
+
+      winnerLabel.text = "Player "+completionOrder[0];
+      if(completionOrder[0] == 1)
+      {
+        winnerTime.text = GameTime.Instance.PlayerOneTime.GetComponent<Text>().text;
+      }
+      else
+      {
+        winnerTime.text = GameTime.Instance.PlayerTwoTime.GetComponent<Text>().text;
+      }
+
+      loserLabel.text = "Player "+completionOrder[1];
+      if(completionOrder[1] == 1)
+      {
+        loserTime.text = GameTime.Instance.PlayerOneTime.GetComponent<Text>().text;
+      }
+      else
+      {
+        loserTime.text = GameTime.Instance.PlayerTwoTime.GetComponent<Text>().text;
+      }
     }
   }
 }

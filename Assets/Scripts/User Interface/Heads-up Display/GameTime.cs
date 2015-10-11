@@ -10,6 +10,12 @@ namespace UserInterface.HeadsUpDisplay
 {
   public class GameTime : MonoBehaviour
   { 
+    private static GameTime _instance;
+    public static GameTime Instance
+    {
+      get { return _instance; }
+    }
+
     public bool PlayerOneActive = true;
     public bool PlayerTwoActive = true;
     public GameObject PlayerOneTime;
@@ -20,7 +26,9 @@ namespace UserInterface.HeadsUpDisplay
     private uint minutes = 0;
 
     internal void Awake()
-    {  
+    {
+      _instance = this;
+
       playerOneTime = PlayerOneTime.GetComponent<Text>();
       if (PlayerTwoTime != null)
       {
