@@ -110,6 +110,7 @@ namespace Domain.Interactables.Elevator
       elevatorSparks = GameObject.FindGameObjectWithTag("ElevatorSparks");
 	  if (!Down) {
 			player = GameObject.FindGameObjectWithTag ("PlayerOne");
+			GetComponentInChildren<ButtonScript>().ModifyWorld();
 			time = 100;
 		}
       if (Physics.Raycast(elevatorFloor.transform.position, Vector3.down, out hit, 1000.0f, ~(1 << LayerMask.NameToLayer("Ignore Raycast")))&&Down)
