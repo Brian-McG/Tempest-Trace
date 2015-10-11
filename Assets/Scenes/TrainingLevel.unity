@@ -556,7 +556,7 @@ Renderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 15291357}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
@@ -26051,7 +26051,7 @@ MonoBehaviour:
   UnlockedMaterial: {fileID: 2100000, guid: 68fb0f92aad2d5247a7df27ff92c7f9b, type: 2}
   Down: 0
   DescendSpeed: -5
-  DoorCloseSpeed: 2
+  DoorCloseSpeed: -2
   SlowFactor: 5
   SlowDuration: 5
   ActivatorSound: {fileID: 828838223}
@@ -71525,8 +71525,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2119024967}
-  m_LocalRotation: {x: .5, y: .5, z: -.5, w: .5}
-  m_LocalPosition: {x: 130.869995, y: 146.839996, z: 194.789993}
+  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
+  m_LocalPosition: {x: 49.0800018, y: 181.929993, z: 222.179993}
   m_LocalScale: {x: 5, y: .100000001, z: 5}
   m_Children: []
   m_Father: {fileID: 1222799550}

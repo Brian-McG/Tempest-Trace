@@ -135,7 +135,7 @@ namespace Domain.Interactables.Elevator
       {
         MoveElevator();
       }
-	 if (time<20) {
+	 if (!Down&&time<20) {
 				time+=Time.deltaTime;
 				if(time>1.95f){
 					player.GetComponent<FirstPersonMovement>().SetVelocity(new Vector3(-4,3,0));
@@ -150,7 +150,7 @@ namespace Domain.Interactables.Elevator
     /// </summary>
     private void MoveElevator()
     {
-			if (currentAmountDescended < dropHeight && Down ||!Down && -currentAmountDescended < dropHeight)
+	if (currentAmountDescended < dropHeight && Down ||!Down && -currentAmountDescended < dropHeight)
       {
         float deltaHeight;
         if (SlowStatus && currentSlowDuration < SlowDuration)
@@ -171,8 +171,8 @@ namespace Domain.Interactables.Elevator
         elevatorSoundEffect.Stop();
       }
     
-      if (currentDoorAscended < RaiseHeight)
-      {
+			if (currentDoorAscended < RaiseHeight && Down ||!Down && -currentDoorAscended < RaiseHeight)
+			{
         float deltaHeight = DoorCloseSpeed * Time.fixedDeltaTime;
         elevatorDoor.transform.localPosition = elevatorDoor.transform.localPosition + (Vector3.up * deltaHeight);
         currentDoorAscended += deltaHeight;
