@@ -4,6 +4,7 @@
 // </copyright>
 using System.Collections;
 using UnityEngine;
+using Domain.Player.Movement;
 namespace Domain.Interactables.Elevator
 {
   public class Elevator : MonoBehaviour
@@ -46,12 +47,14 @@ namespace Domain.Interactables.Elevator
     private GameObject elevatorDoor;
     private GameObject elevatorSlowTerminal;
     private GameObject elevatorSparks;
+	private GameObject player;
     private float dropHeight;
     private float currentAmountDescended;
     private float currentDoorAscended;
     private float currentSlowDuration;
     private float slowDescendSpeed;
     private AudioSource elevatorSoundEffect;
+	private float time;
 
     /// <summary>
     /// Start moving elevator.
@@ -69,6 +72,10 @@ namespace Domain.Interactables.Elevator
         currentAmountDescended = 0.0f;
         currentDoorAscended = 0.0f;
         elevatorSoundEffect.Play();
+		if (!Down){
+			player.GetComponent<FirstPersonMovement>().SetVelocity(new Vector3(0,26f,0));
+			time=0;
+		}
       }
     }
 
@@ -101,13 +108,17 @@ namespace Domain.Interactables.Elevator
       elevatorDoor = GameObject.FindGameObjectWithTag("ElevatorDoor");
       elevatorSlowTerminal = GameObject.FindGameObjectWithTag("ElevatorSlowTerminal");
       elevatorSparks = GameObject.FindGameObjectWithTag("ElevatorSparks");
+	  if (!Down) {
+			player = GameObject.FindGameObjectWithTag ("PlayerOne");
+			time = 100;
+		}
       if (Physics.Raycast(elevatorFloor.transform.position, Vector3.down, out hit, 1000.0f, ~(1 << LayerMask.NameToLayer("Ignore Raycast")))&&Down)
       {
         dropHeight = elevatorFloor.transform.position.y - hit.point.y;
       }
-	  else if (Physics.Raycast(elevatorFloor.transform.position, Vector3.up, out hit, 1000.0f, ~(1 << LayerMask.NameToLayer("Ignore Raycast")))&& !Down)
+	  else if (!Down)
 	  {
-		dropHeight = elevatorFloor.transform.position.y - hit.point.y;
+				dropHeight = 1.5f;
 	  }
       else
       {
@@ -124,6 +135,13 @@ namespace Domain.Interactables.Elevator
       {
         MoveElevator();
       }
+	 if (time<20) {
+				time+=Time.deltaTime;
+				if(time>1.95f){
+					player.GetComponent<FirstPersonMovement>().SetVelocity(new Vector3(-4,3,0));
+					time+=50;
+				}
+			}
     }
 
     /// <summary>
@@ -132,7 +150,7 @@ namespace Domain.Interactables.Elevator
     /// </summary>
     private void MoveElevator()
     {
-      if (currentAmountDescended < dropHeight)
+			if (currentAmountDescended < dropHeight && Down ||!Down && -currentAmountDescended < dropHeight)
       {
         float deltaHeight;
         if (SlowStatus && currentSlowDuration < SlowDuration)

@@ -129,6 +129,13 @@ public class FirstPersonMovement : MonoBehaviour
     get { return velocity; }
   }
 
+  public void SetVelocity (Vector3 v)
+  {
+			velocity = v;
+
+  }
+
+
   public Vector3 HorizontalVelocity
   {
     get
