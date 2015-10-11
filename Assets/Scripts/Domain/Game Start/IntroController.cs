@@ -26,6 +26,7 @@ namespace Domain.GameStart
     public GameObject[] PopUpMessages;
     public int[] PopUpMessageStart;
     public int[] PopUpMessageEnd;
+    public CountDown CountDownTimer;
     private int currentLocation;
     private float lerpTime = 10f;
     private float currentLerpTime;
@@ -38,7 +39,9 @@ namespace Domain.GameStart
     private GameObject playerOneUI;
     private GameObject playerTwoUI;
     private CanvasGroup[] popUpMessageCanvas;
-
+    private PlayerLifeHandler playerOneLifeHander;
+    private PlayerLifeHandler playerTwoLifeHander;
+    
     public void LerpTransform(Transform t1, Transform t2, float t)
     {
       this.camera.transform.position = Vector3.Lerp(t1.position, t2.position, t);
@@ -53,6 +56,8 @@ namespace Domain.GameStart
       playerCameras = GameObject.FindGameObjectsWithTag("MainCamera");
       playerOneUI = GameObject.FindGameObjectWithTag("PlayerOneUI");
       playerTwoUI = GameObject.FindGameObjectWithTag("PlayerTwoUI");
+      playerOneLifeHander = playerOne.GetComponent<PlayerLifeHandler>();
+      playerTwoLifeHander = playerTwo.GetComponent<PlayerLifeHandler>();
       DisablePlayerMode();
       if (Enabled)
       {
@@ -95,10 +100,7 @@ namespace Domain.GameStart
       StartGameSound.Play();
       playerOneUI.SetActive(true);
       playerTwoUI.SetActive(true);
-      PlayerLifeHandler playerOneLifeHander = playerOne.GetComponent<PlayerLifeHandler>();
-      PlayerLifeHandler playerTwoLifeHander = playerTwo.GetComponent<PlayerLifeHandler>();
-      playerOneLifeHander.BlackToClear();
-      playerTwoLifeHander.BlackToClear();
+
       GameObject.FindGameObjectWithTag("UIController").GetComponent<GameTime>().ResetTime();
       playerOneLifeHander.AllowMovement = true;
       playerTwoLifeHander.AllowMovement = true;
@@ -126,6 +128,16 @@ namespace Domain.GameStart
         if (runClose)
         {
           if (fadeController.FadeoutAlpha > 0.95)
+          {
+            IntroDialog.Stop();
+            playerOneLifeHander.BlackToClear();
+            playerTwoLifeHander.BlackToClear();
+          }
+          if (playerOneLifeHander.FadeoutAlpha > 0.95f && playerTwoLifeHander.FadeoutAlpha > 0.95f && !CountDownTimer.IsActive)
+          {
+            CountDownTimer.IsActive = true;
+          }
+          else if (playerOneLifeHander.FadeoutAlpha > 0.95f && playerTwoLifeHander.FadeoutAlpha > 0.95f && CountDownTimer.Finished)
           {
             EnablePlayerMode();
           }
