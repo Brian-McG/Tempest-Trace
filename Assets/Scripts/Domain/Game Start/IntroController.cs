@@ -127,17 +127,22 @@ namespace Domain.GameStart
         }
         if (runClose)
         {
-          if (fadeController.FadeoutAlpha > 0.95)
+          if (fadeController.FadeoutAlpha > 0.99f)
           {
-            IntroDialog.Stop();
+            this.gameObject.camera.enabled = false;
+            foreach (GameObject cameraObj in playerCameras)
+            {
+              cameraObj.camera.enabled = true;
+            }
             playerOneLifeHander.BlackToClear();
             playerTwoLifeHander.BlackToClear();
+            //fadeController.enabled = false;
           }
-          if (playerOneLifeHander.FadeoutAlpha > 0.95f && playerTwoLifeHander.FadeoutAlpha > 0.95f && !CountDownTimer.IsActive)
+          if (playerOneLifeHander.FadeoutAlpha > 0.99f && playerTwoLifeHander.FadeoutAlpha > 0.99f && !CountDownTimer.IsActive)
           {
             CountDownTimer.IsActive = true;
           }
-          else if (playerOneLifeHander.FadeoutAlpha > 0.95f && playerTwoLifeHander.FadeoutAlpha > 0.95f && CountDownTimer.Finished)
+          else if (playerOneLifeHander.FadeoutAlpha < 0.05f && playerTwoLifeHander.FadeoutAlpha < 0.05f && CountDownTimer.Finished)
           {
             EnablePlayerMode();
           }
