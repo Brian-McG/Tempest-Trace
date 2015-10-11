@@ -151,7 +151,7 @@ namespace Domain.GameStart
           }
         }
       }
-      if (Enabled && !runClose && InputSplitter.GetJumpPressed(0) || InputSplitter.GetJumpPressed(1))
+      if (Enabled && !runClose && (InputSplitter.GetJumpPressed(0) || InputSplitter.GetJumpPressed(1)))
       {
         fadeController.KillPlayer();
         runClose = true;
