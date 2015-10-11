@@ -17,6 +17,9 @@ namespace Domain.Interactables.Elevator
     [Tooltip("Material to change termimal status image to once it is pressed.")]
     public Material
       UnlockedMaterial;
+	[Tooltip("Should the elevator be moving down.")]
+	public bool
+		Down;
     [Tooltip("Rate at which the elevator moves.")]
     public float
       DescendSpeed;
@@ -35,8 +38,10 @@ namespace Domain.Interactables.Elevator
     [Tooltip("Sound played when slowTerminal is pressed.")]
     public AudioSource
       SlowActivatorSound;
+	[Tooltip("Height to raise door")]
+    public float 
+			RaiseHeight;
 
-    private const float RaiseHeight = 3.0f;
     private GameObject elevatorFloor;
     private GameObject elevatorDoor;
     private GameObject elevatorSlowTerminal;
@@ -96,10 +101,14 @@ namespace Domain.Interactables.Elevator
       elevatorDoor = GameObject.FindGameObjectWithTag("ElevatorDoor");
       elevatorSlowTerminal = GameObject.FindGameObjectWithTag("ElevatorSlowTerminal");
       elevatorSparks = GameObject.FindGameObjectWithTag("ElevatorSparks");
-      if (Physics.Raycast(elevatorFloor.transform.position, Vector3.down, out hit, 1000.0f, ~(1 << LayerMask.NameToLayer("Ignore Raycast"))))
+      if (Physics.Raycast(elevatorFloor.transform.position, Vector3.down, out hit, 1000.0f, ~(1 << LayerMask.NameToLayer("Ignore Raycast")))&&Down)
       {
         dropHeight = elevatorFloor.transform.position.y - hit.point.y;
       }
+	  else if (Physics.Raycast(elevatorFloor.transform.position, Vector3.up, out hit, 1000.0f, ~(1 << LayerMask.NameToLayer("Ignore Raycast")))&& !Down)
+	  {
+		dropHeight = elevatorFloor.transform.position.y - hit.point.y;
+	  }
       else
       {
         dropHeight = 13.5245f; // Estimated height as backup
@@ -149,7 +158,7 @@ namespace Domain.Interactables.Elevator
         float deltaHeight = DoorCloseSpeed * Time.fixedDeltaTime;
         elevatorDoor.transform.localPosition = elevatorDoor.transform.localPosition + (Vector3.up * deltaHeight);
         currentDoorAscended += deltaHeight;
-        if (currentDoorAscended > RaiseHeight)
+        if (Down && currentDoorAscended > RaiseHeight)
         {
           elevatorDoor.transform.localPosition = new Vector3(elevatorDoor.transform.localPosition.x, -3.0f, elevatorDoor.transform.localPosition.z);
         }
