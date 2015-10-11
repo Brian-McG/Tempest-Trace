@@ -18917,10 +18917,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52900fdd23a4135408d10f97bf08f6a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationSpeed: .100000001
+  RotationSpeed: .5
   ActivationColliders:
   - {fileID: 1358865985}
-  ShootDelay: 2
+  ShootDelay: 1.39999998
   SniperFireSound: {fileID: 664501867}
   Damage: 34
   SpeedPenalty: 2
@@ -25777,6 +25777,14 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: -122.599998
       objectReference: {fileID: 0}
+    - target: {fileID: 11454198, guid: a0ce15097a590f9479412be28e36624e, type: 2}
+      propertyPath: ShootDelay
+      value: 1.70000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 11454198, guid: a0ce15097a590f9479412be28e36624e, type: 2}
+      propertyPath: RotationSpeed
+      value: .5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a0ce15097a590f9479412be28e36624e, type: 2}
   m_RootGameObject: {fileID: 1264043661}
@@ -26052,6 +26060,10 @@ Prefab:
       propertyPath: SniperControl
       value: 
       objectReference: {fileID: 1173777146}
+    - target: {fileID: 11436704, guid: 53d5f95791d56804992cefba59614fd1, type: 2}
+      propertyPath: ReactionDelay
+      value: .200000003
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 53d5f95791d56804992cefba59614fd1, type: 2}
   m_RootGameObject: {fileID: 2007409684}
@@ -29019,6 +29031,14 @@ Prefab:
     - target: {fileID: 454198, guid: a0ce15097a590f9479412be28e36624e, type: 2}
       propertyPath: m_LocalScale.y
       value: 5.15999985
+      objectReference: {fileID: 0}
+    - target: {fileID: 11454198, guid: a0ce15097a590f9479412be28e36624e, type: 2}
+      propertyPath: ShootDelay
+      value: 1.39999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 11454198, guid: a0ce15097a590f9479412be28e36624e, type: 2}
+      propertyPath: RotationSpeed
+      value: .5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a0ce15097a590f9479412be28e36624e, type: 2}
@@ -36879,6 +36899,10 @@ Prefab:
       propertyPath: SniperControl
       value: 
       objectReference: {fileID: 527625019}
+    - target: {fileID: 11436704, guid: 53d5f95791d56804992cefba59614fd1, type: 2}
+      propertyPath: ReactionDelay
+      value: .300000012
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 53d5f95791d56804992cefba59614fd1, type: 2}
   m_RootGameObject: {fileID: 1358865985}
@@ -41355,10 +41379,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52900fdd23a4135408d10f97bf08f6a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationSpeed: .100000001
+  RotationSpeed: .5
   ActivationColliders:
   - {fileID: 2007409684}
-  ShootDelay: 2
+  ShootDelay: 1.70000005
   SniperFireSound: {fileID: 127417642}
   Damage: 34
   SpeedPenalty: 2
@@ -46612,7 +46636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 003b1dc5bde307943b4cba7cfb14a630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReactionDelay: 1
+  ReactionDelay: .300000012
   SniperControl: {fileID: 527625019}
 --- !u!65 &1358865988
 BoxCollider:
@@ -67245,7 +67269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 003b1dc5bde307943b4cba7cfb14a630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReactionDelay: 1
+  ReactionDelay: .200000003
   SniperControl: {fileID: 1173777146}
 --- !u!65 &2007409687
 BoxCollider:
