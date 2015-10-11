@@ -95,6 +95,8 @@ public class FirstPersonMovement : MonoBehaviour
   private int animParamJump;
   private int animParamHeight;
   private int animParamYOffset;
+  private int animParamCameraY;
+  private int animParamCameraZ;
   
   private Headbob headBob;
   private CharacterController charController;
@@ -186,6 +188,8 @@ public class FirstPersonMovement : MonoBehaviour
     animParamJump = Animator.StringToHash("IsJumping");
     animParamHeight = Animator.StringToHash("PlayerHeight");
     animParamYOffset = Animator.StringToHash("AvatarYOffset");
+    animParamCameraY = Animator.StringToHash("CameraYOffset");
+    animParamCameraZ = Animator.StringToHash("CameraZOffset");
 
     RunSpeed = DefaultRunSpeed;
     velocity = Vector3.zero;
@@ -382,6 +386,7 @@ public class FirstPersonMovement : MonoBehaviour
             
             velocity.y = 0.0f;
             ClimbSound.Play();
+            headBob.enabled = false;
             currentMotion = DefinedMotion.CLIMB;
             SetAnimBool(animParamJump, false);
             SetAnimBool(animParamClimb, true);
@@ -537,6 +542,11 @@ public class FirstPersonMovement : MonoBehaviour
   /// </returns>
   private bool UpdateVaultClimbMotion()
   {
+    Vector3 newCamLoc = cameraChild.localPosition;
+    newCamLoc.y = GetAnimFloat(animParamCameraY);
+    newCamLoc.z = GetAnimFloat(animParamCameraZ);
+    cameraChild.localPosition = newCamLoc;
+
     float motionMoveDistance = ClimbSpeed * Time.fixedDeltaTime;
     Vector3 targetOffset = motionTargets[motionProgress] - transform.position;
     if (targetOffset.sqrMagnitude < motionMoveDistance * motionMoveDistance)
@@ -722,6 +732,8 @@ public class FirstPersonMovement : MonoBehaviour
         bool motionComplete = UpdateVaultClimbMotion();
         if (motionComplete)
         {
+          cameraChild.localPosition = new Vector3(0.0f, 1.7f, 0.0f);
+          headBob.enabled = true;
           currentMotion = DefinedMotion.NONE;
           SetAnimBool(animParamClimb, false);
           SetAnimBool(animParamVault, false);
