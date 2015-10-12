@@ -129,6 +129,7 @@ namespace Domain.GameStart
         {
           if (fadeController.FadeoutAlpha > 0.99f)
           {
+            IntroDialog.Stop();
             this.gameObject.camera.enabled = false;
             foreach (GameObject cameraObj in playerCameras)
             {
