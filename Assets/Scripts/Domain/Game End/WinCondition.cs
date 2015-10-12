@@ -82,6 +82,10 @@ namespace Domain.GameEnd
         completionOrder[index] = 2;
       }
       ++index;
+      if (playerTwoUI == null && index == 1)
+      {
+        AllPlayersFinished();
+      }
       if (index == 2)
       {
         AllPlayersFinished();
@@ -96,7 +100,10 @@ namespace Domain.GameEnd
       Debug.Log("Transition to end-game screen");
 
       playerOneUI.active = false;
-      playerTwoUI.active = false;
+      if (playerTwoUI != null)
+      {
+        playerTwoUI.active = false;
+      }
       leaderboardCanvas.active = true;
 
       Transform scorePanelTrans = leaderboardCanvas.transform.Find("ScorePanel");
@@ -105,8 +112,8 @@ namespace Domain.GameEnd
       Text loserLabel = scorePanelTrans.Find("LoserLabel").GetComponent<Text>();
       Text loserTime = scorePanelTrans.Find("LoserTime").GetComponent<Text>();
 
-      winnerLabel.text = "Player "+completionOrder[0];
-      if(completionOrder[0] == 1)
+      winnerLabel.text = "Player " + completionOrder[0];
+      if (completionOrder[0] == 1)
       {
         winnerTime.text = GameTime.Instance.PlayerOneTime.GetComponent<Text>().text;
       }
@@ -115,14 +122,22 @@ namespace Domain.GameEnd
         winnerTime.text = GameTime.Instance.PlayerTwoTime.GetComponent<Text>().text;
       }
 
-      loserLabel.text = "Player "+completionOrder[1];
-      if(completionOrder[1] == 1)
+      if (playerTwoUI != null)
       {
-        loserTime.text = GameTime.Instance.PlayerOneTime.GetComponent<Text>().text;
+        loserLabel.text = "Player " + completionOrder[1];
+        if (completionOrder[1] == 1)
+        {
+          loserTime.text = GameTime.Instance.PlayerOneTime.GetComponent<Text>().text;
+        }
+        else
+        {
+          loserTime.text = GameTime.Instance.PlayerTwoTime.GetComponent<Text>().text;
+        }
       }
       else
       {
-        loserTime.text = GameTime.Instance.PlayerTwoTime.GetComponent<Text>().text;
+        loserLabel.text = "";
+        loserTime.text = "";
       }
     }
   }
