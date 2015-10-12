@@ -12,10 +12,6 @@ namespace Domain.UserInterface.Menu
     public void ChangeToScene(int address)
     {
       Application.LoadLevel(address);
-      if (address == 1)
-      {
-        Screen.showCursor = false;
-      }
     }
     public void Quit()
     {

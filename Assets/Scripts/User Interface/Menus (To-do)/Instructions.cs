@@ -11,7 +11,9 @@ namespace Domain.UserInterface.Menu
   {
     public Canvas MenuCanvas;
     public Canvas InstructionsCanvas;
+	public Canvas ControlCanvas;
     private bool showInstructions;
+	private bool showControls;
 
     internal void Update()
     {
@@ -19,11 +21,19 @@ namespace Domain.UserInterface.Menu
       {
         MenuCanvas.enabled = false;
         InstructionsCanvas.enabled = true;
+		ControlCanvas.enabled = false;
       }
-      else
+      else if (showControls)
+	  {
+		MenuCanvas.enabled = false;
+		InstructionsCanvas.enabled = false;
+		ControlCanvas.enabled = true;
+	  }
+	  else
       {
         MenuCanvas.enabled = true;
         InstructionsCanvas.enabled = false;
+		ControlCanvas.enabled = false;
       }
       if (Input.GetKeyDown(KeyCode.Escape))
       {
@@ -42,5 +52,15 @@ namespace Domain.UserInterface.Menu
     {
       showInstructions = false;
     }
+	public void OpenControls()
+	{
+	  showControls = true;
+	  showInstructions = false;
+	}
+	public void CloseControls()
+	{
+	  showControls = false;
+	  showInstructions = true;
+	}
   }
 }
