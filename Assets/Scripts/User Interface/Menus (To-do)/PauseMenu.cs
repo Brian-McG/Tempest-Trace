@@ -22,6 +22,7 @@ namespace Domain.UserInterface.Menu
       {
         PauseMenuCanvas.SetActive(true);
         Time.timeScale = 0;
+		Screen.showCursor = true;
         player1.GetComponent<FirstPersonCameraHorizontal>().enabled = false;
         player1.GetComponentInChildren<FirstPersonCameraVertical>().enabled = false;
         if (player2 != null)
@@ -34,6 +35,7 @@ namespace Domain.UserInterface.Menu
       {
         PauseMenuCanvas.SetActive(false);
         Time.timeScale = 1;
+		Screen.showCursor = false;
         player1.GetComponent<FirstPersonCameraHorizontal>().enabled = true;
         player1.GetComponentInChildren<FirstPersonCameraVertical>().enabled = true;
         if (player2 != null)
