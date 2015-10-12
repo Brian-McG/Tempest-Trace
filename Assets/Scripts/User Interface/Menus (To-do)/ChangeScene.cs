@@ -11,6 +11,11 @@ namespace Domain.UserInterface.Menu
     // Update is called once per frame
     public void ChangeToScene(int address)
     {
+	  if (address == 1 || address == 2) 
+	  {
+		Screen.showCursor = false;
+	  }
+
       Application.LoadLevel(address);
     }
     public void Quit()
