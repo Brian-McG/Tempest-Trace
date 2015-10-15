@@ -1,5 +1,9 @@
 ## Tempest Trace
-##### **Collaborators:** Brian Mc George (MCGBRI004), Jacques Heunis (HNSJAC003), Timothy Gwynn (GWYTIM001)
+##### Collaborators
+- Brian Mc George
+- Jacques Heunis
+- Timothy Gwynn
+ 
 ## Important Notices
 ### Overview
 Tempest Trace is a competitive player-versus-player first-person running game whereby the player competes against the clock and against another player to get from the start to the end of a parkour/free running track while trying to keep their movements smooth and free flowing. 
